@@ -1,5 +1,11 @@
 # pushed to github
 
+
+
+
+Username for 'https://github.com': lmaroncelli
+Password for 'https://lmaroncelli@github.com': <Lasolita0> 
+
 luigi@LuigiMint /var/www/html/caccia $
 git init 
 git status 
