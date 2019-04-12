@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Distretto;
+use App\Zona;
 use Illuminate\Database\Eloquent\Model;
 
 class Squadra extends Model
@@ -11,9 +13,19 @@ class Squadra extends Model
 		protected $guarded = ['id'];
 
 
-
 		public function cacciatori()
 		  {
 		  return $this->belongsToMany('App\Cacciatore', 'tblCacciatoriSquadre', 'squadra_id', 'cacciatore_id')->withPivot('capo_squadra');
 		  }
+
+		public function distretto()
+		{
+		    return $this->belongsTo(Distretto::class, 'distretto_id', 'id');
+		}
+
+		public function zone()
+		{
+		    return $this->belongsToMany(Zona::class, 'tblSquadreZone', 'squadra_id', 'zona_id')->withPivot('tipo_caccia');
+		}
+
 }
