@@ -15,6 +15,7 @@ class CreateTableDistretti extends Migration
     {
         Schema::create('tblDistretti', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('atc_id')->unsigned()->default(1);
             $table->string('nome')->default('');
             $table->text('note')->nullable()->default(null);
             $table->timestamps();
