@@ -15,7 +15,9 @@ class CreateSquadre extends Migration
     {
         Schema::create('tblSquadre', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('distretto_id')->unsigned()->default(0);
             $table->string('nome')->default('');
+            $table->text('note')->nullable()->default(null);
             $table->timestamps();
         });
     }
