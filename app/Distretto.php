@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Atc;
 use App\Squadra;
 use App\UnitaGestione;
 use Illuminate\Database\Eloquent\Model;
@@ -28,4 +29,9 @@ class Distretto extends Model
 		  {
 		  return $this->belongsToMany('App\Cacciatore', 'tblCacciatoriSquadre', 'squadra_id', 'cacciatore_id')->withPivot('capo_squadra');
 		  }
+
+		public function atc()
+		{
+		    return $this->belongsTo(Atc::class, 'atc_id', 'id');
+		}
 }

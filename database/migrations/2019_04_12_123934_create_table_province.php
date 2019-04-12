@@ -15,6 +15,7 @@ class CreateTableProvince extends Migration
     {
         Schema::create('tblProvince', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('atc_id')->unsigned()->default(2);
             $table->string('nome')->default('');
             $table->timestamps();
         });
