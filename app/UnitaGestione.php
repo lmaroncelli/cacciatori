@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Distretto;
+use App\Zona;
 use Illuminate\Database\Eloquent\Model;
 
 class UnitaGestione extends Model

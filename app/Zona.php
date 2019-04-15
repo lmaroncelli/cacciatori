@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Distretto;
+use App\Comune;
 use App\Squadra;
 use App\UnitaGestione;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +24,12 @@ class Zona extends Model
 		public function squadre()
 		{
 		    return $this->belongsToMany(Squadra::class, 'tblSquadreZone', 'zona_id', 'squadra_id')->withPivot('tipo_caccia');
+		}
+
+
+		public function comuni()
+		{
+		    return $this->belongsToMany(Comune::class, 'tblComuneZona', 'zona_id', 'comune_id');
 		}
 
 		
