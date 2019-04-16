@@ -11,7 +11,7 @@ class Distretto extends Model
 {
 		protected $table = 'tblDistretti';
 
-		protected $guarded = ['id'];
+		protected $fillable = ['atc_id', 'nome', 'note'];
 
 
 		public function squadre()

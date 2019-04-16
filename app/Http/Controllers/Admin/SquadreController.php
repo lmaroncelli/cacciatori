@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Squadra;
 use Illuminate\Http\Request;
 
-class DistrettiController extends Controller
+class SquadreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,12 +26,11 @@ class DistrettiController extends Controller
      */
     public function create()
     {
-        $distretto = new Distretto;
+        $squadra = new Squadra;
 
-        $squadre = Squadra::orderBy('nome')->pluck('nome','id');
+        $distretti = Distretto::orderBy('nome')->pluck('nome','id');
 
-        $squadre_associate = $distretto->squadre->pluck('id')->toArray();
-        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate'));
+        return view('admin.squadre.form', compact('squadra','distretti'));
     }
 
     /**
@@ -41,10 +40,12 @@ class DistrettiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-      {
-      $distretto = Distretto::create($request->all());  
-      echo 'ok';
-      }
+    	{
+      $squadra = Squadra::create($request->all());
+
+      echo 'OK';
+
+    	}
 
     /**
      * Display the specified resource.

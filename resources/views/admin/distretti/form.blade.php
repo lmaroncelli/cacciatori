@@ -16,7 +16,10 @@
 		<form role="form" action="{{ route('distretti.store') }}" method="POST" enctype="multipart/form-data">
 	@endif
 		{!! csrf_field() !!}
-		
+	
+		{{-- <div class="form-group" id="squadre_select">
+			@include('admin.distretti.inc_squadre_select')
+		</div>		 --}}
 
 		<div class="form-group">
 		  <label for="nome">Nome</label>
