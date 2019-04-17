@@ -9,6 +9,30 @@ use Illuminate\Http\Request;
 
 class DistrettiController extends Controller
 {
+
+
+    public function _saveDistretto(&$distretto, $request)
+      {
+
+      if($distretto->squadre->count())
+        {
+        Squadra::where('distretto_id', $distretto->id)
+        ->update(['distretto_id' => 0]);
+        }
+
+        $distretto->nome = $request->get('nome');
+        $distretto->note = $request->get('note');
+
+        foreach ($request->get('squadre') as $squadra_id) 
+          {
+          Squadra::where('id', $squadra_id)
+                  ->update(['distretto_id' => $distretto->id]);
+          }
+
+        $distretto->save();
+      }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +40,9 @@ class DistrettiController extends Controller
      */
     public function index()
     {
-        //
+        $distretti = Distretto::all();
+
+        return view('admin.distretti.index', compact('distretti'));
     }
 
     /**
@@ -42,8 +68,10 @@ class DistrettiController extends Controller
      */
     public function store(Request $request)
       {
-      $distretto = Distretto::create($request->all());  
-      echo 'ok';
+      $distretto = new Distretto;
+      $this->_saveDistretto($distretto, $request);
+
+      return redirect()->route("distretti")->with('status', 'Distretto creato correttamente!');
       }
 
     /**
@@ -65,7 +93,13 @@ class DistrettiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $distretto = Distretto::find($id);
+
+        $squadre = Squadra::orderBy('nome')->pluck('nome','id');
+
+        $squadre_associate = $distretto->squadre->pluck('id')->toArray();
+
+        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate'));
     }
 
     /**
@@ -77,7 +111,11 @@ class DistrettiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $distretto = Distretto::find($id);
+        $this->_saveDistretto($distretto, $request);
+
+        return redirect()->route("distretti.index")->with('status', 'Distretto modificato correttamente!');
+
     }
 
     /**
