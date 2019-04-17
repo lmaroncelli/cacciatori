@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Distretto;
+use App\Cacciatore;
 use App\Http\Controllers\Controller;
-use App\Squadra;
 use Illuminate\Http\Request;
 
-class SquadreController extends Controller
+class CacciatoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,10 @@ class SquadreController extends Controller
      */
     public function index()
     {
-        $squadre = Squadra::all();
+        
+        $cacciatori = Cacciatore::all();
 
-        return view('admin.squadre.index', compact('squadre'));
+        return view('admin.cacciatori.index', compact('cacciatori'));
     }
 
     /**
@@ -28,9 +28,10 @@ class SquadreController extends Controller
      */
     public function create()
     {
-        $squadra = new Squadra;
 
-        return view('admin.squadre.form', compact('squadra'));
+    $cacciatore = new Cacciatore;
+    $squadre_associate = $cacciatore->squadre->pluck('id')->toArray();
+    return view('admin.cacciatori.form', compact('cacciatore', 'squadre_associate'));
     }
 
     /**
@@ -40,12 +41,9 @@ class SquadreController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    	{
-      $squadra = Squadra::create($request->all());
-
-      return redirect()->route("squadre")->with('status', 'Squadra creata correttamente!');
-
-    	}
+    {
+        //
+    }
 
     /**
      * Display the specified resource.
@@ -78,9 +76,7 @@ class SquadreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $squadra = Squadra::where('id',$id)->update($request->all());
-
-        return redirect()->route("squadre")->with('status', 'Squadra modificata correttamente!');
+        //
     }
 
     /**

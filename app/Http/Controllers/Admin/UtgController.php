@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Distretto;
 use App\Http\Controllers\Controller;
-use App\Squadra;
+use App\UnitaGestione;
 use Illuminate\Http\Request;
 
-class SquadreController extends Controller
+class UtgController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,11 @@ class SquadreController extends Controller
      */
     public function index()
     {
-        $squadre = Squadra::all();
+        $utg = UnitaGestione::all();
 
-        return view('admin.squadre.index', compact('squadre'));
+        return view('admin.utg.index', compact('utg'));
+
+        return redirect()->route("utg")->with('status', 'Unità di gestione creata correttamente!');
     }
 
     /**
@@ -28,9 +29,9 @@ class SquadreController extends Controller
      */
     public function create()
     {
-        $squadra = new Squadra;
+        $utg = new UnitaGestione;
 
-        return view('admin.squadre.form', compact('squadra'));
+        return view('admin.utg.form', compact('utg'));
     }
 
     /**
@@ -40,12 +41,11 @@ class SquadreController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    	{
-      $squadra = Squadra::create($request->all());
+    {
+        $utg = UnitaGestione::create($request->all());
 
-      return redirect()->route("squadre")->with('status', 'Squadra creata correttamente!');
-
-    	}
+        return redirect()->route("utg")->with('status', 'Unità di gestione creata correttamente!');
+    }
 
     /**
      * Display the specified resource.
@@ -78,9 +78,9 @@ class SquadreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $squadra = Squadra::where('id',$id)->update($request->all());
+        $utg = UnitaGestione::where('id',$id)->update($request->all());
 
-        return redirect()->route("squadre")->with('status', 'Squadra modificata correttamente!');
+        return redirect()->route("utg")->with('status', 'Unità di gestione modificata correttamente!');
     }
 
     /**

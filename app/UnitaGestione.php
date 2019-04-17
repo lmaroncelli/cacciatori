@@ -10,7 +10,7 @@ class UnitaGestione extends Model
 {
 		protected $table = 'tblUnitaGestione';
 
-		protected $guarded = ['id'];
+		protected $fillable = ['distretto_id', 'nome', 'note'];
 
 
 		public function distretto()

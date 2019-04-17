@@ -54,10 +54,8 @@ class DistrettiController extends Controller
     {
         $distretto = new Distretto;
 
-        $squadre = Squadra::orderBy('nome')->pluck('nome','id');
-
         $squadre_associate = $distretto->squadre->pluck('id')->toArray();
-        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate'));
+        return view('admin.distretti.form', compact('distretto','squadre_associate'));
     }
 
     /**

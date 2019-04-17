@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cacciatore extends Model
 {
  	
  	use SoftDeletes;
  	
- 	protected $table = 'tblVolontari';
+ 	protected $table = 'tblCacciatori';
 
  	protected $guarded = ['id'];
 

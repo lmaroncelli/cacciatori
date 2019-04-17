@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+	<p>
+		<a href="{{ route('distretti.create') }}" title="Nuovo distretto" class="btn btn-primary">Nuovo distretto</a>
+	</p>
 	<table class="table table-striped">
 	  <thead>
 	    <tr>

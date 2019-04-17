@@ -43,7 +43,7 @@
 				Crea
 			@endif
 		</button>
-		<a href="{{ url('admin/squadre') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
+		<a href="{{ route('squadre.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
 		</div>
 		</form>
 
