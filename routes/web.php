@@ -27,5 +27,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::resource('utg', 'Admin\UtgController');
 	Route::resource('cacciatori', 'Admin\CacciatoriController');
 	Route::resource('zone', 'Admin\ZoneController');
+	Route::resource('province', 'Admin\ProvinceController');
+	Route::resource('comuni', 'Admin\ComuniController');
 
 });

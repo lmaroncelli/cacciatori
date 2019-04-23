@@ -17,6 +17,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer(['admin.squadre.form'],'App\Http\Composers\ZoneFormComposer');
         view()->composer(['admin.distretti.form','admin.cacciatori.form','admin.zone.form'],'App\Http\Composers\SquadreFormComposer');         
         view()->composer(['admin.zone.form'],'App\Http\Composers\UtgFormComposer');         
+        view()->composer(['admin.province.form'],'App\Http\Composers\ComuniFormComposer');         
     }
 
     /**
