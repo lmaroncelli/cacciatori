@@ -17,9 +17,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('distretti', 'Admin\DistrettiController');
-Route::resource('squadre', 'Admin\SquadreController');
-Route::resource('utg', 'Admin\UtgController');
-Route::resource('cacciatori', 'Admin\CacciatoriController');
+Route::group(['middleware' => ['admin']], function () {
+
+	Route::resource('distretti', 'Admin\DistrettiController');
+	Route::resource('squadre', 'Admin\SquadreController');
+	Route::resource('utg', 'Admin\UtgController');
+	Route::resource('cacciatori', 'Admin\CacciatoriController');
+	Route::resource('zone', 'Admin\ZoneController');
+
+});

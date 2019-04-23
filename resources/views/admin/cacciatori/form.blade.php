@@ -18,7 +18,8 @@
 		<form role="form" action="{{ route('cacciatori.update', $cacciatore->id) }}" method="POST">
 		{{ method_field('PUT') }}
 	@else
-		<form role="form" action="{{ route('cacciatori.store') }}" method="POST" enctype="multipart/form-data">
+		{{-- registro nuovo utente cacciatore --}}
+		<form method="POST" action="{{ route('register') }}">
 	@endif
 		{!! csrf_field() !!}
 	

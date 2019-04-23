@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+
+
+@section('header_css')
+	<!-- Select2 -->
+	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
+
+
+
 @section('content')
 	
 	@if ($squadra->exists)
@@ -27,6 +36,10 @@
 		  </select>
 		</div>
 
+		<div class="form-group" id="zone_select">
+			@include('admin.inc_zone_select')
+		</div>	
+
 		<div class="form-group">
 		  <label for="nome">Nome</label>
 		  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $squadra->nome}}" required="required">
@@ -47,4 +60,19 @@
 		</div>
 		</form>
 
+@endsection
+
+
+
+@section('script_footer')
+	<!-- Select2 -->
+	<script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+	<script type="text/javascript">
+				$(function () {
+				    //Initialize Select2 Elements
+				    $('.select2').select2();
+
+				});
+	</script>
 @endsection

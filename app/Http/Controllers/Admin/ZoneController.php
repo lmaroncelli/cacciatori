@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Cacciatore;
 use App\Http\Controllers\Controller;
+use App\Zona;
 use Illuminate\Http\Request;
 
-class CacciatoriController extends Controller
+class ZoneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,11 @@ class CacciatoriController extends Controller
      */
     public function index()
     {
-        
-        $cacciatori = Cacciatore::all();
+        $zone = Zona::all();
 
-        return view('admin.cacciatori.index', compact('cacciatori'));
+        return view('admin.zone.index', compact('zone'));
+
+        return redirect()->route("zone")->with('status', 'Zona creata correttamente!');
     }
 
     /**
@@ -28,13 +29,9 @@ class CacciatoriController extends Controller
      */
     public function create()
     {
+        $zona = new Zona;
 
-    $cacciatore = new Cacciatore;
-    
-    $squadre_associate = $cacciatore->squadre->pluck('id')->toArray();
-    
-    return view('admin.cacciatori.form', compact('cacciatore', 'squadre_associate'));
-    
+        return view('admin.zone.form', compact('zona'));
     }
 
     /**
