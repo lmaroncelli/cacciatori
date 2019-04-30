@@ -17,7 +17,7 @@ class DistrettiFormComposer
     public function compose(View $view)
     	{
 
-    	$distretti = Distretto::orderBy('nome')->pluck('nome','id');
+    	$distretti = Distretto::orderBy('nome')->pluck('nome','id')->toArray();
 
     	$view->with(compact('distretti'));
     	}

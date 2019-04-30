@@ -36,6 +36,16 @@
 		  </select>
 		</div>
 
+
+		<div class="form-group">
+		  <label for="unita_gestione_id">Unità di gestione</label>
+		  <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
+		    @foreach ($utg as $id => $nome)
+		    	<option value="{{$id}}" @if ($squadra->unita_gestione_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
+		    @endforeach
+		  </select>
+		</div>
+
 		<div class="form-group" id="zone_select">
 			@include('admin.inc_zone_select')
 		</div>	

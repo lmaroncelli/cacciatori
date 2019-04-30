@@ -16,7 +16,7 @@ class ZoneFormComposer
     public function compose(View $view)
     	{
 
-    	$zone = Zona::orderBy('nome')->pluck('nome','id');
+    	$zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
 
 
     	$view->with(compact('zone'));

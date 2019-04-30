@@ -96,5 +96,17 @@
         </main>
     </div>
      @yield('script_footer')
+     <script type="text/javascript">
+         $(function () {
+             $(".delete").click(function(){
+
+                 var Id = $(this).data("id");
+                 if (window.confirm('Sei sicuro di voler cancellare l\'elemento ?')) {
+                     $("#form_"+Id).submit();
+                 }
+
+             });
+        });
+     </script>
 </body>
 </html>

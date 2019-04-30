@@ -21,7 +21,7 @@ class Distretto extends Model
 
 		public function unita()
 		{
-		    return $this->hasMany(UnitaGestione::class, 'distretto_id', 'id');
+		    return $this->hasMany(UnitaGestione::class, 'distretto_id', 'id')->orderBy('nome');
 		}
 
 

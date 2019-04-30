@@ -11,7 +11,7 @@ class Zona extends Model
 {
 		protected $table = 'tblZone';
 
-		protected $guarded = ['id'];
+		protected $fillable = ['unita_gestione_id','numero','nome','superficie','tipo','note'];
 
 
 		public function unita()
@@ -31,6 +31,20 @@ class Zona extends Model
 		{
 		    return $this->belongsToMany(Comune::class, 'tblComuneZona', 'zona_id', 'comune_id');
 		}
+
+
+
+
+		public function setSuperficieAttribute($value)
+	   {
+	    $this->attributes['superficie'] =  (float) str_ireplace(',', '.', $value);
+	   }
+
+
+	  public function getSuperficieAttribute($value)
+    	{
+       return str_ireplace('.', ',', $value);
+    	}
 
 		
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class SquadreController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +31,11 @@ class SquadreController extends Controller
     {
         $squadra = new Squadra;
 
-        return view('admin.squadre.form', compact('squadra'));
+        $utg = $squadra->distretto->unita->pluck('nome','id');
+        
+        $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
+
+        return view('admin.squadre.form', compact('squadra', 'utg', 'zone_associate'));
     }
 
     /**
@@ -40,12 +45,17 @@ class SquadreController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    	{
+    {
       $squadra = Squadra::create($request->all());
+      
+      if ($request->has('zone')) 
+        {
+        $squadra->zone()->sync($request->get('zone'));
+        }
 
-      return redirect()->route("squadre")->with('status', 'Squadra creata correttamente!');
+      return redirect()->route("squadre.index")->with('status', 'Squadra creata correttamente!');
 
-    	}
+    }
 
     /**
      * Display the specified resource.
@@ -66,7 +76,14 @@ class SquadreController extends Controller
      */
     public function edit($id)
     {
-        //
+      $squadra = Squadra::find($id);
+
+      $utg = $squadra->distretto->unita->pluck('nome','id');
+
+      $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
+
+       return view('admin.squadre.form', compact('squadra', 'utg', 'zone_associate'));
+
     }
 
     /**
@@ -77,10 +94,13 @@ class SquadreController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $squadra = Squadra::where('id',$id)->update($request->all());
+    { 
 
-        return redirect()->route("squadre")->with('status', 'Squadra modificata correttamente!');
+        $squadra = Squadra::find($id);
+
+        $squadra->fill($request->all())->save();
+
+        return redirect()->route("squadre.index")->with('status', 'Squadra modificata correttamente!');
     }
 
     /**

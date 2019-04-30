@@ -31,7 +31,9 @@ class ZoneController extends Controller
     {
         $zona = new Zona;
 
-        return view('admin.zone.form', compact('zona'));
+        $squadre_associate = $zona->squadre->pluck('nome','id')->toArray();
+
+        return view('admin.zone.form', compact('zona','squadre_associate'));
     }
 
     /**
@@ -42,7 +44,16 @@ class ZoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $zona = Zona::create($request->all());
+
+        if ($request->has('squadre')) 
+          {
+          $zona->squadre()->sync($request->get('squadre'));
+          }
+
+        $request->get('tipo') == 'zona' ? $status = 'Zona di braccata creata correttamente!' : $status = 'Particella di girata creata correttamente!';
+
+        return redirect()->route("zone.index")->with('status', $status);
     }
 
     /**
@@ -64,7 +75,11 @@ class ZoneController extends Controller
      */
     public function edit($id)
     {
-        //
+      $zona = Zona::find($id);
+
+      $squadre_associate = $zona->squadre->pluck('nome','id')->toArray();
+
+      return view('admin.zone.form', compact('zona','squadre_associate'));
     }
 
     /**
@@ -75,8 +90,21 @@ class ZoneController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+
+        $zona = Zona::find($id);
+
+        $zona->fill($request->all())->save();
+
+
+        if ($request->has('squadre')) 
+          {
+          $zona->squadre()->sync($request->get('squadre'));
+          }
+
+        $request->get('tipo') == 'zona' ? $status = 'Zona di braccata aggiornata correttamente!' : $status = 'Particella di girata aggiornata correttamente!';
+
+        return redirect()->route("zone.index")->with('status', $status);
     }
 
     /**

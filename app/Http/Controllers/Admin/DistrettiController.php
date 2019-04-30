@@ -23,10 +23,13 @@ class DistrettiController extends Controller
         $distretto->nome = $request->get('nome');
         $distretto->note = $request->get('note');
 
-        foreach ($request->get('squadre') as $squadra_id) 
+        if ($request->has('squadre')) 
           {
-          Squadra::where('id', $squadra_id)
-                  ->update(['distretto_id' => $distretto->id]);
+          foreach ($request->get('squadre') as $squadra_id) 
+            {
+            Squadra::where('id', $squadra_id)
+                    ->update(['distretto_id' => $distretto->id]);
+            } 
           }
 
         $distretto->save();
@@ -69,7 +72,7 @@ class DistrettiController extends Controller
       $distretto = new Distretto;
       $this->_saveDistretto($distretto, $request);
 
-      return redirect()->route("distretti")->with('status', 'Distretto creato correttamente!');
+      return redirect()->route("distretti.index")->with('status', 'Distretto creato correttamente!');
       }
 
     /**
@@ -124,6 +127,8 @@ class DistrettiController extends Controller
      */
     public function destroy($id)
     {
-        //
+      Distretto::destroy($id);
+
+      return redirect()->route("distretti.index")->with('status', 'Distretto eliminato correttamente!');
     }
 }

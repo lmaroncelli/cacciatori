@@ -14,10 +14,17 @@
 	  </thead>
 	  <tbody>
 	  	@foreach ($utg as $unita)
+	  		<form action="{{ route('utg.destroy', $unita->id) }}" id="form_{{$unita->id}}" method="POST" id="record_delete">
+	  		  {!! csrf_field() !!}
+	  		  @method('DELETE')
+	  		</form>
 		    <tr>
 		      <td>{{$unita->nome}}</td>
 		      <td>{{$unita->distretto->nome}}</td>
 		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td>
+		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}">elimina</button>
+		      </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>

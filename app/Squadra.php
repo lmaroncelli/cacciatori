@@ -10,7 +10,7 @@ class Squadra extends Model
 {
 		protected $table = 'tblSquadre';
 
-		protected $fillable = ['distretto_id', 'nome', 'note'];
+		protected $fillable = ['distretto_id', 'nome', 'note','unita_gestione_id'];
 
 
 

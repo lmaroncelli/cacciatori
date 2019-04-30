@@ -44,7 +44,7 @@ class UtgController extends Controller
     {
         $utg = UnitaGestione::create($request->all());
 
-        return redirect()->route("utg")->with('status', 'Unità di gestione creata correttamente!');
+        return redirect()->route("utg.index")->with('status', 'Unità di gestione creata correttamente!');
     }
 
     /**
@@ -66,7 +66,10 @@ class UtgController extends Controller
      */
     public function edit($id)
     {
-        //
+        $utg = UnitaGestione::find($id);
+
+        return view('admin.utg.form', compact('utg'));
+
     }
 
     /**
@@ -78,9 +81,9 @@ class UtgController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $utg = UnitaGestione::where('id',$id)->update($request->all());
+        $utg = UnitaGestione::find($id)->fill($request->all())->save();
 
-        return redirect()->route("utg")->with('status', 'Unità di gestione modificata correttamente!');
+        return redirect()->route("utg.index")->with('status', 'Unità di gestione modificata correttamente!');
     }
 
     /**
@@ -91,6 +94,9 @@ class UtgController extends Controller
      */
     public function destroy($id)
     {
-        //
+        UnitaGestione::destroy($id);
+        
+        return redirect()->route("utg.index")->with('status', 'Unità di gestione eliminata correttamente!');
+
     }
 }

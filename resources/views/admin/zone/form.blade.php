@@ -17,14 +17,25 @@
 		  <input type="hidden" name="id" value="{{$zona->id}}">
 		</form>
 	
-		<form role="form" action="{{ route('zone.update', $zona->id) }}" method="POST">
-		{{ method_field('PUT') }}
+	<form role="form" action="{{ route('zone.update', $zona->id) }}" method="POST">
+			@method('PUT')
 	@else
 		<form role="form" action="{{ route('zone.store') }}" method="POST" enctype="multipart/form-data">
 	@endif
 		{!! csrf_field() !!}
 		
-	
+			
+
+		<div class="form-group">
+		  <label for="note">Tipo</label>
+		  <select class="form-control" name="tipo" id="tipo">
+		    @foreach (['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'] as $key => $nome)
+		      <option value="{{$key}}" @if (old('tipo') != '' && old('tipo') == $key) selected="selected" @endif>{{$nome}}</option>
+		    @endforeach
+		  </select>
+		</div>
+
+
 		<div class="form-group">
 		  <label for="unita_gestione_id">UTG</label>
 		  <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">

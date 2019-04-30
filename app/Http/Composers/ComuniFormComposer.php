@@ -16,7 +16,7 @@ class ComuniFormComposer
     public function compose(View $view)
     	{
 
-    	$comuni = Comune::orderBy('nome')->pluck('nome','id');
+    	$comuni = Comune::orderBy('nome')->pluck('nome','id')->toArray();
 
 
     	$view->with(compact('comuni'));
