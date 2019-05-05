@@ -64,7 +64,20 @@ class ZoneController extends Controller
      */
     public function show($id)
     {
-        //
+        $zona = Zona::find($id);
+
+        $poligono = $zona->poligono;
+
+        $coordinate = $poligono->coordinate->pluck('long','lat');
+
+        $coordinate_json = [];
+        foreach ($coordinate as $lat => $long) 
+          {
+          $coordinate_json[] = json_encode(['lat' => (float) $lat, 'lng' => (float) $long]);
+          }
+
+         return view('admin.zone.show_mappa', compact('zona','poligono','coordinate_json','coordinate'));
+
     }
 
     /**

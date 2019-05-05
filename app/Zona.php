@@ -33,6 +33,13 @@ class Zona extends Model
 		}
 
 
+		public function poligono()
+		  { 
+		      // the Poligono model is automatically assumed to have a zona_id foreign key
+		      return $this->hasOne('App\Poligono','zona_id','id');
+		  }
+
+
 
 
 		public function setSuperficieAttribute($value)
