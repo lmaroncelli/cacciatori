@@ -25,6 +25,8 @@ class AddPoligonoTable extends Migration
             $table->boolean('editable')->default(true)->nullable();
             $table->timestamps();
         });
+
+        
     }
 
     /**
