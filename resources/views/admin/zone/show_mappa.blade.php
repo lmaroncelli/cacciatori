@@ -4,8 +4,9 @@
 @section('header_css')
 	<style type="text/css" media="screen">
 		#map {
-			width: 1000px;
+			/*width: 1000px;*/
 			height: 800px;
+			margin-top: 10px;
 		}
 	</style>
 @endsection
@@ -14,8 +15,13 @@
 @section('content')
 	
 	<h3>Zona {{$zona->nome}}</h3>
-	
+
+	@csrf
+
+	<button id="salva_coordinate" title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Salva coordinate</button>
+			
 	<div id="map"></div>
+
 
 @endsection
 
@@ -89,39 +95,91 @@
 
 		     	infoWindow = new google.maps.InfoWindow;
 
+
+
+     	    $('#salva_coordinate').click(function(){
+
+     	    	var vertices = distretto.getPath();
+     				console.log(vertices);
+
+     				var distretto_coords = new Array();
+
+     				// Iterate over the vertices.
+     				for (var i =0; i < vertices.getLength(); i++) {
+     				  var xy = vertices.getAt(i);
+
+     				   	var jsonData = {};
+	 				  		jsonData['lat'] = xy.lat();
+	 				  		jsonData['long'] = xy.lng();
+
+	 				  		distretto_coords.push(jsonData);
+
+     				}
+
+     				console.log(distretto_coords);
+
+     	    	jQuery.ajax({
+     	    	        url: '{{ route("aggiorna_coordinate") }}',
+     	    	        type: "post",
+     	    	        async: false,
+     	    	        data : { 
+     	    	               'distretto_coords': distretto_coords, 
+     	    	               'zona_id': '{{$zona->id}}',
+     	    	               '_token': jQuery('input[name=_token]').val()
+     	    	               },
+     	    	       	success: function(data) {
+     	    	       
+     	    	       }
+
+     	    	 }); // ajax //
+
+     	    }); // clcik //
+
+
+
 				}
 
-						/** @this {google.maps.Polygon} */
-				    function showArrays(event) {
+				/** @this {google.maps.Polygon} */
+		    function showArrays(event) {
 
-				    	
-				      // Since this polygon has only one path, we can call getPath() to return the
-				      // MVCArray of LatLngs.
-				      var vertices = this.getPath();
-				    	
+		    	
+		      // Since this polygon has only one path, we can call getPath() to return the
+		      // MVCArray of LatLngs.
+		      var vertices = this.getPath();
+		    	
 
-				      var contentString = '<b>Rimini polygon</b><br>' +
-				          'Clicked location: <br>' + event.latLng.lat() + ',' + event.latLng.lng() +
-				          '<br>';
+		      var contentString = '<b>Rimini polygon</b><br>' +
+		          'Clicked location: <br>' + event.latLng.lat() + ',' + event.latLng.lng() +
+		          '<br>';
 
 
-				      // Iterate over the vertices.
-				      for (var i =0; i < vertices.getLength(); i++) {
-				        var xy = vertices.getAt(i);
-				        contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
-				            xy.lng();
-				      }
+		      // Iterate over the vertices.
+		      for (var i =0; i < vertices.getLength(); i++) {
+		        var xy = vertices.getAt(i);
+		        contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
+		            xy.lng();
+		      }
 
-				      // Replace the info window's content and position.
-				      infoWindow.setContent(contentString);
-				      infoWindow.setPosition(event.latLng);
+		      // Replace the info window's content and position.
+		      infoWindow.setContent(contentString);
+		      infoWindow.setPosition(event.latLng);
 
-				      infoWindow.open(map);
-				    }
+		      infoWindow.open(map);
+		    }
 
 	</script>
 	
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY&callback=initMap" type="text/javascript"></script>
+	
 
+
+	<script type="text/javascript">
+		$(function () {
+		    
+		
+		}); // onload
+		
+
+	</script>
 
 @endsection

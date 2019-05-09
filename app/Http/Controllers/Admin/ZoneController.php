@@ -70,13 +70,8 @@ class ZoneController extends Controller
 
         $coordinate = $poligono->coordinate->pluck('long','lat');
 
-        $coordinate_json = [];
-        foreach ($coordinate as $lat => $long) 
-          {
-          $coordinate_json[] = json_encode(['lat' => (float) $lat, 'lng' => (float) $long]);
-          }
 
-         return view('admin.zone.show_mappa', compact('zona','poligono','coordinate_json','coordinate'));
+         return view('admin.zone.show_mappa', compact('zona','poligono','coordinate'));
 
     }
 
