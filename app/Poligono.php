@@ -11,7 +11,7 @@ class Poligono extends Model
 {
 		protected $table = 'tblPoligoni';
 
-		protected $protected = ['id'];
+		protected $guarded = ['id'];
 
 
 		public function zona()
