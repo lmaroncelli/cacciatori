@@ -83,7 +83,14 @@ class DistrettiController extends Controller
      */
     public function show($id)
     {
-        //
+        $distretto = Distretto::find($id);
+
+        $poligono = $distretto->poligono;
+
+        $coordinate = $poligono->coordinate->pluck('long','lat');
+
+
+         return view('admin.distretti.show_mappa', compact('distretto','poligono','coordinate'));
     }
 
     /**

@@ -24,6 +24,11 @@ class Distretto extends Model
 		    return $this->hasMany(UnitaGestione::class, 'distretto_id', 'id')->orderBy('nome');
 		}
 
+		public function poligono()
+		  { 
+		      // the Poligono model is automatically assumed to have a distretto_id foreign key
+		      return $this->hasOne('App\Poligono','distretto_id','id');
+		  }
 
 		public function cacciatori()
 		  {

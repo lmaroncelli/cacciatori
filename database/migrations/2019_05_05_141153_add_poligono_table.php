@@ -16,6 +16,7 @@ class AddPoligonoTable extends Migration
         Schema::create('tblPoligoni', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('zona_id')->unsigned()->nullable()->default(null);
+            $table->integer('distretto_id')->unsigned()->nullable()->default(null);
             $table->string('name')->default('')->nullable();
             $table->string('strokeColor', 7)->default('#FF0000')->nullable();
             $table->string('fillColor', 7)->default('#FF0000')->nullable();

@@ -9,6 +9,7 @@
 	    <tr>
 	      <th scope="col">Nome</th>
 	      <th></th>
+	      <th></th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -20,6 +21,7 @@
 		    <tr>
 		      <td>{{$distretto->nome}}</td>
 		      <td> <a href="{{ route('distretti.edit',$distretto->id) }}" title="Modifica distretto" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('distretti.show',$distretto->id) }}" title="Visualizza distretto" class="btn btn-warning btn-sm">visualizza</a> </td>
 		      <td>
 		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$distretto->id}}">elimina</button>
 		      </td>

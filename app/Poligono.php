@@ -19,6 +19,11 @@ class Poligono extends Model
 		  return $this->belongsTo('App\Zona','zona_id','id');
 		}
 
+		public function distretto()
+		{
+		  return $this->belongsTo('App\Distretto','distretto_id','id');
+		}
+
 		public function coordinate()
 		{
 		    return $this->hasMany(CoordinataPoligono::class, 'poligono_id', 'id');

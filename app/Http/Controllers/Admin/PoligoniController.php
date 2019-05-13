@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\CoordinataPoligono;
+use App\Distretto;
 use App\Http\Controllers\Controller;
 use App\Poligono;
 use App\Zona;
@@ -50,6 +51,46 @@ class PoligoniController extends Controller
     	}
 
 
+     public function salvaCoordinatePoligonoAjaxDistretto(Request $request) 
+      {
+      $zona_id = $request->get('zona_id');
+      $distretto_coords = $request->get('distretto_coords');
+      /*
+      array:5 [
+        0 => array:2 [
+          "lat" => "44.066493"
+          "lng" => "12.550753999999984"
+        ]
+        1 => array:2 [
+          "lat" => "44.069207"
+          "lng" => "12.592094999999972"
+        ]
+        2 => array:2 [
+          "lat" => "44.043546732062424"
+          "lng" => "12.60307991540526"
+        ]
+        3 => array:2 [
+          "lat" => "44.04058499397212"
+          "lng" => "12.565656322509767"
+        ]
+        4 => array:2 [
+          "lat" => "44.048605"
+          "lng" => "12.535472000000027"
+        ]
+      ]
+      dd($distretto_coords);
+       */
+      $zona = Zona::find($zona_id);
+
+      $poligono = $zona->poligono;
+
+      $poligono->coordinate()->delete();
+
+      $poligono->coordinate()->createMany($distretto_coords);
+      
+      }
+
+
     public function readJson()
     	{
    
@@ -71,7 +112,7 @@ class PoligoniController extends Controller
           $num = 1111;
           $zona = Zona::create(['unita_gestione_id' => 3, 'nome' => $nome_zona, 'tipo' => 'zona', 'numero' => $num, 'superficie' => $data_zona['AREA']]);
 
-          $poligono = $zona->poligono()->create(['name' => 'Poligono '.$nome_zona]);
+          $poligono = $zona->poligono()->create(['name' => 'Poligono zona '.$nome_zona]);
 
           $coordinate =  $element['geometry']['coordinates'][0];
 
@@ -86,5 +127,36 @@ class PoligoniController extends Controller
 
     	}
 
+
+    public function readXml()
+      {
+      $xml = simplexml_load_file(storage_path('app/public/distretto_b2.kml'));
+      
+      /*echo '<pre>';
+      print_r($xml);
+      echo '</pre>';*/
+      
+      $coords = $xml->Document->Folder->Placemark->Polygon->outerBoundaryIs->LinearRing->coordinates;
+
+      $coords = $coords->__toString();
+      
+      $coords_arr = explode(' ',$coords);
+
+
+      //dd($coords_arr);
+
+
+      $distretto = Distretto::find(3);
+
+      $poligono = $distretto->poligono()->create(['name' => 'Poligono distretto '.$distretto->nome]);
+
+      foreach ($coords_arr as $value) 
+        {
+        $coordinata_arr = explode(',', $value);
+        $my_coord = new CoordinataPoligono(['lat' => $coordinata_arr[1] , 'long' => $coordinata_arr[0]]);
+        $poligono->coordinate()->save($my_coord);
+        }
+
+      }
 
 }
