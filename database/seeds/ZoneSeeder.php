@@ -7,35 +7,11 @@ use Illuminate\Database\Seeder;
 
 class ZoneSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-
-    	$zone_old = Zona::all();
-
-    	foreach ($zone_old as $zona) 
-    		{
-	  		$p = $zona->poligono;
-	  		
-	  		if(!is_null($p))
-	  			{
-					$p->coordinate()->delete();
-			 		$p->delete();
-	  			} 	
-	  			
-	  	 	$zona->delete();
-    		}
 
 
-    
-	 		$distretto = Distretto::where('nome','distretto_a1')->first();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG a1']);
 
-    	$files = ['a1_braccata.kml', 'a1_girata.kml'];
+		private function _createZonaFromXml($files, $unita)
+			{
       foreach ($files as $file) 
       	{
 	      $xml = simplexml_load_file(storage_path('app/public/'.$file));
@@ -64,7 +40,72 @@ class ZoneSeeder extends Seeder
 
 	      	}
 
-	     	}
+	     	} // end for
+			}
+
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+
+    	$zone_old = Zona::all();
+
+    	foreach ($zone_old as $zona) 
+    		{
+	  		$p = $zona->poligono;
+	  		
+	  		if(!is_null($p))
+	  			{
+					$p->coordinate()->delete();
+			 		$p->delete();
+	  			} 	
+	  			
+	  	 	$zona->delete();
+    		}
+
+	 		$distretto = Distretto::where('nome','distretto_a1')->first();
+	 		$distretto->unita()->delete();
+	 		$unita = $distretto->unita()->create(['nome' => 'UTG a1']);
+
+    	$files = ['a1_braccata.kml', 'a1_girata.kml'];
+
+    	$this->_createZonaFromXml($files, $unita);
+
+      
+
+
+	 		$distretto = Distretto::where('nome','distretto_a2')->first();
+	 		$distretto->unita()->delete();
+	 		$unita = $distretto->unita()->create(['nome' => 'UTG a2']);
+
+    	$files = ['a2_braccata.kml', 'a2_girata.kml'];
+
+    	$this->_createZonaFromXml($files, $unita);
+
+
+
+	 		$distretto = Distretto::where('nome','distretto_b1')->first();
+	 		$distretto->unita()->delete();
+	 		$unita = $distretto->unita()->create(['nome' => 'UTG b1']);
+
+    	$files = ['b1_girata.kml', 'b2_girata.kml'];
+
+    	$this->_createZonaFromXml($files, $unita);
+
+
+
+    	$distretto = Distretto::where('nome','distretto_c')->first();
+	 		$distretto->unita()->delete();
+	 		$unita = $distretto->unita()->create(['nome' => 'UTG c']);
+
+    	$files = ['c_braccata.kml'];
+
+    	$this->_createZonaFromXml($files, $unita);
+
 
 
     }
