@@ -24,4 +24,9 @@ class Atc extends Model
 		    return $this->hasMany(Distretto::class, 'atc_id', 'id');
 		}
 
+		public function scopeCode($query, $code)
+	   {
+	       return $query->where('code', 'ATC'.$code)->first();
+	   }
+
 }

@@ -18,7 +18,7 @@ class CreateTableZone extends Migration
             $table->integer('unita_gestione_id')->unsigned()->default(0);
             $table->integer('numero')->default(0);
             $table->string('nome')->default('');
-            $table->decimal('superficie', 8, 1);
+            $table->decimal('superficie', 8, 1)->nullable()->default(null);
             $table->enum('tipo', ['zona', 'particella'])->default('zona');
             $table->text('note')->nullable()->default(null);
             $table->timestamps();

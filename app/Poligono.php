@@ -28,4 +28,5 @@ class Poligono extends Model
 		{
 		    return $this->hasMany(CoordinataPoligono::class, 'poligono_id', 'id');
 		}
+		
 }

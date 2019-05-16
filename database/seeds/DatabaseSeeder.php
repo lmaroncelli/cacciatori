@@ -12,10 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        
+        $this->call(DistrettiSeeder::class);
+        
+        $this->call(ZoneSeeder::class);
  				
      		  
 
-        $this->call(PolignoSeeder::class);
+        //$this->call(PolignoSeeder::class);
 
     }
 }
