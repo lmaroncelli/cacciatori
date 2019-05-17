@@ -16,8 +16,8 @@
 	  <tbody>
 	  	@foreach ($zone as $zona)
 		    <tr>
-		      <td>{{$zona->numero}}</td>
 		      <td>{{$zona->nome}}</td>
+		      <td>{{$zona->numero}}</td>
 		      <td>{{$zona->unita->nome}}</td>
 		      <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-primary btn-sm">modifica</a> </td>
 		      <td> <a href="{{ route('zone.show',$zona->id) }}" title="Visualizza zona" class="btn btn-warning btn-sm">visualizza</a> </td>

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Cacciatore;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -37,7 +41,46 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        /*$this->middleware('guest');*/
+        $this->middleware('auth');
+    }
+
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+          {
+          $name = $request->get('nome') . ' ' . $request->get('cognome');
+          $new_request['name'] = $name;
+          $new_request['ruolo'] = 'cacciatore';
+          }
+        else
+          {
+          $new_request['ruolo'] = 'admin';
+          }
+       
+        $request->merge($new_request);
+        
+        $this->validator($request->all())->validate();    
+
+        event(new Registered($user = $this->create($request->all())));
+
+
+        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+          {
+          return redirect('cacciatori')->with('status', 'Cacciatore creato correttamente!');
+          }
+        else
+          {
+          return redirect('utenti')->with('status', 'Admin reato correttamente!');
+          }
+
     }
 
     /**
@@ -48,11 +91,53 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        $validation_rules = [
+              /*'username' => 'required|string|max:20|unique:users', */
+              'email' => 'required|string|email|max:255|unique:users',
+              'password' => 'required|string|min:6|confirmed',
+          ];
+
+
+        $validation_messages =  [
+            'username.required' => 'Lo username è obbligatorio',
+            'username.unique' => 'Lo username è già utilizzato',
+            'username.max' => 'Lo username deve essere al massimo :max caratteri',
+
+            'email.required' => 'La mail è obbligatoria',
+            'email.unique' => 'La mail è già utilizzata',
+            
+            'password.required' => 'La password è obbligatoria',
+            'password.min' => 'Le password deve essere almeno :min caratteri',
+            'password.confirmed' => 'Le password non coincidono',
+            'data_nascita.required' => 'La data di nascita è obbligatoria',
+            'data_nascita.date_format' => 'La data di nascita non ha un formato valido',
+            ];
+
+        /*aggiungo le regole di validazione per il volontario*/
+        if ( array_key_exists('user', $data) && $data['user'] == 'cacciatore' ) 
+          {
+          $validation_rules['data_nascita'] = 'required|date_format:d/m/Y';
+          $validation_rules['nome'] = 'required|string|max:255';
+          $validation_rules['cognome'] = 'required|string|max:255';
+          
+          $validation_messages['nome.required'] = 'Il nome è obbligatoria';
+          $validation_messages['cognome.required'] = 'Il cognome è obbligatoria';
+          }
+        else
+          {
+          $validation_rules['name'] = 'required|string|max:255';
+          $validation_messages['name.required'] = 'Il nome è obbligatoria';
+          
+          }
+
+
+        
+        
+          return Validator::make(
+            $data,  
+            $validation_rules,
+            $validation_messages
+          );
     }
 
     /**
@@ -63,10 +148,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $user = null;
+        DB::transaction(function() use ($data) {
+           
+           $user =  User::create([
+               'ruolo' => $data['ruolo'],
+               'name' => $data['name'],
+               /*'username' => $data['username'],*/ 
+               'email' => $data['email'],
+               'password' => Hash::make($data['password']),
+           ]);
+
+           if ( !is_null($user) && array_key_exists('user', $data) && $data['user'] == 'cacciatore') 
+             {
+             $cacciatore = Cacciatore::create($data);
+             $cacciatore->user_id = $user->id;
+             $cacciatore->save();
+             }
+
+        });
+
+        return $user;
     }
 }

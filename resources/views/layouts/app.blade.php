@@ -9,6 +9,10 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ionicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/skins/skin-blue.min.css') }}" rel="stylesheet">
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
@@ -82,11 +86,12 @@
                             <div class="card-header">Dashboard</div>
 
                             <div class="card-body">
-                                @if (session('status'))
+                                {{-- @if (session('status'))
                                     <div class="alert alert-success" role="alert">
                                         {{ session('status') }}
                                     </div>
-                                @endif
+                                @endif --}}
+                                @include('layouts.errors')
                                 @yield('content')
                             </div>
                         </div>

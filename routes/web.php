@@ -11,11 +11,18 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+
+
+
+// la home diventa il mio loginForm
+Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
 Auth::routes();
+
 
 
 Route::get('/home', 'HomeController@index')->name('home');

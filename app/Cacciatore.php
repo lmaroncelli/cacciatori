@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +13,7 @@ class Cacciatore extends Model
  	
  	protected $table = 'tblCacciatori';
 
- 	protected $guarded = ['id'];
+ 	protected $fillable = ['user_id','nome','cognome','registro','data_nascita','nota','deleted_at','created_at','updated_at'];
 
  	protected $dates = ['data_nascita','deleted_at'];
 
