@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Cacciatore;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ModificaCacciatoreRequest;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CacciatoriController extends Controller
 {
@@ -67,21 +71,15 @@ class CacciatoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        $cacciatore = Cacciatore::find($id);
+        
+        $squadre_associate = $cacciatore->squadre->pluck('id')->toArray();
+        
+        return view('admin.cacciatori.form', compact('cacciatore', 'squadre_associate'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *

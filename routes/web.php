@@ -21,6 +21,8 @@
 // la home diventa il mio loginForm
 Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
+Route::post('utenti/modifica/{utente_id}', 'Auth\RegisterController@modificaUtente')->name('utenti.modifica');
+
 Auth::routes();
 
 
@@ -32,7 +34,9 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::resource('distretti', 'Admin\DistrettiController');
 	Route::resource('squadre', 'Admin\SquadreController');
 	Route::resource('utg', 'Admin\UtgController');
+	
 	Route::resource('cacciatori', 'Admin\CacciatoriController');
+	
 	Route::resource('zone', 'Admin\ZoneController');
 	Route::resource('province', 'Admin\ProvinceController');
 	Route::resource('comuni', 'Admin\ComuniController');

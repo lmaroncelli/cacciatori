@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Cacciatore;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ModificaUtenteRequest;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -169,5 +170,94 @@ class RegisterController extends Controller
         });
 
         return $user;
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
+    {
+        //dd($request->all());
+
+        $utente = User::find($utente_id);
+
+        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+          {
+          $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
+          $utente->ruolo = 'cacciatore';
+          }
+        else
+          {
+          $utente->name = $request->get('name');
+          }
+
+        $utente->email = $request->get('email');
+        /*$utente->username = $request->get('username');*/
+
+        if ($request->filled('login_capabilities')) 
+          {
+          $utente->login_capabilities = true;
+          }
+        else
+          {
+          $utente->login_capabilities = false;
+          }
+
+        if ($request->filled('password')) 
+          {
+          $utente->password = Hash::make($request->get('password'));
+          }
+
+        DB::transaction(function() use ($request, $utente) {
+
+          $utente->save();
+
+          if ( !is_null($utente) && $request->has('user') && $request->get('user') == 'cacciatore')
+            {
+              
+            $cacciatore = $utente->cacciatore;
+            /////////////////////////////////////////////////////////////////////
+            // ho inserito il salvataggio della data come Carbon in un mutator //
+            /////////////////////////////////////////////////////////////////////
+            $cacciatore->fill($request->except('elimina'));
+            $cacciatore->save();
+
+            if ($request->filled('elimina') && $request->get('elimina') == 1) 
+              {
+
+              //$user = $cacciatore->utente;
+              
+              // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
+              // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+              $cacciatore->delete();
+
+              //$user->login_capabilities = false;
+              //$user->save();
+              } 
+            }  
+
+        });
+
+
+        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+          {
+          if ($request->filled('elimina') && $request->get('elimina') == 1) 
+            {
+            return redirect('cacciatori')->with('status', 'Cacciatore eliminato!');
+            } 
+          else 
+            {
+            return redirect('cacciatori')->with('status', 'Cacciatore modificato correttamente!');
+            }  
+          }
+        else
+          {
+          return redirect('utenti')->with('status', 'Admin modificato correttamente!');
+          }
     }
 }

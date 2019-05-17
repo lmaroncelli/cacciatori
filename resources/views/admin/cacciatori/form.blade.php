@@ -11,15 +11,8 @@
 @section('content')
 	
 	@if ($cacciatore->exists)
-		
-		<form action="{{ route('cacciatori.destroy', $cacciatore->id) }}" method="POST" id="record_delete">
-			{{ method_field('DELETE') }}
-		  {!! csrf_field() !!}
-		  <input type="hidden" name="id" value="{{$cacciatore->id}}">
-		</form>
-	
-		<form role="form" action="{{ route('cacciatori.update', $cacciatore->id) }}" method="POST">
-		{{ method_field('PUT') }}
+		<form role="form" action="{{ route('utenti.modifica',$cacciatore->utente->id) }}" method="POST">
+		<input type="hidden" name="utente_id" value="{{$cacciatore->utente->id}}">
 	@else
 		{{-- registro nuovo utente cacciatore --}}
 		<form method="POST" action="{{ route('register') }}">
