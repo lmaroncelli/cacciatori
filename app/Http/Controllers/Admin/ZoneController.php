@@ -125,4 +125,19 @@ class ZoneController extends Controller
     {
         //
     }
+
+
+
+    public function aggiornaCentroAjax(Request $request)
+      {
+      $lat = $request->get('lat');
+      $long = $request->get('long');
+      $zoom = $request->get('zoom');
+      $zona_id = $request->get('zona_id');
+
+      Zona::where('id',$zona_id)->update(['center_lat' => $lat , 'center_long' => $long, 'zoom' => $zoom ]);
+
+      echo "ok";
+
+      }
 }

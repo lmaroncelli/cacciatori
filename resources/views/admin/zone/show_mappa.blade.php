@@ -19,6 +19,13 @@
 	@csrf
 
 	<button id="salva_coordinate" title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Salva coordinate</button>
+
+	<form id="new_center" style="display: none;">
+		<button title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Ricentra la mappa</button>
+		<input type="hidden" id="lat" name="lat" value="">
+		<input type="hidden" id="long" name="long" value="">
+		<input type="hidden" id="zoom" name="zoom" value="">
+	</form>
 			
 	<div id="map"></div>
 
@@ -29,157 +36,208 @@
 @section('script_footer')
 
 	<script type="text/javascript">
+	
 		var infoWindow;
 		var map;
 
-
-				// Initialize and add the map
-				function initMap() {
-
-				  // The location of center
-				  var center = {lat: 44.060921, lng: 12.566300};
-
-				  // Define the LatLng coordinates for the polygon's path.
-				  // 
-		  	 	// Define the LatLng coordinates for the polygon's path. Note that there's
-		    	// no need to specify the final coordinates to complete the polygon, because
-		    	// The Google Maps JavaScript API will automatically draw the closing side.
-		     /*var distretto_coords = [
-		       {lat: 44.066493, lng: 12.550754},
-		       {lat:44.069207, lng: 12.592095},
-		       {lat: 44.044657, lng: 12.597757},
-		       {lat: 44.048605, lng: 12.535472}
-		     ];*/
-
-		    
-		    var distretto_coords = new Array();
-
-		    
-		   	@foreach ($coordinate as $lat => $long)
-		   		
-		    	var jsonData = {};
-		   		jsonData['lat'] = {{$lat}};
-		   		jsonData['lng'] = {{$long}};
-		   		
-		   		//console.log('jsonData = '+JSON.stringify(jsonData));
-
-		   		distretto_coords.push(jsonData);
-
-		   	@endforeach
-
-		   		//console.log(distretto_coords);
-		    	//console.log(distretto_coords);
-
-				  // The map
-				  map = new google.maps.Map(
-				      document.getElementById('map'), {zoom: 13, center: center});
-
-				  
-				  // Construct the polygon.
-		      var distretto = new google.maps.Polygon({
-		        paths: distretto_coords,
-		        strokeColor: '#FF0000',
-		        strokeOpacity: 0.8,
-		        strokeWeight: 2,
-		        fillColor: '#FF0000',
-		        fillOpacity: 0.35,
-		        editable: true
-		      });
+		var contentString;
 
 
-		      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-		      distretto.setMap(map);
+		// Initialize and add the map
+		function initMap() {
 
-		      // Add a listener for the click event.
-		      distretto.addListener('click', showArrays);
+			var center_lat = {{$zona->center_lat}};
+			var center_long = {{$zona->center_long}};
+			var zoom = {{$zona->zoom}};
 
-		     	infoWindow = new google.maps.InfoWindow;
+		  // The location of center
+		  var center = {lat: center_lat, lng: center_long};
 
+		  // Define the LatLng coordinates for the polygon's path.
+		  // 
+  	 	// Define the LatLng coordinates for the polygon's path. Note that there's
+    	// no need to specify the final coordinates to complete the polygon, because
+    	// The Google Maps JavaScript API will automatically draw the closing side.
+     /*var distretto_coords = [
+       {lat: 44.066493, lng: 12.550754},
+       {lat:44.069207, lng: 12.592095},
+       {lat: 44.044657, lng: 12.597757},
+       {lat: 44.048605, lng: 12.535472}
+     ];*/
 
+    
+    var distretto_coords = new Array();
 
-     	    $('#salva_coordinate').click(function(){
+    
+   	@foreach ($coordinate as $lat => $long)
+   		
+    	var jsonData = {};
+   		jsonData['lat'] = {{$lat}};
+   		jsonData['lng'] = {{$long}};
+   		
+   		//console.log('jsonData = '+JSON.stringify(jsonData));
 
-     	    	var vertices = distretto.getPath();
-     				console.log(vertices);
+   		distretto_coords.push(jsonData);
 
-     				var distretto_coords = new Array();
+   	@endforeach
 
-     				// Iterate over the vertices.
-     				for (var i =0; i < vertices.getLength(); i++) {
-     				  var xy = vertices.getAt(i);
+   		//console.log(distretto_coords);
+    	//console.log(distretto_coords);
 
-     				   	var jsonData = {};
-	 				  		jsonData['lat'] = xy.lat();
-	 				  		jsonData['long'] = xy.lng();
+		  // The map
+		  map = new google.maps.Map(
+		      document.getElementById('map'), {zoom: zoom, center: center});
 
-	 				  		distretto_coords.push(jsonData);
-
-     				}
-
-     				console.log(distretto_coords);
-
-     	    	jQuery.ajax({
-     	    	        url: '{{ route("aggiorna_coordinate") }}',
-     	    	        type: "post",
-     	    	        async: false,
-     	    	        data : { 
-     	    	               'distretto_coords': distretto_coords, 
-     	    	               'zona_id': '{{$zona->id}}',
-     	    	               '_token': jQuery('input[name=_token]').val()
-     	    	               },
-     	    	       	success: function(data) {
-     	    	       
-     	    	       }
-
-     	    	 }); // ajax //
-
-     	    }); // clcik //
-
-
-
-				}
-
-				/** @this {google.maps.Polygon} */
-		    function showArrays(event) {
-
-		    	
-		      // Since this polygon has only one path, we can call getPath() to return the
-		      // MVCArray of LatLngs.
-		      var vertices = this.getPath();
-		    	
-
-		      var contentString = '<b>Rimini polygon</b><br>' +
-		          'Clicked location: <br>' + event.latLng.lat() + ',' + event.latLng.lng() +
-		          '<br>';
+		  
+		  // Construct the polygon.
+      var distretto = new google.maps.Polygon({
+        paths: distretto_coords,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        editable: true
+      });
 
 
-		      // Iterate over the vertices.
-		      for (var i =0; i < vertices.getLength(); i++) {
-		        var xy = vertices.getAt(i);
-		        contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
-		            xy.lng();
-		      }
+      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+      distretto.setMap(map);
 
-		      // Replace the info window's content and position.
-		      infoWindow.setContent(contentString);
-		      infoWindow.setPosition(event.latLng);
+      // Add a listener for the click event.
+      distretto.addListener('click', showArrays);
 
-		      infoWindow.open(map);
-		    }
+     	infoWindow = new google.maps.InfoWindow;
+
+
+ 	    $('#salva_coordinate').click(function(){
+
+ 	    	var vertices = distretto.getPath();
+ 				console.log(vertices);
+
+ 				var distretto_coords = new Array();
+
+ 				// Iterate over the vertices.
+ 				for (var i =0; i < vertices.getLength(); i++) {
+ 				  var xy = vertices.getAt(i);
+
+ 				   	var jsonData = {};
+				  		jsonData['lat'] = xy.lat();
+				  		jsonData['long'] = xy.lng();
+
+				  		distretto_coords.push(jsonData);
+
+ 				}
+
+ 				console.log(distretto_coords);
+
+ 	    	jQuery.ajax({
+ 	    	        url: '{{ route("aggiorna_coordinate") }}',
+ 	    	        type: "post",
+ 	    	        async: false,
+ 	    	        data : { 
+ 	    	               'distretto_coords': distretto_coords, 
+ 	    	               'zona_id': '{{$zona->id}}',
+ 	    	               '_token': jQuery('input[name=_token]').val()
+ 	    	               },
+ 	    	       	success: function(data) {
+ 	    	       
+ 	    	       }
+
+ 	    	 }); // ajax //
+
+ 	    }); // clcik //
+
+
+
+		} //init Map
+
+
+
+		/** @this {google.maps.Polygon} */
+		function showArrays(event) {
+
+
+			// visualizzo il bottone per settare il nuovo centro
+			
+			$("#new_center").show();
+
+
+		  // Since this polygon has only one path, we can call getPath() to return the
+		  // MVCArray of LatLngs.
+		  var vertices = this.getPath();
+			
+			var nome = '{{$zona->nome}}';
+
+			var c_lat = event.latLng.lat();
+			var c_long = event.latLng.lng();
+			var c_zoom = map.getZoom();
+
+
+
+			$("#lat").val(c_lat);
+			$("#long").val(c_long);
+			$("#zoom").val(c_zoom);
+
+
+		  contentString = '<b>'+nome+'</b><br>' +
+		      'Coordinate correnti: <br>' + c_lat + ',' + c_long +
+		      '<br>'+
+		      'Zoom corrente: '+ c_zoom + '<br><br>';
+
+
+		  // Iterate over the vertices.
+		  for (var i =0; i < vertices.getLength(); i++) {
+		    var xy = vertices.getAt(i);
+		    contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
+		        xy.lng();
+		  }
+
+		  // Replace the info window's content and position.
+		  infoWindow.setContent(contentString);
+		  infoWindow.setPosition(event.latLng);
+
+		  infoWindow.open(map);
+
+
+		  google.maps.event.addListener(infoWindow, 'closeclick', function() {  
+		      $("#new_center").hide();
+		  });  
+		  
+
+		} //showArrays
+
+
+
+		$('#new_center').click(function(e){
+				e.preventDefault();
+
+				var c_lat = $("#lat").val();
+				var c_long = $("#long").val();
+				var c_zoom = $("#zoom").val();
+
+				jQuery.ajax({
+				        url: '{{ route("aggiorna_centro") }}',
+				        type: "post",
+				        async: false,
+				        data : { 
+				               'lat': c_lat, 
+				               'long': c_long, 
+				               'zoom': c_zoom, 
+				               'zona_id': '{{$zona->id}}',
+				               '_token': jQuery('input[name=_token]').val()
+				               },
+				       	success: function(data) {
+				       		location.reload();
+				       	}
+
+				 }) // ajax //
+
+		}); // click new_center
+
 
 	</script>
 	
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY&callback=initMap" type="text/javascript"></script>
 	
-
-
-	<script type="text/javascript">
-		$(function () {
-		    
-		
-		}); // onload
-		
-
-	</script>
-
 @endsection

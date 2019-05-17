@@ -34,6 +34,10 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::post('salva_coordinate_poligono_ajax','Admin\PoligoniController@salvaCoordinatePoligonoAjax')->name('aggiorna_coordinate');
 	Route::post('salva_coordinate_poligono_ajax_distretto','Admin\PoligoniController@salvaCoordinatePoligonoAjaxDistretto')->name('aggiorna_coordinate_distretto');
 
+	Route::post('aggiorna_centro_ajax','Admin\ZoneController@aggiornaCentroAjax')->name('aggiorna_centro');
+
+
+
 	Route::get('readJson','Admin\PoligoniController@readJson')->name('readJson');
 	Route::get('readXml','Admin\PoligoniController@readXml')->name('readXml');
 
