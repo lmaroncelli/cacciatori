@@ -42,6 +42,10 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::resource('comuni', 'Admin\ComuniController');
 
 
+	Route::resource('azioni', 'Admin\AzioniCacciaController');
+
+
+
 	Route::post('salva_coordinate_poligono_ajax','Admin\PoligoniController@salvaCoordinatePoligonoAjax')->name('aggiorna_coordinate');
 	Route::post('salva_coordinate_poligono_ajax_distretto','Admin\PoligoniController@salvaCoordinatePoligonoAjaxDistretto')->name('aggiorna_coordinate_distretto');
 

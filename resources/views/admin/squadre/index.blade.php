@@ -16,7 +16,7 @@
 	  	@foreach ($squadre as $squadra)
 		    <tr>
 		      <td>{{$squadra->nome}}</td>
-		      <td>{{$squadra->distretto->nome}}</td>
+		      <td>{{optional($squadra->distretto)->nome}}</td>
 		      <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-primary btn-sm">modifica</a> </td>
 		    </tr>
 	  	@endforeach
