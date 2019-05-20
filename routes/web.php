@@ -34,6 +34,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::resource('distretti', 'Admin\DistrettiController');
 
 	Route::post('getUnitaGestioneAjax','Admin\SquadreController@getUnitaGestioneAjax')->name('get_unita_gestione');
+	Route::post('getZonaAjax','Admin\SquadreController@getZonaAjax')->name('get_zona');
 	Route::resource('squadre', 'Admin\SquadreController');
 
 	Route::resource('utg', 'Admin\UtgController');

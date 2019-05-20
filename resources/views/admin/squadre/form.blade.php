@@ -38,12 +38,12 @@
 		
 
 		<div class="form-group" id="unita_select">
-			@include('admin.squadre.inc_unita_select')
+			@include('admin.squadre.inc_unita_select_cascade')
 		</div>
 
 
 		<div class="form-group" id="zone_select">
-			@include('admin.inc_zone_select')
+			@include('admin.squadre.inc_zone_select_cascade')
 		</div>	
 
 		<div class="form-group">
@@ -75,6 +75,30 @@
 	<script src="{{ asset('js/select2.full.min.js') }}"></script>
 
 	<script type="text/javascript">
+				
+
+
+				function caricaZona(val) {
+					var unita_gestione_id = val;
+					
+					jQuery.ajax({
+					        url: '{{ route('get_zona') }}',
+					        type: "post",
+					        async: false,
+					        data : { 
+					               'unita_gestione_id': unita_gestione_id, 
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+					         jQuery("#zone_select").html(data);
+					       }
+					 });
+
+				}
+
+
+
+
 
 				function caricaUnitaGestione(val) {
 					var distretto_id = val;
@@ -89,9 +113,14 @@
 					               },
 					       	success: function(data) {
 					         jQuery("#unita_select").html(data);
-					         $('.select2').select2();
 					       }
 					 });
+
+		    	var unita_gestione_id = $("#unita_gestione_id").val();
+
+		    	caricaZona(unita_gestione_id);
+
+
 				}
 
 				$(function () {
@@ -105,6 +134,8 @@
 				    $('#distretto_id').change(function(){
 				    	caricaUnitaGestione(this.value);
 				    });
+
+
 
 				});
 	</script>

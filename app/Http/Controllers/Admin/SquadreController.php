@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Distretto;
 use App\Http\Controllers\Controller;
 use App\Squadra;
+use App\UnitaGestione;
 use Illuminate\Http\Request;
 
 class SquadreController extends Controller
@@ -134,7 +135,19 @@ class SquadreController extends Controller
       $distretto = Distretto::find($distretto_id); 
 
       $utg = $distretto->unita->pluck('nome','id')->toArray();
-      
-      return view('admin.squadre.inc_unita_select', compact('utg'));
+
+      return view('admin.squadre.inc_unita_select_cascade', compact('utg'));
       }
+
+
+    public function getZonaAjax(Request $request)
+      {
+      $unita_gestione_id = $request->get('unita_gestione_id');
+
+      $unita = UnitaGestione::find($unita_gestione_id); 
+
+      $zone = $unita->zone->pluck('nome','id')->toArray();
+
+      return view('admin.squadre.inc_zone_select_cascade', compact('zone'));
+      }  
 }
