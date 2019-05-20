@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
 @section('header_css')
+
+	<!-- bootstrap datepicker -->
+	<link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+	
+	<!-- Bootstrap time Picker -->
+	<link href="{{ asset('css/bootstrap-timepicker.min.css') }}" rel="stylesheet">
+
 	<!-- Select2 -->
 	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+
 @endsection
 
 @section('content')
@@ -68,11 +76,17 @@
 		<div class="form-group">
 		  <label for="squadra_id">Squadra</label>
 		  <select class="form-control" style="width: 100%;" name="squadra_id" id="squadra_id">
-		    @foreach ($squadre as $id => $nome)
+		    @foreach ([0 => 'Seleziona'] + $squadre as $id => $nome)
 		    	<option value="{{$id}}" @if ($azione->squadra_id == $id || old('squadra_id') == $id) selected="selected" @endif>{{$nome}}</option>
 		    @endforeach
 		  </select>
 		</div>	
+
+		
+		<div class="form-group" id="distretto_wrapper" style="display: none;">
+		  <label for="distretto">Distretto</label>
+		  <input type="text" class="form-control" id="distretto" value="">
+		</div>
 
 	
 		<div class="form-group">
@@ -97,11 +111,50 @@
 	<!-- Select2 -->
 	<script src="{{ asset('js/select2.full.min.js') }}"></script>
 
-	<script type="text/javascript">
-				$(function () {
-				    //Initialize Select2 Elements
-				    $('.select2').select2();
+	<!-- bootstrap datepicker -->
+	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
 
-				});
+	<!-- bootstrap time picker -->
+	<script src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
+
+	<script type="text/javascript">
+			$(function () {
+			    //Initialize Select2 Elements
+			    $('.select2').select2();
+
+			    $("#squadra_id").change(function(){
+			    	var squadra_id = $(this).val();
+
+			    	jQuery.ajax({
+			    	        url: '{{ route('get_distretto') }}',
+			    	        type: "post",
+			    	        async: false,
+			    	        data : { 
+			    	               'squadra_id': squadra_id, 
+			    	               '_token': jQuery('input[name=_token]').val()
+			    	               },
+			    	       	success: function(data) {
+			    	         jQuery("#distretto").val(data);
+			    	         $("#distretto_wrapper").show();
+			    	       }
+			    	 });
+
+			    });
+
+			});
+
+			var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true};
+
+		
+			$("#datepicker").datepicker(_jsonObjDate);
+
+			//Timepicker
+			$('.timepicker').timepicker({
+			  language: "it",
+			  showInputs: false,
+			  showMeridian: false,
+			  minuteStep: 1
+			})
 	</script>
 @endsection

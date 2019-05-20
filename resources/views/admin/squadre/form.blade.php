@@ -35,16 +35,12 @@
 		    @endforeach
 		  </select>
 		</div>
+		
 
-
-		<div class="form-group">
-		  <label for="unita_gestione_id">Unità di gestione</label>
-		  <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
-		    @foreach ($utg as $id => $nome)
-		    	<option value="{{$id}}" @if ($squadra->unita_gestione_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
-		    @endforeach
-		  </select>
+		<div class="form-group" id="unita_select">
+			@include('admin.squadre.inc_unita_select')
 		</div>
+
 
 		<div class="form-group" id="zone_select">
 			@include('admin.inc_zone_select')
@@ -79,9 +75,36 @@
 	<script src="{{ asset('js/select2.full.min.js') }}"></script>
 
 	<script type="text/javascript">
+
+				function caricaUnitaGestione(val) {
+					var distretto_id = val;
+					
+					jQuery.ajax({
+					        url: '{{ route('get_unita_gestione') }}',
+					        type: "post",
+					        async: false,
+					        data : { 
+					               'distretto_id': distretto_id, 
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+					         jQuery("#unita_select").html(data);
+					         $('.select2').select2();
+					       }
+					 });
+				}
+
 				$(function () {
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
+
+				    var distretto_id = $("#distretto_id").val();
+
+				    caricaUnitaGestione(distretto_id);
+
+				    $('#distretto_id').change(function(){
+				    	caricaUnitaGestione(this.value);
+				    });
 
 				});
 	</script>

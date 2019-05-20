@@ -30,7 +30,11 @@
 		<div class="form-group" id="squadre_select">
 			@include('admin.inc_squadre_select')
 		</div>		
-
+		
+		<div class="form-group" id="squadre_select">
+		  <label>Unità di gestione</label>
+		  {{implode(',',$unita)}}
+		</div>
 		<div class="form-group">
 		  <label for="nome">Nome</label>
 		  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $distretto->nome}}" required="required">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Distretto;
 use App\Http\Controllers\Controller;
 use App\Squadra;
+use App\UnitaGestione;
 use Illuminate\Http\Request;
 
 class DistrettiController extends Controller
@@ -107,7 +108,9 @@ class DistrettiController extends Controller
 
         $squadre_associate = $distretto->squadre->pluck('id')->toArray();
 
-        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate'));
+        $unita = $distretto->unita->pluck('nome')->toArray();
+
+        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate','unita'));
     }
 
     /**

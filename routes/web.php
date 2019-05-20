@@ -32,7 +32,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['admin']], function () {
 
 	Route::resource('distretti', 'Admin\DistrettiController');
+
+	Route::post('getUnitaGestioneAjax','Admin\SquadreController@getUnitaGestioneAjax')->name('get_unita_gestione');
 	Route::resource('squadre', 'Admin\SquadreController');
+
 	Route::resource('utg', 'Admin\UtgController');
 	
 	Route::resource('cacciatori', 'Admin\CacciatoriController');
@@ -42,6 +45,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::resource('comuni', 'Admin\ComuniController');
 
 
+	Route::post('getDistrettoFromSquadraAjax','Admin\AzioniCacciaController@getDistrettoFromSquadraAjax')->name('get_distretto');
 	Route::resource('azioni', 'Admin\AzioniCacciaController');
 
 

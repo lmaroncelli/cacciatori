@@ -77,11 +77,22 @@ class SquadreController extends Controller
     public function edit($id)
     {
       $squadra = Squadra::find($id);
+      
+      $utg = collect(); 
+      $zone_associate = [];
 
-      $utg = $squadra->distretto->unita->pluck('nome','id');
+      if(!is_null($squadra->distretto))
+        {
+        if(!is_null($squadra->distretto->unita))
+          $utg = $squadra->distretto->unita->pluck('nome','id');
+        }
+      
 
-      $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
-
+      if(!is_null($squadra->zone))
+        {
+        $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
+        }
+      
        return view('admin.squadre.form', compact('squadra', 'utg', 'zone_associate'));
 
     }
@@ -113,4 +124,17 @@ class SquadreController extends Controller
     {
         //
     }
+
+
+
+    public function getUnitaGestioneAjax(Request $request)
+      {
+      $distretto_id = $request->get('distretto_id');
+
+      $distretto = Distretto::find($distretto_id); 
+
+      $utg = $distretto->unita->pluck('nome','id')->toArray();
+      
+      return view('admin.squadre.inc_unita_select', compact('utg'));
+      }
 }
