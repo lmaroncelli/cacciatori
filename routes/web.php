@@ -47,6 +47,8 @@ Route::group(['middleware' => ['admin']], function () {
 
 
 	Route::post('getDistrettoFromSquadraAjax','Admin\AzioniCacciaController@getDistrettoFromSquadraAjax')->name('get_distretto');
+	Route::post('showDistrettoZonaAjax','Admin\ZoneController@showDistrettoZonaAjax')->name('show_distretto');
+	Route::post('getSquadreFromDistrettoAjax','Admin\ZoneController@getSquadreFromDistrettoAjax')->name('get_squadre');
 	Route::resource('azioni', 'Admin\AzioniCacciaController');
 
 

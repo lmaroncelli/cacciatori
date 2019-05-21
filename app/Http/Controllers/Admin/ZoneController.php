@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Distretto;
 use App\Http\Controllers\Controller;
+use App\UnitaGestione;
 use App\Zona;
 use Illuminate\Http\Request;
 
@@ -70,7 +72,6 @@ class ZoneController extends Controller
 
         $coordinate = $poligono->coordinate->pluck('long','lat');
 
-
          return view('admin.zone.show_mappa', compact('zona','poligono','coordinate'));
 
     }
@@ -126,6 +127,49 @@ class ZoneController extends Controller
         //
     }
 
+
+    public function showDistrettoZonaAjax(Request $request)
+      {
+      $unita_gestione_id = $request->get('unita_gestione_id');
+      if(!is_null($unita = UnitaGestione::find($unita_gestione_id)))
+        {
+        if(!is_null($distretto = $unita->distretto()->first()))
+          {
+          $res['nome'] = $distretto->nome;
+          $res['id'] = $distretto->id;
+          return  json_encode($res);
+          }
+        else
+          {
+          $res['nome'] = "L'unità non ha un distretto associato";
+          $res['id'] = 0;
+          return  json_encode($res);
+          }
+        } 
+      else
+        {
+        $res['nome'] = "L'unità non esiste";
+        $res['id'] = 0;
+        return  json_encode($res);
+        }
+      }
+
+
+    public function getSquadreFromDistrettoAjax(Request $request)
+      {
+      $distretto_id = $request->get('distretto_id');
+      $zona_id = $request->get('zona_id');
+      $distretto = Distretto::find($distretto_id); 
+      $zona = Zona::find($zona_id); 
+
+      $squadre_associate = $zona->squadre->pluck('id')->toArray();
+
+      $squadre = $distretto->squadre->pluck('nome','id')->toArray();
+
+      return view('admin.inc_squadre_select', compact('squadre','squadre_associate'));
+
+
+      }
 
 
     

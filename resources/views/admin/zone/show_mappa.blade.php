@@ -231,6 +231,7 @@
 
 	</script>
 	
+
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY&callback=initMap" type="text/javascript"></script>
 	
 @endsection

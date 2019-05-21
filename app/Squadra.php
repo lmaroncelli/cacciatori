@@ -25,6 +25,7 @@ class Squadra extends Model
 		    return $this->belongsTo(Distretto::class, 'distretto_id', 'id');
 		}
 
+
 		public function zone()
 		{
 		    return $this->belongsToMany(Zona::class, 'tblSquadreZone', 'squadra_id', 'zona_id')->withPivot('tipo_caccia');

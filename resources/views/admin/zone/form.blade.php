@@ -45,6 +45,11 @@
 		  </select>
 		</div>
 
+		<div class="form-group" style="display: none;" id="distretto_wrapper">
+		  <label for="distretto">Distretto</label>
+		  <input type="text" class="form-control" name="distretto" id="distretto" value="" readonly="">
+		</div>
+
 		<div class="form-group" id="squadre_select">
 			@include('admin.inc_squadre_select')
 		</div>	
@@ -89,9 +94,67 @@
 	<script src="{{ asset('js/select2.full.min.js') }}"></script>
 
 	<script type="text/javascript">
+				
+				function caricaSquadre(distretto_id, zona_id) {
+					var distretto_id = distretto_id;
+					var zona_id = zona_id;
+					
+					jQuery.ajax({
+					        url: '{{ route('get_squadre') }}',
+					        type: "post",
+					        async: false,
+					        data : { 
+					               'distretto_id': distretto_id, 
+					               'zona_id': zona_id, 
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+					         jQuery("#squadre_select").html(data);
+					          $('.select2').select2();
+					       }
+					 });
+
+				}
+
+
+				function showDistretto(val) {
+					var unita_gestione_id = val;
+					
+					jQuery.ajax({
+					        url: '{{ route('show_distretto') }}',
+					        type: "post",
+					        dataType: 'json',
+					        async: false,
+					        data : { 
+					               'unita_gestione_id': unita_gestione_id, 
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+					         jQuery("#distretto").val(data.nome);
+					         jQuery("#distretto_wrapper").show();
+					         var distretto_id = data.id;
+					        
+					         if(distretto_id != 0) {
+					         	var zona_id = '{{$zona->id}}';
+					         	caricaSquadre(distretto_id, zona_id);
+					         }
+
+					       } // success
+					 }); // ajax
+
+				} // showDistretto
+
 				$(function () {
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
+
+				    var unita_gestione_id = $("#unita_gestione_id").val();
+
+				    showDistretto(unita_gestione_id);
+
+				    $('#unita_gestione_id').change(function(){
+				    	showDistretto(this.value);
+				    });
 
 				});
 	</script>

@@ -47,11 +47,12 @@ class SquadreController extends Controller
      */
     public function store(Request $request)
     {
+  
       $squadra = Squadra::create($request->all());
       
-      if ($request->has('zone')) 
+      if ($request->has('zona_id')) 
         {
-        $squadra->zone()->sync($request->get('zone'));
+        $squadra->zone()->sync($request->get('zona_id'));
         }
 
       return redirect()->route("squadre.index")->with('status', 'Squadra creata correttamente!');
@@ -111,6 +112,11 @@ class SquadreController extends Controller
         $squadra = Squadra::find($id);
 
         $squadra->fill($request->all())->save();
+
+        if ($request->has('zona_id')) 
+          {
+          $squadra->zone()->sync($request->get('zona_id'));
+          }
 
         return redirect()->route("squadre.index")->with('status', 'Squadra modificata correttamente!');
     }
