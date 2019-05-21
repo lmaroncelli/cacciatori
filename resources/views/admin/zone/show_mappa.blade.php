@@ -15,21 +15,14 @@
 @section('content')
 	
 	<h3>Zona {{$zona->nome}}</h3>
-
+	
 	@csrf
 
-	<button id="salva_coordinate" title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Salva coordinate</button>
-
-	<form id="new_center" style="display: none;">
-		<button title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Ricentra la mappa</button>
-		<input type="hidden" id="lat" name="lat" value="">
-		<input type="hidden" id="long" name="long" value="">
-		<input type="hidden" id="zoom" name="zoom" value="">
-	</form>
-			
-	<div id="map"></div>
-
-
+	@include('admin.mappa.bottoni')
+	
+	@php
+		$item = $zona
+	@endphp
 @endsection
 
 
@@ -46,9 +39,9 @@
 		// Initialize and add the map
 		function initMap() {
 
-			var center_lat = {{$zona->center_lat}};
-			var center_long = {{$zona->center_long}};
-			var zoom = {{$zona->zoom}};
+			var center_lat = {{$item->center_lat}};
+			var center_long = {{$item->center_long}};
+			var zoom = {{$item->zoom}};
 
 		  // The location of center
 		  var center = {lat: center_lat, lng: center_long};
@@ -137,7 +130,7 @@
  	    	        async: false,
  	    	        data : { 
  	    	               'distretto_coords': distretto_coords, 
- 	    	               'zona_id': '{{$zona->id}}',
+ 	    	               'zona_id': '{{$item->id}}',
  	    	               '_token': jQuery('input[name=_token]').val()
  	    	               },
  	    	       	success: function(data) {
@@ -167,7 +160,7 @@
 		  // MVCArray of LatLngs.
 		  var vertices = this.getPath();
 			
-			var nome = '{{$zona->nome}}';
+			var nome = '{{$item->nome}}';
 
 			var c_lat = event.latLng.lat();
 			var c_long = event.latLng.lng();
@@ -224,7 +217,7 @@
 				               'lat': c_lat, 
 				               'long': c_long, 
 				               'zoom': c_zoom, 
-				               'zona_id': '{{$zona->id}}',
+				               'zona_id': '{{$item->id}}',
 				               '_token': jQuery('input[name=_token]').val()
 				               },
 				       	success: function(data) {

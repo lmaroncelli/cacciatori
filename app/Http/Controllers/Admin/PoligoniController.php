@@ -13,8 +13,32 @@ class PoligoniController extends Controller
 {
     public function salvaCoordinatePoligonoAjax(Request $request) 
     	{
-    	$zona_id = $request->get('zona_id');
+
+      if($request->has('zona_id'))
+        {
+    	   $zona_id = $request->get('zona_id');
+
+         $zona = Zona::find($zona_id);
+
+         $poligono = $zona->poligono;
+        }
+      else
+        {
+        $distretto_id = $request->get('distretto_id');
+
+        $distretto = Distretto::find($distretto_id);
+
+        $poligono = $distretto->poligono;
+
+        }
+
     	$distretto_coords = $request->get('distretto_coords');
+
+      $poligono->coordinate()->delete();
+
+      $poligono->coordinate()->createMany($distretto_coords);
+
+
     	/*
     	array:5 [
     	  0 => array:2 [
@@ -40,54 +64,31 @@ class PoligoniController extends Controller
     	]
     	dd($distretto_coords);
     	 */
-    	$zona = Zona::find($zona_id);
-
-    	$poligono = $zona->poligono;
-
-    	$poligono->coordinate()->delete();
-
-    	$poligono->coordinate()->createMany($distretto_coords);
     	
     	}
 
 
-     public function salvaCoordinatePoligonoAjaxDistretto(Request $request) 
+    public function aggiornaCentroAjax(Request $request)
       {
-      $zona_id = $request->get('zona_id');
-      $distretto_coords = $request->get('distretto_coords');
-      /*
-      array:5 [
-        0 => array:2 [
-          "lat" => "44.066493"
-          "lng" => "12.550753999999984"
-        ]
-        1 => array:2 [
-          "lat" => "44.069207"
-          "lng" => "12.592094999999972"
-        ]
-        2 => array:2 [
-          "lat" => "44.043546732062424"
-          "lng" => "12.60307991540526"
-        ]
-        3 => array:2 [
-          "lat" => "44.04058499397212"
-          "lng" => "12.565656322509767"
-        ]
-        4 => array:2 [
-          "lat" => "44.048605"
-          "lng" => "12.535472000000027"
-        ]
-      ]
-      dd($distretto_coords);
-       */
-      $zona = Zona::find($zona_id);
+      $lat = $request->get('lat');
+      $long = $request->get('long');
+      $zoom = $request->get('zoom');
 
-      $poligono = $zona->poligono;
+      if($request->has('zona_id'))
+        {
+        $zona_id = $request->get('zona_id');
 
-      $poligono->coordinate()->delete();
+        Zona::where('id',$zona_id)->update(['center_lat' => $lat , 'center_long' => $long, 'zoom' => $zoom ]); 
+        }
+      else
+        {
+        $distretto_id = $request->get('distretto_id');
 
-      $poligono->coordinate()->createMany($distretto_coords);
-      
+        Distretto::where('id',$distretto_id)->update(['center_lat' => $lat , 'center_long' => $long, 'zoom' => $zoom ]);
+        }
+
+      echo "ok";
+
       }
 
 

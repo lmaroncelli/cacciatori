@@ -141,4 +141,5 @@ class DistrettiController extends Controller
 
       return redirect()->route("distretti.index")->with('status', 'Distretto eliminato correttamente!');
     }
+
 }

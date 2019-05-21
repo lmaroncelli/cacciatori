@@ -18,10 +18,13 @@
 
 	@csrf
 
-	<button id="salva_coordinate" title="Salva coordinate" class="btn btn-sm btn-primary align-self-end">Salva coordinate</button>
-			
-	<div id="map"></div>
+	
+	@include('admin.mappa.bottoni')
 
+	
+	@php
+		$item = $distretto
+	@endphp
 
 @endsection
 
@@ -32,12 +35,18 @@
 		var infoWindow;
 		var map;
 
+		var contentString;
+
 
 				// Initialize and add the map
 				function initMap() {
 
-				  // The location of center
-				  var center = {lat: 44.060921, lng: 12.566300};
+		 			var center_lat = {{$item->center_lat}};
+		 			var center_long = {{$item->center_long}};
+		 			var zoom = {{$item->zoom}};
+
+		 		  // The location of center
+		 		  var center = {lat: center_lat, lng: center_long};
 
 				  // Define the LatLng coordinates for the polygon's path.
 				  // 
@@ -119,12 +128,12 @@
      				console.log(distretto_coords);
 
      	    	jQuery.ajax({
-     	    	        url: '{{ route("aggiorna_coordinate_distretto") }}',
+     	    	        url: '{{ route("aggiorna_coordinate") }}',
      	    	        type: "post",
      	    	        async: false,
      	    	        data : { 
      	    	               'distretto_coords': distretto_coords, 
-     	    	               'distretto_id': '{{$distretto->id}}',
+     	    	               'distretto_id': '{{$item->id}}',
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },
      	    	       	success: function(data) {
@@ -135,22 +144,38 @@
 
      	    }); // clcik //
 
+				} // initMap
 
 
-				}
 
 				/** @this {google.maps.Polygon} */
 		    function showArrays(event) {
+
+
+		    	$("#new_center").show();
 
 		    	
 		      // Since this polygon has only one path, we can call getPath() to return the
 		      // MVCArray of LatLngs.
 		      var vertices = this.getPath();
+
+		      var nome = '{{$item->nome}}';
+
+		      var c_lat = event.latLng.lat();
+		      var c_long = event.latLng.lng();
+		      var c_zoom = map.getZoom();
+
+
+
+		      $("#lat").val(c_lat);
+		      $("#long").val(c_long);
+		      $("#zoom").val(c_zoom);
 		    	
 
-		      var contentString = '<b>Rimini polygon</b><br>' +
-		          'Clicked location: <br>' + event.latLng.lat() + ',' + event.latLng.lng() +
-		          '<br>';
+		     contentString = '<b>'+nome+'</b><br>' +
+		     		      'Coordinate correnti: <br>' + c_lat + ',' + c_long +
+		     		      '<br>'+
+		     		      'Zoom corrente: '+ c_zoom + '<br><br>';
 
 
 		      // Iterate over the vertices.
@@ -165,7 +190,41 @@
 		      infoWindow.setPosition(event.latLng);
 
 		      infoWindow.open(map);
-		    }
+
+
+		      google.maps.event.addListener(infoWindow, 'closeclick', function() {  
+		          $("#new_center").hide();
+		      });  
+
+
+		    } // showArrays
+
+
+		    $('#new_center').click(function(e){
+		    		e.preventDefault();
+
+		    		var c_lat = $("#lat").val();
+		    		var c_long = $("#long").val();
+		    		var c_zoom = $("#zoom").val();
+
+		    		jQuery.ajax({
+		    		        url: '{{ route("aggiorna_centro") }}',
+		    		        type: "post",
+		    		        async: false,
+		    		        data : { 
+		    		               'lat': c_lat, 
+		    		               'long': c_long, 
+		    		               'zoom': c_zoom, 
+		    		               'distretto_id': '{{$item->id}}',
+		    		               '_token': jQuery('input[name=_token]').val()
+		    		               },
+		    		       	success: function(data) {
+		    		       		location.reload();
+		    		       	}
+
+		    		 }) // ajax //
+
+		    }); // click new_center
 
 	</script>
 	
