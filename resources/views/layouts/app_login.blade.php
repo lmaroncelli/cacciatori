@@ -14,8 +14,9 @@
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/AdminLTE.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/blue.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/skins/skin-green.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
