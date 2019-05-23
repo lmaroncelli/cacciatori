@@ -2,7 +2,7 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('cacciatori.create') }}" title="Nuovo cacciatore" class="btn btn-primary">Nuovo cacciatore</a>
+		<a href="{{ route('cacciatori.create') }}" title="Nuovo cacciatore" class="btn btn-success">Nuovo cacciatore</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
@@ -15,7 +15,7 @@
 	  	@foreach ($cacciatori as $cacciatore)
 		    <tr>
 		      <td>{{$cacciatore->nome}}</td>
-		      <td> <a href="{{ route('cacciatori.edit',$cacciatore->id) }}" title="Modifica cacciatore" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('cacciatori.edit',$cacciatore->id) }}" title="Modifica cacciatore" class="btn btn-success btn-sm">modifica</a> </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>

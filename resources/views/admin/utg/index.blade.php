@@ -2,7 +2,7 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('utg.create') }}" title="Nuova Unità gestione" class="btn btn-primary">Nuova Unità gestione</a>
+		<a href="{{ route('utg.create') }}" title="Nuova Unità gestione" class="btn btn-success">Nuova Unità gestione</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
@@ -21,7 +21,7 @@
 		    <tr>
 		      <td>{{$unita->nome}}</td>
 		      <td>{{$unita->distretto->nome}}</td>
-		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm">modifica</a> </td>
 		      <td>
 		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}">elimina</button>
 		      </td>

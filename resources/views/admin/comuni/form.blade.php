@@ -33,7 +33,7 @@
 		</div>
 	
 		<div class="box-footer">
-		<button type="submit" class="btn btn-primary">
+		<button type="submit" class="btn btn-success">
 			@if ($comune->exists)
 				Modifica
 			@else

@@ -2,7 +2,7 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('zone.create') }}" title="Nuova Zona" class="btn btn-primary">Nuova zona</a>
+		<a href="{{ route('zone.create') }}" title="Nuova Zona" class="btn btn-success">Nuova zona</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
@@ -19,7 +19,7 @@
 		      <td>{{$zona->nome}}</td>
 		      <td>{{$zona->numero}}</td>
 		      <td>{{$zona->unita->nome}}</td>
-		      <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-success btn-sm">modifica</a> </td>
 		      <td> <a href="{{ route('zone.show',$zona->id) }}" title="Visualizza zona" class="btn btn-warning btn-sm">visualizza</a> </td>
 		    </tr>
 	  	@endforeach

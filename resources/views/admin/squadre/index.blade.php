@@ -2,7 +2,7 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('squadre.create') }}" title="Nuova squadra" class="btn btn-primary">Nuova Squadra</a>
+		<a href="{{ route('squadre.create') }}" title="Nuova squadra" class="btn btn-success">Nuova Squadra</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
@@ -17,7 +17,7 @@
 		    <tr>
 		      <td>{{$squadra->nome}}</td>
 		      <td>{{optional($squadra->distretto)->nome}}</td>
-		      <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-success btn-sm">modifica</a> </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>

@@ -94,7 +94,7 @@
 			<textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $azione->note}}</textarea>
 		</div>
 		<div class="box-footer">
-		<button type="submit" class="btn btn-primary">
+		<button type="submit" class="btn btn-success">
 			@if ($azione->exists)
 				Modifica
 			@else

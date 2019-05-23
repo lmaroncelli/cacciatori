@@ -2,23 +2,18 @@
 
 
 @section('header_css')
-	<style type="text/css" media="screen">
-		#map {
-			/*width: 1000px;*/
-			height: 800px;
-			margin-top: 10px;
-		}
-	</style>
+
 @endsection
 
 
 @section('content')
-	
-	<h3>Zona {{$zona->nome}}</h3>
-	
-	@csrf
+	<div id="content">
+		<h3>Zona {{$zona->nome}}</h3>
+		
+		@csrf
 
-	@include('admin.mappa.bottoni')
+		@include('admin.mappa.bottoni')
+	</div>	
 	
 	@php
 		$item = $zona

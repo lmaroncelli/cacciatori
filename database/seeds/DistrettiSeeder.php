@@ -37,15 +37,23 @@ class DistrettiSeeder extends Seeder
 
       foreach ($files as $file) 
       	{
-
+         $this->command->info('seeding file '.$file);
 	       $xml = simplexml_load_file(storage_path('app/public/'.$file));
 
 		     if($xml)
 		     	{
 		     		$name = $xml->Document->Folder->name->__toString();
 
-		     		$coords = $xml->Document->Folder->Placemark->Polygon->outerBoundaryIs->LinearRing->coordinates;
-		     		$coords = $coords->__toString();
+            try 
+              {
+		     		   $coords = $xml->Document->Folder->Placemark->Polygon->outerBoundaryIs->LinearRing->coordinates;
+              } 
+            catch (\Exception $e) 
+              {
+              $coords = $xml->Document->Folder->Placemark->MultiGeometry->Polygon->outerBoundaryIs->LinearRing->coordinates;
+              }
+		     		
+            $coords = $coords->__toString();
 		     		$coords_arr = explode(' ',$coords);
 
 		     		if(count($coords_arr))

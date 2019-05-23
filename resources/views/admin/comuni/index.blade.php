@@ -2,7 +2,7 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('comuni.create') }}" title="Nuovo comune" class="btn btn-primary">Nuovo comune</a>
+		<a href="{{ route('comuni.create') }}" title="Nuovo comune" class="btn btn-success">Nuovo comune</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
@@ -15,7 +15,7 @@
 	  	@foreach ($comuni as $comune)
 		    <tr>
 		      <td>{{$comune->nome}}</td>
-		      <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-primary btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-success btn-sm">modifica</a> </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>
