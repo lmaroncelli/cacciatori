@@ -1,31 +1,29 @@
 @extends('layouts.app')
 
+@section('titolo')
+{{$distretto->nome}}
+@endsection
 
-@section('header_css')
-	<style type="text/css" media="screen">
-		#map {
-			/*width: 1000px;*/
-			height: 800px;
-			margin-top: 10px;
-		}
-	</style>
+@section('titolo_small')
+Distretto
 @endsection
 
 
+@section('back')
+<a href="{{ route('distretti.index') }}"><i class="fa fa-step-backward"></i> back </a>
+@endsection
+
 @section('content')
-	
-	<h3>Distretto {{$distretto->nome}}</h3>
+	<div id="content">
+		
+		@csrf
 
-	@csrf
-
-	
-	@include('admin.mappa.bottoni')
-
+		@include('admin.mappa.bottoni')
+	</div>	
 	
 	@php
 		$item = $distretto
 	@endphp
-
 @endsection
 
 
@@ -81,7 +79,7 @@
 
 				  // The map
 				  map = new google.maps.Map(
-				      document.getElementById('map'), {zoom: 13, center: center});
+				      document.getElementById('map'), {zoom: zoom, center: center});
 
 				  
 				  // Construct the polygon.
@@ -92,7 +90,8 @@
 		        strokeWeight: 2,
 		        fillColor: '#FF0000',
 		        fillOpacity: 0.35,
-		        editable: true
+		        editable: true,
+		        draggable: true
 		      });
 
 

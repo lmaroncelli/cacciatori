@@ -14,7 +14,7 @@
 	  </thead>
 	  <tbody>
 	  	@foreach ($utg as $unita)
-	  		<form action="{{ route('utg.destroy', $unita->id) }}" id="form_{{$unita->id}}" method="POST" id="record_delete">
+	  		<form action="{{ route('utg.destroy', $unita->id) }}" id="form_{{$unita->id}}" method="POST">
 	  		  {!! csrf_field() !!}
 	  		  @method('DELETE')
 	  		</form>

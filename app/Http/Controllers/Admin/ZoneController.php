@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Distretto;
 use App\Http\Controllers\Controller;
 use App\UnitaGestione;
+use App\Utility;
 use App\Zona;
 use Illuminate\Http\Request;
 
@@ -54,6 +55,13 @@ class ZoneController extends Controller
           }
 
         $request->get('tipo') == 'zona' ? $status = 'Zona di braccata creata correttamente!' : $status = 'Particella di girata creata correttamente!';
+
+        //////////////////////////////////////////////////////
+        // creo un poligono di 4 punti associato di default //
+        //////////////////////////////////////////////////////
+        $poligono = $zona->poligono()->create(['name' => 'Poligono zona '.$zona->nome]);
+        $poligono->coordinate()->createMany(Utility::zonaCoords());
+
 
         return redirect()->route("zone.index")->with('status', $status);
     }
@@ -124,7 +132,10 @@ class ZoneController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $zona = Zona::find($id);
+      $zona->destroyMe();
+
+      return redirect()->route("zone.index")->with('status', "Zona cancellata correttamente");
     }
 
 

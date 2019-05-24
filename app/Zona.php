@@ -54,4 +54,18 @@ class Zona extends Model
     	}
 
 		
+    // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO
+    public function destroyMe()
+    	{
+  		$p = $this->poligono;
+  		
+  		if(!is_null($p))
+  			{
+				$p->coordinate()->delete();
+		 		$p->delete();
+  			} 	
+  			
+  	 	self::delete();
+    	}
+
 }

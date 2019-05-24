@@ -1,14 +1,22 @@
 @extends('layouts.app')
 
 
-@section('header_css')
 
+@section('titolo')
+{{$zona->nome}}
+@endsection
+
+@section('titolo_small')
+Zona
 @endsection
 
 
+@section('back')
+<a href="{{ route('zone.index') }}"><i class="fa fa-step-backward"></i> back </a>
+@endsection
+
 @section('content')
 	<div id="content">
-		<h3>Zona {{$zona->nome}}</h3>
 		
 		@csrf
 
@@ -85,7 +93,8 @@
         strokeWeight: 2,
         fillColor: '#FF0000',
         fillOpacity: 0.35,
-        editable: true
+        editable: true,
+        draggable: true
       });
 
 

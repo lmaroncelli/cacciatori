@@ -59,7 +59,7 @@
 
 
 @section('script_footer')
-    {{-- <script>
+    <script>
       $(function () {
         $('input').iCheck({
           checkboxClass: 'icheckbox_square-green',
@@ -67,5 +67,5 @@
           increaseArea: '20%' /* optional */
         });
       });
-    </script> --}}
+    </script>
 @endsection

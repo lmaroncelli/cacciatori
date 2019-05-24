@@ -41,8 +41,16 @@
         
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            @yield('briciole','')
-
+            <section class="content-header">
+              <h1>
+                @yield('titolo')
+                <small>@yield('titolo_small')</small>
+              </h1>
+              <ol class="breadcrumb">
+                <li>@yield('back')</li>
+              </ol>
+            </section>
+            
             <!-- Main content -->    
             <section class="content container-fluid">
                 @include('layouts.errors')
@@ -63,6 +71,18 @@
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
 
     @yield('script_footer')
+    <script type="text/javascript">
+        $(function () {
+            $(".delete").click(function(){
+
+                var Id = $(this).data("id");
+                if (window.confirm('Sei sicuro di voler cancellare l\'elemento ?')) {
+                    $("#form_"+Id).submit();
+                }
+
+            });
+       });
+    </script>
 
 </body>
 </html>

@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 
+@section('titolo')
+Zona
+@endsection
+
+@section('titolo_small')
+nuova
+@endsection
+
+
+@section('back')
+<a href="{{ route('zone.index') }}"><i class="fa fa-step-backward"></i> back </a>
+@endsection
+
 @section('header_css')
 	<!-- Select2 -->
 	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
@@ -25,15 +38,20 @@
 		{!! csrf_field() !!}
 		
 			
+	<div class="form-group">
+	  <label for="nome">Nome</label>
+	  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $zona->nome}}" required="required">
+	</div>
 
-		<div class="form-group">
-		  <label for="note">Tipo</label>
-		  <select class="form-control" name="tipo" id="tipo">
-		    @foreach (['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'] as $key => $nome)
-		      <option value="{{$key}}" @if (old('tipo') != '' && old('tipo') == $key) selected="selected" @endif>{{$nome}}</option>
-		    @endforeach
-		  </select>
-		</div>
+
+	<div class="form-group">
+	  <label for="note">Tipo</label>
+	  <select class="form-control" name="tipo" id="tipo">
+	    @foreach (['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'] as $key => $nome)
+	      <option value="{{$key}}" @if (old('tipo') != '' && old('tipo') == $key) selected="selected" @endif>{{$nome}}</option>
+	    @endforeach
+	  </select>
+	</div>
 
 
 		<div class="form-group">
@@ -57,11 +75,6 @@
 		<div class="form-group">
 		  <label for="numero">Numero</label>
 		  <input type="text" class="form-control" name="numero" id="numero" placeholder="numero" value="{{ old('numero') != '' ?  old('numero') : $zona->numero}}" required="required">
-		</div>
-
-		<div class="form-group">
-		  <label for="nome">Nome</label>
-		  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $zona->nome}}" required="required">
 		</div>
 
 		<div class="form-group">

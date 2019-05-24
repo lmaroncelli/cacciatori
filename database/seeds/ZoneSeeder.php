@@ -56,15 +56,7 @@ class ZoneSeeder extends Seeder
 
     	foreach ($zone_old as $zona) 
     		{
-	  		$p = $zona->poligono;
-	  		
-	  		if(!is_null($p))
-	  			{
-					$p->coordinate()->delete();
-			 		$p->delete();
-	  			} 	
-	  			
-	  	 	$zona->delete();
+    		$zona->destroyMe();
     		}
 
 	 		$distretto = Distretto::where('nome','distretto_a1')->first();
