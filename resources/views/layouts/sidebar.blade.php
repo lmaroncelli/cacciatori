@@ -107,6 +107,20 @@
         </ul>
       </li>
 
+      {{-- Azioni --}}
+      <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-envelope-o"></i> <span>Azioni</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ route('azioni.index') }}">Elenco</a></li>
+          <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
+
+        </ul>
+      </li>
+
 
       {{-- DOCUMENTI ELENCO --}}
 

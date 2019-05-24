@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\AzioneCaccia;
+use App\Distretto;
 use App\Http\Controllers\Controller;
 use App\Squadra;
 use Illuminate\Http\Request;
@@ -88,24 +89,4 @@ class AzioniCacciaController extends Controller
         //
     }
 
-
-    public function getDistrettoFromSquadraAjax(Request $request)
-      {
-      $squadra_id = $request->get('squadra_id');
-      if(!is_null($squadra = Squadra::find($squadra_id)))
-        {
-        if(!is_null($distretto = $squadra->distretto()->first()))
-          {
-          return $squadra->distretto()->nome; 
-          }
-        else
-          {
-          return "La squadra non ha un distretto associato";
-          }
-        } 
-      else
-        {
-        return "La squadra non esiste";
-        }
-      }
 }

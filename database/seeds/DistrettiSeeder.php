@@ -21,15 +21,8 @@ class DistrettiSeeder extends Seeder
     	foreach ($distretti_old as $distretto) 
     		{
     		
-    		$p = $distretto->poligono; 	
+    		$distretto->destroyMe(); 	
     		
-    		if(!is_null($p))
-	  			{
-  				$p->coordinate()->delete();
-  	 			$p->delete();
-  	 			}
-    			
-    	 	$distretto->delete();
     	 	} 
 
     	$files = ['distretto_a1.kml', 'distretto_a2.kml','distretto_b1.kml', 'distretto_b2.kml', 'distretto_c.kml'];

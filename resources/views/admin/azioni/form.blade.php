@@ -88,6 +88,15 @@
 		  <input type="text" class="form-control" id="distretto" value="">
 		</div>
 
+
+		<div class="form-group" id="unita_gestione_wrapper"  style="display: none;">
+			@include('admin.squadre.inc_unita_select_cascade')
+		</div>
+
+		<div class="form-group" id="zone_select_wrapper"  style="display: none;">
+			@include('admin.squadre.inc_zone_select_cascade')
+		</div>	
+
 	
 		<div class="form-group">
 			<label for="note">Note</label>
@@ -123,22 +132,82 @@
 			    //Initialize Select2 Elements
 			    $('.select2').select2();
 
-			    $("#squadra_id").change(function(){
-			    	var squadra_id = $(this).val();
 
+			        $("#unita_gestione_id").change(function(){
+			        	var unita_gestione_id = $(this).val();
+
+			        	if(unita_gestione_id != 0)
+			        		{
+
+			    	    	jQuery.ajax({
+			    	    	        url: '{{ route('get_zona') }}',
+			    	    	        type: "post",
+			    	    	        async: false,
+			    	    	        data : { 
+			    	    	               'unita_gestione_id': unita_gestione_id, 
+			    	    	               '_token': jQuery('input[name=_token]').val()
+			    	    	               },
+			    	    	       	success: function(data) {
+			    	    	        	jQuery("#zone_select").html(data);
+			    	    	        	$("#zone_select_wrapper").show();
+			    	    	       }
+
+			    	    	 });
+
+			        		}
+
+			        });
+
+			    function caricaUtg(distretto_id) {
+
+			    	var distretto_id = distretto_id;
+			    	
 			    	jQuery.ajax({
-			    	        url: '{{ route('get_distretto') }}',
+			    	        url: '{{ route('get_utg') }}',
 			    	        type: "post",
 			    	        async: false,
 			    	        data : { 
-			    	               'squadra_id': squadra_id, 
+			    	               'distretto_id': distretto_id, 
 			    	               '_token': jQuery('input[name=_token]').val()
 			    	               },
 			    	       	success: function(data) {
-			    	         jQuery("#distretto").val(data);
-			    	         $("#distretto_wrapper").show();
+			    	         jQuery("#unita_gestione_id").html(data);
+			    	          $('#unita_gestione_wrapper').show();
 			    	       }
 			    	 });
+
+			    }
+
+
+			    $("#squadra_id").change(function(){
+			    	var squadra_id = $(this).val();
+
+			    	if(squadra_id != 0)
+			    		{
+
+				    	jQuery.ajax({
+				    	        url: '{{ route('get_distretto') }}',
+				    	        type: "post",
+				    	        dataType: 'json',
+				    	        async: false,
+				    	        data : { 
+				    	               'squadra_id': squadra_id, 
+				    	               '_token': jQuery('input[name=_token]').val()
+				    	               },
+				    	       	success: function(data) {
+				    	         jQuery("#distretto").val(data.nome);
+				    	         $("#distretto_wrapper").show();
+				    	         var distretto_id = data.id;
+
+				    	         if(distretto_id != 0) {
+				    	         		caricaUtg(distretto_id);
+				    	         }
+
+				    	       }
+
+				    	 });
+
+			    		}
 
 			    });
 

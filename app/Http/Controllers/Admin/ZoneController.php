@@ -135,53 +135,8 @@ class ZoneController extends Controller
       $zona = Zona::find($id);
       $zona->destroyMe();
 
-      return redirect()->route("zone.index")->with('status', "Zona cancellata correttamente");
+      return redirect()->route("zone.index")->with('status', "Zona eliminata correttamente");
     }
-
-
-    public function showDistrettoZonaAjax(Request $request)
-      {
-      $unita_gestione_id = $request->get('unita_gestione_id');
-      if(!is_null($unita = UnitaGestione::find($unita_gestione_id)))
-        {
-        if(!is_null($distretto = $unita->distretto()->first()))
-          {
-          $res['nome'] = $distretto->nome;
-          $res['id'] = $distretto->id;
-          return  json_encode($res);
-          }
-        else
-          {
-          $res['nome'] = "L'unità non ha un distretto associato";
-          $res['id'] = 0;
-          return  json_encode($res);
-          }
-        } 
-      else
-        {
-        $res['nome'] = "L'unità non esiste";
-        $res['id'] = 0;
-        return  json_encode($res);
-        }
-      }
-
-
-    public function getSquadreFromDistrettoAjax(Request $request)
-      {
-      $distretto_id = $request->get('distretto_id');
-      $zona_id = $request->get('zona_id');
-      $distretto = Distretto::find($distretto_id); 
-      $zona = Zona::find($zona_id); 
-
-      $squadre_associate = $zona->squadre->pluck('id')->toArray();
-
-      $squadre = $distretto->squadre->pluck('nome','id')->toArray();
-
-      return view('admin.inc_squadre_select', compact('squadre','squadre_associate'));
-
-
-      }
-
 
     
 }

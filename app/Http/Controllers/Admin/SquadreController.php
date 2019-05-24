@@ -132,28 +132,4 @@ class SquadreController extends Controller
         //
     }
 
-
-
-    public function getUnitaGestioneAjax(Request $request)
-      {
-      $distretto_id = $request->get('distretto_id');
-
-      $distretto = Distretto::find($distretto_id); 
-
-      $utg = $distretto->unita->pluck('nome','id')->toArray();
-
-      return view('admin.squadre.inc_unita_select_cascade', compact('utg'));
-      }
-
-
-    public function getZonaAjax(Request $request)
-      {
-      $unita_gestione_id = $request->get('unita_gestione_id');
-
-      $unita = UnitaGestione::find($unita_gestione_id); 
-
-      $zone = $unita->zone->pluck('nome','id')->toArray();
-
-      return view('admin.squadre.inc_zone_select_cascade', compact('zone'));
-      }  
 }

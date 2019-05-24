@@ -137,9 +137,10 @@ class DistrettiController extends Controller
      */
     public function destroy($id)
     {
-      Distretto::destroy($id);
+    $distretto = Distretto::find($id);
+    $distretto->destroyMe();
 
-      return redirect()->route("distretti.index")->with('status', 'Distretto eliminato correttamente!');
+    return redirect()->route("distretti.index")->with('status', 'Distretto eliminato correttamente!');
     }
 
 }
