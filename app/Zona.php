@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\AzioneCaccia;
 use App\Comune;
 use App\Squadra;
 use App\UnitaGestione;
@@ -38,6 +39,12 @@ class Zona extends Model
 		      // the Poligono model is automatically assumed to have a zona_id foreign key
 		      return $this->hasOne('App\Poligono','zona_id','id');
 		  }
+
+
+	public function azioni()
+		{
+	  return $this->hasMany(AzioneCaccia::class, 'zona_id', 'id');
+		}
 
 
 

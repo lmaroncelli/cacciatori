@@ -30,10 +30,12 @@
 	@endif
 		{!! csrf_field() !!}
 		
-		
+			
 		<div class="form-group">
 		  <label for="nome">A.T.C. RIMINI 1</label>
 		</div>
+		
+		<input type="hidden" name="distretto_id" id="distretto_id" value="">
 		
 		{{-- UNICA RIGA --}}
 		<div class="row form-group">
@@ -148,7 +150,7 @@
 			    	    	               '_token': jQuery('input[name=_token]').val()
 			    	    	               },
 			    	    	       	success: function(data) {
-			    	    	        	jQuery("#zone_select").html(data);
+			    	    	        	jQuery("#zona_id").html(data);
 			    	    	        	$("#zone_select_wrapper").show();
 			    	    	       }
 
@@ -200,6 +202,7 @@
 				    	         var distretto_id = data.id;
 
 				    	         if(distretto_id != 0) {
+				    	         		$("#distretto_id").val(distretto_id);
 				    	         		caricaUtg(distretto_id);
 				    	         }
 

@@ -15,6 +15,7 @@ class CreateAzioneDiCaccia extends Migration
     {
         Schema::create('tblAzioniCaccia', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id')->unsigned()->default(0);
             $table->integer('squadra_id')->unsigned()->default(0);
             $table->integer('distretto_id')->unsigned()->default(0);
             $table->integer('unita_gestione_id')->unsigned()->default(0);
