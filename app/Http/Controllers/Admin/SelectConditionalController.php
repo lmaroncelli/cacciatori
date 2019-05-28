@@ -42,13 +42,15 @@ class SelectConditionalController extends Controller
 
       $zone = $unita->zone->pluck('nome','id')->toArray();
 
-      return view('admin.squadre.inc_zone_select_cascade', compact('zone'));
+      $selected_id = $request->get('zona_id');
+
+      return view('admin.squadre.inc_zone_select_cascade', compact('zone','selected_id'));
       }  
 
 
    /**
     * [getUtgFromDistrettoAjax description]
-    * @param  Request $request [distretto_id]
+    * @param  Request $request [distretto_id , unita_gestione_id (eventuale valore SELECTED) ]
     * @return [type]           [select da cui selezionare UTG]
     */
    public function getUtgFromDistrettoAjax(Request $request)
@@ -58,9 +60,11 @@ class SelectConditionalController extends Controller
          if(!is_null($distretto = Distretto::find($distretto_id)))
            {
 
+           $selected_id = $request->get('unita_gestione_id');
+
            $utg = $distretto->unita->pluck('nome','id')->toArray();
 
-           return view('admin.squadre.inc_unita_select_cascade', compact('utg'));
+           return view('admin.squadre.inc_unita_select_cascade', compact('utg','selected_id'));
 
            }
          }

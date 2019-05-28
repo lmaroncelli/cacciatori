@@ -91,7 +91,8 @@ class AzioniCacciaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $azione = AzioneCaccia::find($id);
+        return view('admin.azioni.form', compact('azione'));
     }
 
     /**

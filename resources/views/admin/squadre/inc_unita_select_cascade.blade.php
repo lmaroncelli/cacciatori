@@ -3,7 +3,7 @@
 @if (isset($utg))
 	@foreach ($utg as $id => $nome)
 		<option value="0">Seleziona...</option>
-		<option value="{{$id}}">{{$nome}}</option>
+		<option value="{{$id}}" @if ( $selected_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
 	@endforeach
 @else
 		<option value="0">Attendi...</option>
