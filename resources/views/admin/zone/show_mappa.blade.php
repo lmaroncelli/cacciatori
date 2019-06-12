@@ -3,11 +3,11 @@
 
 
 @section('titolo')
-{{$zona->nome}}
+{{$zona->unita->distretto->nome}} > {{$zona->unita->nome}} > {{$zona->nome}}
 @endsection
 
 @section('titolo_small')
-Zona
+{{App\Utility::getTipoZona()[$zona->tipo]}}
 @endsection
 
 
@@ -49,57 +49,10 @@ Zona
 		  // The location of center
 		  var center = {lat: center_lat, lng: center_long};
 
-		  // Define the LatLng coordinates for the polygon's path.
-		  // 
-  	 	// Define the LatLng coordinates for the polygon's path. Note that there's
-    	// no need to specify the final coordinates to complete the polygon, because
-    	// The Google Maps JavaScript API will automatically draw the closing side.
-     /*var zona_coords = [
-       {lat: 44.066493, lng: 12.550754},
-       {lat:44.069207, lng: 12.592095},
-       {lat: 44.044657, lng: 12.597757},
-       {lat: 44.048605, lng: 12.535472}
-     ];*/
 
-    
-    var zona_coords = new Array();
-
-    
-   	@foreach ($coordinate as $lat => $long)
-   		
-    	var jsonData = {};
-   		jsonData['lat'] = {{$lat}};
-   		jsonData['lng'] = {{$long}};
-   		
-   		//console.log('jsonData = '+JSON.stringify(jsonData));
-
-   		zona_coords.push(jsonData);
-
-   	@endforeach
-
-   		//console.log(zona_coords);
-    	//console.log(zona_coords);
-
-		  // The map
+       // The map
 		  map = new google.maps.Map(
 		      document.getElementById('map'), {zoom: zoom, center: center});
-
-		  
-		  // Construct the polygon.
-      var zona = new google.maps.Polygon({
-        paths: zona_coords,
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
-        editable: true,
-        draggable: true
-      });
-
-
-      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-      zona.setMap(map);
 
 
       // CREAZIONE DEL POLIGONO DISTRETTO
@@ -138,11 +91,44 @@ Zona
 
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           distretto.setMap(map);
+		 
+      
+      var zona_coords = new Array();
+
+    
+      @foreach ($coordinate as $lat => $long)
+        
+        var jsonData = {};
+        jsonData['lat'] = {{$lat}};
+        jsonData['lng'] = {{$long}};
+        
+        //console.log('jsonData = '+JSON.stringify(jsonData));
+
+        zona_coords.push(jsonData);
+
+      @endforeach
+
+   		//console.log(zona_coords);
+    	//console.log(zona_coords);
+
+		 
+
+		  
+		  // Construct the polygon.
+      var zona = new google.maps.Polygon({
+        paths: zona_coords,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        editable: true,
+        draggable: true
+      });
 
 
-
-
-
+      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+      zona.setMap(map);
 
 
       // Add a listener for the click event.

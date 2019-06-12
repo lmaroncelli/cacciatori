@@ -45,6 +45,7 @@ class Utility extends Model
             
         ];
 
+  private static $tipoZona = ['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'];
 
 	/**
 	 * Prende l'id del visitatore
@@ -235,6 +236,13 @@ class Utility extends Model
     return in_array($ip, self::$ip_debug) && env('APP_ENV') !== 'production';
 	}
 
+
+
+
+  public static function getTipoZona()
+  {
+    return self::$tipoZona;
+  }
 
 
 

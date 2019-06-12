@@ -87,11 +87,26 @@ class DistrettiController extends Controller
         $distretto = Distretto::find($id);
 
         $poligono = $distretto->poligono;
-
         $coordinate = $poligono->coordinate->pluck('long','lat');
 
 
-         return view('admin.distretti.show_mappa', compact('distretto','poligono','coordinate'));
+        // trovo tutte le zone facendo un loop su tutte el UTG
+        $coordinate_zona = [];
+
+        foreach ($distretto->unita as $utg) 
+          {
+          foreach ($utg->zone as $zona) 
+            {
+            $poligono = $zona->poligono;
+          
+            $coordinata_zona = $poligono->coordinate->pluck('long','lat');
+            
+            $coordinate_zona[] = $coordinata_zona;
+            }
+          }
+        
+
+         return view('admin.distretti.show_mappa', compact('distretto','poligono','coordinate','coordinate_zona'));
     }
 
     /**
