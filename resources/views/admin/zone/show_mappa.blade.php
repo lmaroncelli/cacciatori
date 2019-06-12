@@ -54,7 +54,7 @@ Zona
   	 	// Define the LatLng coordinates for the polygon's path. Note that there's
     	// no need to specify the final coordinates to complete the polygon, because
     	// The Google Maps JavaScript API will automatically draw the closing side.
-     /*var distretto_coords = [
+     /*var zona_coords = [
        {lat: 44.066493, lng: 12.550754},
        {lat:44.069207, lng: 12.592095},
        {lat: 44.044657, lng: 12.597757},
@@ -62,7 +62,7 @@ Zona
      ];*/
 
     
-    var distretto_coords = new Array();
+    var zona_coords = new Array();
 
     
    	@foreach ($coordinate as $lat => $long)
@@ -73,12 +73,12 @@ Zona
    		
    		//console.log('jsonData = '+JSON.stringify(jsonData));
 
-   		distretto_coords.push(jsonData);
+   		zona_coords.push(jsonData);
 
    	@endforeach
 
-   		//console.log(distretto_coords);
-    	//console.log(distretto_coords);
+   		//console.log(zona_coords);
+    	//console.log(zona_coords);
 
 		  // The map
 		  map = new google.maps.Map(
@@ -86,8 +86,8 @@ Zona
 
 		  
 		  // Construct the polygon.
-      var distretto = new google.maps.Polygon({
-        paths: distretto_coords,
+      var zona = new google.maps.Polygon({
+        paths: zona_coords,
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
         strokeWeight: 2,
@@ -99,20 +99,64 @@ Zona
 
 
       //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-      distretto.setMap(map);
+      zona.setMap(map);
+
+
+      // CREAZIONE DEL POLIGONO DISTRETTO
+
+       var distretto_coords = new Array();
+
+    
+        @foreach ($coordinate_distretto as $lat => $long)
+          
+          var jsonData = {};
+          jsonData['lat'] = {{$lat}};
+          jsonData['lng'] = {{$long}};
+          
+          //console.log('jsonData = '+JSON.stringify(jsonData));
+
+          distretto_coords.push(jsonData);
+
+        @endforeach
+
+          //console.log(distretto_coords);
+          //console.log(distretto_coords);
+
+          
+          // Construct the polygon.
+          var distretto = new google.maps.Polygon({
+            paths: distretto_coords,
+            strokeColor: 'yellow',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: 'yellow',
+            fillOpacity: 0.35,
+            editable: false,
+            draggable: false
+          });
+
+
+          //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+          distretto.setMap(map);
+
+
+
+
+
+
 
       // Add a listener for the click event.
-      distretto.addListener('click', showArrays);
+      zona.addListener('click', showArrays);
 
      	infoWindow = new google.maps.InfoWindow;
 
 
  	    $('#salva_coordinate').click(function(){
 
- 	    	var vertices = distretto.getPath();
+ 	    	var vertices = zona.getPath();
  				console.log(vertices);
 
- 				var distretto_coords = new Array();
+ 				var zona_coords = new Array();
 
  				// Iterate over the vertices.
  				for (var i =0; i < vertices.getLength(); i++) {
@@ -122,18 +166,18 @@ Zona
 				  		jsonData['lat'] = xy.lat();
 				  		jsonData['long'] = xy.lng();
 
-				  		distretto_coords.push(jsonData);
+				  		zona_coords.push(jsonData);
 
  				}
 
- 				console.log(distretto_coords);
+ 				console.log(zona_coords);
 
  	    	jQuery.ajax({
  	    	        url: '{{ route("aggiorna_coordinate") }}',
  	    	        type: "post",
  	    	        async: false,
  	    	        data : { 
- 	    	               'distretto_coords': distretto_coords, 
+ 	    	               'zona_coords': zona_coords, 
  	    	               'zona_id': '{{$item->id}}',
  	    	               '_token': jQuery('input[name=_token]').val()
  	    	               },

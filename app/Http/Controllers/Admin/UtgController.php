@@ -18,8 +18,6 @@ class UtgController extends Controller
         $utg = UnitaGestione::all();
 
         return view('admin.utg.index', compact('utg'));
-
-        return redirect()->route("utg")->with('status', 'Unità di gestione creata correttamente!');
     }
 
     /**

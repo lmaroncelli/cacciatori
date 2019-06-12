@@ -15,7 +15,7 @@
 	  	@foreach ($province as $provincia)
 		    <tr>
 		      <td>{{$provincia->nome}}</td>
-		      <td> <a href="{{ route('province.edit',$provincia->id) }}" title="Modifica provincia" class="btn btn-success btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('province.edit',$provincia->id) }}" title="Modifica provincia" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>

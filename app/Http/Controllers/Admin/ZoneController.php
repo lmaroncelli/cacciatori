@@ -74,13 +74,19 @@ class ZoneController extends Controller
      */
     public function show($id)
     {
-        $zona = Zona::find($id);
+        $zona = Zona::with('unita.distretto')->find($id);
 
         $poligono = $zona->poligono;
 
         $coordinate = $poligono->coordinate->pluck('long','lat');
 
-         return view('admin.zone.show_mappa', compact('zona','poligono','coordinate'));
+        
+        $poligono_distretto = $zona->unita->distretto->poligono;
+        
+        $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+
+        
+        return view('admin.zone.show_mappa', compact('zona','poligono','coordinate', 'poligono_distretto','coordinate_distretto'));
 
     }
 

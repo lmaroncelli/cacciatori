@@ -15,7 +15,7 @@
 	  	@foreach ($comuni as $comune)
 		    <tr>
 		      <td>{{$comune->nome}}</td>
-		      <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-success btn-sm">modifica</a> </td>
+		      <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		    </tr>
 	  	@endforeach
 	  </tbody>

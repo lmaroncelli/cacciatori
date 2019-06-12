@@ -20,10 +20,10 @@
 	  		</form>
 		    <tr>
 		      <td>{{$unita->nome}}</td>
-		      <td>{{$unita->distretto->nome}}</td>
-		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm">modifica</a> </td>
+		      <td>{{optional($unita->distretto)->nome}}</td>
+		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		      <td>
-		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}">elimina</button>
+		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}"><i class="fa fa-trash"></i> elimina</button>
 		      </td>
 		    </tr>
 	  	@endforeach

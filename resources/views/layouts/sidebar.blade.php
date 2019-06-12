@@ -109,7 +109,7 @@
 
       {{-- Azioni --}}
       <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-envelope-o"></i> <span>Azioni</span>
+        <a href="#"><i class="fa fa-envelope-o"></i> <span>Attivita</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

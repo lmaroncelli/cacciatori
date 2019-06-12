@@ -2,14 +2,16 @@
 
 @section('content')
 	<p>
-		<a href="{{ route('azioni.create') }}" title="Nuovo distretto" class="btn btn-success">Nuovo distretto</a>
+		<a href="{{ route('azioni.create') }}" title="Nuovo distretto" class="btn btn-success">Nuova attività</a>
 	</p>
 	<table class="table table-striped">
 	  <thead>
 	    <tr>
 	      <th scope="col">Data</th>
 	      <th>Squadra</th>
-	      <th>Zona</th>
+        <th>Zona</th>
+        <th></th>
+        <th></th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -22,10 +24,9 @@
 		      <td>{{$azione->getDalleAlle()}}</td>
 		      <td>{{$azione->squadra->nome}}</td>
 		      <td>{{$azione->zona->nome}}</td>
-		      <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm">modifica</a> </td>
-		      <td> <a href="{{ route('azioni.show',$azione->id) }}" title="Visualizza azione" class="btn btn-warning btn-sm">visualizza</a> </td>
+		      <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
 		      <td>
-		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$azione->id}}">elimina</button>
+		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$azione->id}}"><i class="fa fa-trash"></i> elimina</button>
 		      </td>
 		    </tr>
 	  	@endforeach
