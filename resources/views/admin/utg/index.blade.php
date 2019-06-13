@@ -7,8 +7,9 @@
 	<table class="table table-striped">
 	  <thead>
 	    <tr>
-	      <th scope="col">Nome</th>
 	      <th>Distretto</th>
+        <th scope="col">Nome</th>
+        <th>Zone</th>
 	      <th></th>
 	    </tr>
 	  </thead>
@@ -19,8 +20,9 @@
 	  		  @method('DELETE')
 	  		</form>
 		    <tr>
-		      <td>{{$unita->nome}}</td>
 		      <td>{{optional($unita->distretto)->nome}}</td>
+          <td>{{$unita->nome}}</td>
+          <td>{{$unita->getZone()}}</td>
 		      <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		      <td>
 		      	<button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}"><i class="fa fa-trash"></i> elimina</button>

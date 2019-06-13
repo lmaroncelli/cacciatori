@@ -7,7 +7,9 @@
 	<table class="table table-striped">
 	  <thead>
 	    <tr>
+	      <th>A.T.C.</th>
 	      <th scope="col">Nome</th>
+	      <th>Unità di gestione</th>
 	      <th></th>
 	      <th></th>
 	    </tr>
@@ -19,7 +21,9 @@
 		      @method('DELETE')
 		    </form>
 		    <tr>
+		      <td>ATC RN1</td>
 		      <td>{{$distretto->nome}}</td>
+		      <td>{{$distretto->getUnita()}}</td>
 		      <td> <a href="{{ route('distretti.edit',$distretto->id) }}" title="Modifica distretto" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		      <td> <a href="{{ route('distretti.show',$distretto->id) }}" title="Visualizza distretto" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
 		      <td>

@@ -100,8 +100,10 @@
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
 
-				    var distretto_id = $("#distretto_id").val();
-
+            @if (!$squadra->exists)
+				      var distretto_id = $("#distretto_id").val();
+              caricaZone(distretto_id);
+            @endif
 				    
 				    $('#distretto_id').change(function(){
 				    	caricaZone(this.value);

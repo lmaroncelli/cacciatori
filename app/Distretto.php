@@ -38,7 +38,12 @@ class Distretto extends Model
 		public function atc()
 		{
 		    return $this->belongsTo(Atc::class, 'atc_id', 'id');
-		}
+    }
+    
+    public function getUnita() 
+    {
+    return implode(',', $this->unita()->pluck('nome')->toArray());
+    }
 
 
     // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO

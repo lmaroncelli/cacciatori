@@ -5,9 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
+use App\Zona;
 
 class UtgController extends Controller
 {
+
+
+    private function _saveZone(Request $request, $utg)
+      {
+        if($request->has('zone'))
+        {
+        foreach ($request->get('zone') as $zone_id) 
+            {
+            Zona::where('id', $zone_id)
+                    ->update(['unita_gestione_id' => $utg->id]);
+            } 
+        }
+      }
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +43,9 @@ class UtgController extends Controller
     {
         $utg = new UnitaGestione;
 
-        return view('admin.utg.form', compact('utg'));
+        $zone_associate = $utg->zone->pluck('id')->toArray();
+
+        return view('admin.utg.form', compact('utg','zone_associate'));
     }
 
     /**
@@ -41,6 +57,8 @@ class UtgController extends Controller
     public function store(Request $request)
     {
         $utg = UnitaGestione::create($request->all());
+
+        $this->_saveZone($request, $utg);
 
         return redirect()->route("utg.index")->with('status', 'Unità di gestione creata correttamente!');
     }
@@ -66,7 +84,9 @@ class UtgController extends Controller
     {
         $utg = UnitaGestione::find($id);
 
-        return view('admin.utg.form', compact('utg'));
+        $zone_associate = $utg->zone->pluck('id')->toArray();
+
+        return view('admin.utg.form', compact('utg','zone_associate'));
 
     }
 
@@ -79,7 +99,9 @@ class UtgController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $utg = UnitaGestione::find($id)->fill($request->all())->save();
+        $utg = UnitaGestione::find($id)->fill($request->all());
+
+        $this->_saveZone($request, $utg);
 
         return redirect()->route("utg.index")->with('status', 'Unità di gestione modificata correttamente!');
     }

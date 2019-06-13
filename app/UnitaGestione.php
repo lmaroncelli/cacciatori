@@ -22,4 +22,9 @@ class UnitaGestione extends Model
 		{
 		    return $this->hasMany(Zona::class, 'unita_gestione_id', 'id');
 		}
+
+		public function getZone() 
+    {
+    return implode(',', $this->zone()->pluck('nome')->toArray());
+    }
 }

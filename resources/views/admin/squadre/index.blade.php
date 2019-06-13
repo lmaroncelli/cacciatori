@@ -9,6 +9,7 @@
 	    <tr>
 	      <th scope="col">Nome</th>
 	      <th>Distretto</th>
+	      <th>Zone</th>
 	      <th></th>
 	    </tr>
 	  </thead>
@@ -16,7 +17,8 @@
 	  	@foreach ($squadre as $squadra)
 		    <tr>
 		      <td>{{$squadra->nome}}</td>
-		      <td>{{optional($squadra->distretto)->nome}}</td>
+          <td>{{optional($squadra->distretto)->nome}}</td>
+          <td>{{$squadra->getZone()}}</td>          
 		      <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
 		    </tr>
 	  	@endforeach

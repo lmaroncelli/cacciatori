@@ -58,7 +58,13 @@ class Zona extends Model
 	  public function getSuperficieAttribute($value)
     	{
        return str_ireplace('.', ',', $value);
-    	}
+      }
+      
+
+    public function getSquadre() 
+    {
+    return implode(',', $this->squadre()->pluck('nome')->toArray());
+    }
 
 		
     // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO

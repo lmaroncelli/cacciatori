@@ -31,12 +31,11 @@ class SquadreController extends Controller
     public function create()
     {
         $squadra = new Squadra;
-
-        $utg = $squadra->distretto->unita->pluck('nome','id');
         
-        $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
-
-        return view('admin.squadre.form', compact('squadra', 'utg', 'zone_associate'));
+        $zone = [];
+        $zone_associate = [];
+        
+        return view('admin.squadre.form', compact('squadra', 'zone', 'zone_associate'));
     }
 
     /**
@@ -50,9 +49,9 @@ class SquadreController extends Controller
   
       $squadra = Squadra::create($request->all());
       
-      if ($request->has('zona_id')) 
+      if ($request->has('zone')) 
         {
-        $squadra->zone()->sync($request->get('zona_id'));
+        $squadra->zone()->sync($request->get('zone'));
         }
 
       return redirect()->route("squadre.index")->with('status', 'Squadra creata correttamente!');
@@ -80,7 +79,7 @@ class SquadreController extends Controller
     {
       $squadra = Squadra::find($id);
       
-      $utg = collect(); 
+      $zone = [];
       $zone_associate = [];
 
 
@@ -124,9 +123,9 @@ class SquadreController extends Controller
 
         $squadra->fill($request->all())->save();
 
-        if ($request->has('zona_id')) 
+        if ($request->has('zone')) 
           {
-          $squadra->zone()->sync($request->get('zona_id'));
+          $squadra->zone()->sync($request->get('zone'));
           }
 
         return redirect()->route("squadre.index")->with('status', 'Squadra modificata correttamente!');

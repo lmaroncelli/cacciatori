@@ -12,29 +12,19 @@ class DistrettiController extends Controller
 {
 
 
-    public function _saveDistretto(&$distretto, $request)
+    private function _saveUtg($request, $distretto)
       {
 
-      if($distretto->squadre->count())
+      if($request->has('utg'))
         {
-        Squadra::where('distretto_id', $distretto->id)
-        ->update(['distretto_id' => 0]);
-        }
-
-        $distretto->nome = $request->get('nome');
-        $distretto->note = $request->get('note');
-
-        if ($request->has('squadre')) 
-          {
-          foreach ($request->get('squadre') as $squadra_id) 
+        foreach ($request->get('utg') as $utg_id) 
             {
-            Squadra::where('id', $squadra_id)
+            UnitaGestione::where('id', $utg_id)
                     ->update(['distretto_id' => $distretto->id]);
             } 
-          }
-
-        $distretto->save();
-      }
+        }
+    
+    }
 
 
     /**
@@ -58,8 +48,9 @@ class DistrettiController extends Controller
     {
         $distretto = new Distretto;
 
-        $squadre_associate = $distretto->squadre->pluck('id')->toArray();
-        return view('admin.distretti.form', compact('distretto','squadre_associate'));
+        $unita_associate = $distretto->unita->pluck('id')->toArray();
+
+        return view('admin.distretti.form', compact('distretto','unita_associate'));
     }
 
     /**
@@ -70,8 +61,8 @@ class DistrettiController extends Controller
      */
     public function store(Request $request)
       {
-      $distretto = new Distretto;
-      $this->_saveDistretto($distretto, $request);
+      $distretto = Distretto::create($request->all());
+      $this->_saveUtg($request, $distretto);
 
       return redirect()->route("distretti.index")->with('status', 'Distretto creato correttamente!');
       }
@@ -119,13 +110,9 @@ class DistrettiController extends Controller
     {
         $distretto = Distretto::find($id);
 
-        $squadre = Squadra::orderBy('nome')->pluck('nome','id');
+        $unita_associate = $distretto->unita->pluck('id')->toArray();
 
-        $squadre_associate = $distretto->squadre->pluck('id')->toArray();
-
-        $unita = $distretto->unita->pluck('nome')->toArray();
-
-        return view('admin.distretti.form', compact('distretto','squadre','squadre_associate','unita'));
+        return view('admin.distretti.form', compact('distretto','unita_associate'));
     }
 
     /**
@@ -137,8 +124,10 @@ class DistrettiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $distretto = Distretto::find($id);
-        $this->_saveDistretto($distretto, $request);
+       
+        $distretto = Distretto::find($id)->fill($request->all());
+
+        $this->_saveUtg($request, $distretto);
 
         return redirect()->route("distretti.index")->with('status', 'Distretto modificato correttamente!');
 

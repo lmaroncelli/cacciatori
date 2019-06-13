@@ -35,6 +35,11 @@ class Squadra extends Model
 		}
 
 
+    public function getZone() 
+      {
+      return implode(',', $this->zone()->pluck('nome')->toArray());
+      }
+
 		
 
 }
