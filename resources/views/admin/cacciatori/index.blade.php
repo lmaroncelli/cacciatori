@@ -4,7 +4,7 @@
 	<p>
 		<a href="{{ route('cacciatori.create') }}" title="Nuovo cacciatore" class="btn btn-success">Nuovo cacciatore</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">Nome</th>

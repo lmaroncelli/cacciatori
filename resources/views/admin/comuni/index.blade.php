@@ -4,7 +4,7 @@
 	<p>
 		<a href="{{ route('comuni.create') }}" title="Nuovo comune" class="btn btn-success">Nuovo comune</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">Nome</th>

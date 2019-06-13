@@ -4,7 +4,7 @@
 	<p>
 		<a href="{{ route('azioni.create') }}" title="Nuovo distretto" class="btn btn-success">Nuova attività</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">Data</th>

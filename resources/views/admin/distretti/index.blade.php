@@ -4,8 +4,15 @@
 	<p>
 		<a href="{{ route('distretti.create') }}" title="Nuovo distretto" class="btn btn-success">Nuovo distretto</a>
 	</p>
-	<table class="table table-striped">
-	  <thead>
+	<table class="table table-hover">
+    <colgroup>
+        <col></col>
+        <col class="success"></col>
+        <col></col>
+        <col></col>
+        <col></col>
+    </colgroup>
+    <thead>
 	    <tr>
 	      <th>A.T.C.</th>
 	      <th scope="col">Nome</th>

@@ -4,7 +4,13 @@
 	<p>
 		<a href="{{ route('utg.create') }}" title="Nuova Unità gestione" class="btn btn-success">Nuova Unità gestione</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
+    <colgroup>
+        <col></col>
+        <col class="success"></col>
+        <col></col>
+        <col></col>
+    </colgroup>
 	  <thead>
 	    <tr>
 	      <th>Distretto</th>

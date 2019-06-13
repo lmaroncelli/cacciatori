@@ -4,7 +4,14 @@
 	<p>
 		<a href="{{ route('zone.create') }}" title="Nuova Zona" class="btn btn-success">Nuova zona</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
+    <colgroup>
+        <col></col>
+        <col class="success"></col>
+        <col></col>
+        <col></col>
+        <col></col>
+    </colgroup>
 	  <thead>
 	    <tr>
 	      <th>Unità di gestione</th>

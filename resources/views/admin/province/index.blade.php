@@ -4,7 +4,7 @@
 	<p>
 		<a href="{{ route('province.create') }}" title="Nuova provincia" class="btn btn-success">Nuova provincia</a>
 	</p>
-	<table class="table table-striped">
+	<table class="table table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">Nome</th>
