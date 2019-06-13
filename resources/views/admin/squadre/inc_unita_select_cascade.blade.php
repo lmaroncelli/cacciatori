@@ -1,3 +1,9 @@
+
+@php
+    if(!isset($selected_id))
+      $selected_id = 0;
+@endphp
+
 <label for="unita_gestione_id">Unità di gestione</label>
 <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
 @if (isset($utg))

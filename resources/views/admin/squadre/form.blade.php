@@ -36,12 +36,6 @@
 		  </select>
 		</div>
 		
-
-		<div class="form-group" id="unita_select">
-			@include('admin.squadre.inc_unita_select_cascade')
-		</div>
-
-
 		<div class="form-group" id="zone_select">
 			@include('admin.squadre.inc_zone_select_cascade')
 		</div>	
@@ -78,33 +72,11 @@
 				
 
 
-				function caricaZona(val) {
-					var unita_gestione_id = val;
-					
-					jQuery.ajax({
-					        url: '{{ route('get_zona') }}',
-					        type: "post",
-					        async: false,
-					        data : { 
-					               'unita_gestione_id': unita_gestione_id, 
-					               '_token': jQuery('input[name=_token]').val()
-					               },
-					       	success: function(data) {
-					         jQuery("#zone_select").html(data);
-					       }
-					 });
-
-				}
-
-
-
-
-
-				function caricaUnitaGestione(val) {
+				function caricaZone(val) {
 					var distretto_id = val;
 					
 					jQuery.ajax({
-					        url: '{{ route('get_unita_gestione') }}',
+					        url: '{{ route('get_zona') }}',
 					        type: "post",
 					        async: false,
 					        data : { 
@@ -112,16 +84,17 @@
 					               '_token': jQuery('input[name=_token]').val()
 					               },
 					       	success: function(data) {
-					         jQuery("#unita_select").html(data);
+					         jQuery("#zone_select").html(data);
+                    $('.select2').select2();
 					       }
 					 });
 
-		    	var unita_gestione_id = $("#unita_gestione_id").val();
-
-		    	caricaZona(unita_gestione_id);
-
-
 				}
+
+
+
+
+
 
 				$(function () {
 				    //Initialize Select2 Elements
@@ -129,10 +102,9 @@
 
 				    var distretto_id = $("#distretto_id").val();
 
-				    caricaUnitaGestione(distretto_id);
-
+				    
 				    $('#distretto_id').change(function(){
-				    	caricaUnitaGestione(this.value);
+				    	caricaZone(this.value);
 				    });
 
 

@@ -83,10 +83,21 @@ class SquadreController extends Controller
       $utg = collect(); 
       $zone_associate = [];
 
+
+      // la squadra sta in questo distretto
       if(!is_null($squadra->distretto))
         {
-        if(!is_null($squadra->distretto->unita))
-          $utg = $squadra->distretto->unita->pluck('nome','id');
+        // questo distrtto ha tantio UTG e le zone associabili alla squadra sono quelle di TUTTI gli UTG
+        if(!is_null($utg = $squadra->distretto->unita))
+          {
+          $zone = [];
+          foreach ($utg as $unita) 
+            {
+            $zone += $unita->zone()->pluck('nome','id')->toArray();
+            }
+          if(!empty($zone))
+            asort($zone);
+          }
         }
       
 
@@ -95,7 +106,7 @@ class SquadreController extends Controller
         $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
         }
       
-       return view('admin.squadre.form', compact('squadra', 'utg', 'zone_associate'));
+       return view('admin.squadre.form', compact('squadra', 'zone', 'zone_associate'));
 
     }
 

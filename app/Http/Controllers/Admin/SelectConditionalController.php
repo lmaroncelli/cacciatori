@@ -31,20 +31,26 @@ class SelectConditionalController extends Controller
 
 	 /**
 	  * [getZonaAjax description]
-	  * @param  Request $request [unita_gestione_id]
+	  * @param  Request $request [distretto_id]
 	  * @return [type]           [select da cui selezionare le ZONE]
 	  */
 	 public function getZonaAjax(Request $request)
       {
-      $unita_gestione_id = $request->get('unita_gestione_id');
+      $distretto_id = $request->get('distretto_id');
 
-      $unita = UnitaGestione::find($unita_gestione_id); 
+      $distretto = Distretto::find($distretto_id); 
 
-      $zone = $unita->zone->pluck('nome','id')->toArray();
+      $zone = [];
+      
+      foreach ($distretto->unita as $unita) 
+        {
+        $zone += $unita->zone()->pluck('nome','id')->toArray();
+        }
 
-      $selected_id = $request->get('zona_id');
+      if(!empty($zone))
+        asort($zone);
 
-      return view('admin.squadre.inc_zone_select_cascade', compact('zone','selected_id'));
+      return view('admin.squadre.inc_zone_select_cascade', compact('zone'));
       }  
 
 
