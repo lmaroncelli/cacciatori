@@ -93,21 +93,21 @@
             
             <div class="form-group" id="distretto_wrapper" style="display: none;">
               <label for="distretto">Distretto</label>
-              <input type="text" class="form-control" id="distretto" value="">
+              <input type="text" class="form-control" id="distretto" value="" readonly="readonly">
             </div>
 
 
+            @php
+              $azione->exists ? $selected_id = $azione->unita_gestione_id : $selected_id = 0;
+            @endphp
             <div class="form-group" id="unita_gestione_wrapper"  style="display: none;">
-              @php
-                $azione->exists ? $selected_id = $azione->unita_gestione_id : $selected_id = 0;
-              @endphp
-              @include('admin.squadre.inc_unita_select_cascade', ['selected_id' => $selected_id])
+              @include('admin.azioni.inc_unita_select_cascade', ['selected_id' => $selected_id])
             </div>
 
+            @php
+              $azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
+            @endphp
             <div class="form-group" id="zone_select_wrapper"  style="display: none;">
-              @php
-                $azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
-              @endphp
               @include('admin.squadre.inc_zone_select_cascade', ['selected_id' => $selected_id])
             </div>	
 
@@ -185,43 +185,7 @@
 
 	        }).change();
 
-	        $("#unita_gestione_id").change(function(){
-
-	        	console.log('unita_gestione_id.change');
-	        	
-	        	var unita_gestione_id = $(this).val();
-
-	        	console.log('unita_gestione_id = '+unita_gestione_id);
-
-	        	if(unita_gestione_id != 0)
-	        		{
-
-	        		var zona_id = 0;
-
-				    	@if ($azione->exists)
-				    		zona_id = {{$azione->zona_id}}
-				    	@endif
-
-	    	    	jQuery.ajax({
-	    	    	        url: '{{ route('get_zona') }}',
-	    	    	        type: "post",
-	    	    	        async: false,
-	    	    	        data : { 
-	    	    	               'unita_gestione_id': unita_gestione_id, 
-	    	    	               'zona_id': zona_id,
-	    	    	               '_token': jQuery('input[name=_token]').val()
-	    	    	               },
-	    	    	       	success: function(data) {
-	    	    	        	jQuery("#zona_id").html(data);
-	    	    	        	$("#zone_select_wrapper").show();
-	    	    	       }
-
-	    	    	 });
-
-	        		}
-
-	        }).change();
-
+	        
 			    function caricaUtg(distretto_id) {
 			    	
 			    	console.log('caricaUtg');
@@ -245,10 +209,50 @@
 			    	               '_token': jQuery('input[name=_token]').val()
 			    	               },
 			    	       	success: function(data) {
-			    	         jQuery("#unita_gestione_id").html(data);
-			    	          $('#unita_gestione_wrapper').show();
+			    	         jQuery("#unita_gestione_wrapper").html(data);
+                      $('#unita_gestione_wrapper').show();
 			    	       }
-			    	 });
+             });
+             
+
+             $("#utg").change(function(){
+
+                console.log('unita_gestione_id.change');
+                
+                var unita_gestione_id = $(this).val();
+
+                console.log('unita_gestione_id = '+unita_gestione_id);
+
+                if(unita_gestione_id != 0)
+                  {
+
+                  var zona_id = 0;
+
+                  @if ($azione->exists)
+                    zona_id = {{$azione->zona_id}}
+                  @endif
+
+                  jQuery.ajax({
+                          url: '{{ route('get_zone_form_utg') }}',
+                          type: "post",
+                          async: false,
+                          data : { 
+                                'unita_gestione_id': unita_gestione_id, 
+                                'zona_id': zona_id,
+                                '_token': jQuery('input[name=_token]').val()
+                                },
+                          success: function(data) {
+                            jQuery("#zone_select_wrapper").html(data);
+                            $("#zone_select_wrapper").show();
+                            $('.select2').select2();
+                        }
+
+                  });
+
+                  }
+
+	        }).change();
+
 
 			    }
 
