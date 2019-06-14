@@ -14,114 +14,125 @@
 @endsection
 
 @section('content')
-	
-	@if ($azione->exists)
-		
-		<form action="{{ route('azioni.destroy', $azione->id) }}" method="POST" id="record_delete">
-			{{ method_field('DELETE') }}
-		  {!! csrf_field() !!}
-		  <input type="hidden" name="id" value="{{$azione->id}}">
-		</form>
-	
-		<form role="form" action="{{ route('azioni.update', $azione->id) }}" method="POST">
-		{{ method_field('PUT') }}
-	@else
-		<form role="form" action="{{ route('azioni.store') }}" method="POST" enctype="multipart/form-data">
-	@endif
-		{!! csrf_field() !!}
-		
-			
-		<div class="form-group">
-		  <label for="nome">A.T.C. RIMINI 1</label>
-		</div>
-		
-		<input type="hidden" name="distretto_id" id="distretto_id" value="">
-		
-		{{-- UNICA RIGA --}}
-		<div class="row form-group">
-			
-			<div class="col-md-4">
-				<label>Date:</label>
+	<div class="row">    
+    <div class="col-xs-12">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Attività</h3>
+        </div>
+        <!-- /.box-header -->
+        @if ($azione->exists)
+          
+          <form action="{{ route('azioni.destroy', $azione->id) }}" method="POST" id="record_delete">
+            {{ method_field('DELETE') }}
+            {!! csrf_field() !!}
+            <input type="hidden" name="id" value="{{$azione->id}}">
+          </form>
+        
+          <form role="form" action="{{ route('azioni.update', $azione->id) }}" method="POST">
+          {{ method_field('PUT') }}
+        @else
+          <form role="form" action="{{ route('azioni.store') }}" method="POST" enctype="multipart/form-data">
+        @endif
+          {!! csrf_field() !!}
+          <div class="box-body">
+            
+            <div class="form-group">
+              <label for="nome">A.T.C. RIMINI 1</label>
+            </div>
+            
+            <input type="hidden" name="distretto_id" id="distretto_id" value="">
+            
+            {{-- UNICA RIGA --}}
+            <div class="row form-group">
+              
+              <div class="col-md-4">
+                <label>Date:</label>
 
-				<div class="input-group date">
-				  <div class="input-group-addon">
-				    <i class="fa fa-calendar"></i>
-				  </div>
-				  <input type="text" name="data" @if ($azione->exists) value="{{ old('data') != '' ? old('data') : $azione->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
-				</div>
-			</div>
-			
-			<div class="col-md-4 bootstrap-timepicker">
-				<label>Dalle:</label>
-				<div class="input-group">
-				  <input type="text" name="dal" @if ($azione->exists) value="{{ old('dal') != '' ? old('dal') : $azione->dalle->format('H:i')}}" @endif class="form-control timepicker">
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" name="data" @if ($azione->exists) value="{{ old('data') != '' ? old('data') : $azione->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
+                </div>
+              </div>
+              
+              <div class="col-md-4 bootstrap-timepicker">
+                <label>Dalle:</label>
+                <div class="input-group">
+                  <input type="text" name="dal" @if ($azione->exists) value="{{ old('dal') != '' ? old('dal') : $azione->dalle->format('H:i')}}" @endif class="form-control timepicker">
 
-				  <div class="input-group-addon">
-				    <i class="fa fa-clock-o"></i>
-				  </div>
-				</div>
-			</div>
-			
-			<div class="col-md-4 bootstrap-timepicker">
-				<label>Alle:</label>
-				<div class="input-group">
-				  <input type="text" name="al" @if ($azione->exists) value="{{old('al') != ''  ? old('al') : $azione->alle->format('H:i')}}" @endif class="form-control timepicker">
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 bootstrap-timepicker">
+                <label>Alle:</label>
+                <div class="input-group">
+                  <input type="text" name="al" @if ($azione->exists) value="{{old('al') != ''  ? old('al') : $azione->alle->format('H:i')}}" @endif class="form-control timepicker">
 
-				  <div class="input-group-addon">
-				    <i class="fa fa-clock-o"></i>
-				  </div>
-				</div>
-			</div>
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+              </div>
 
-		</div>
+            </div>
 
-		<div class="form-group">
-		  <label for="squadra_id">Squadra</label>
-		  <select class="form-control" style="width: 100%;" name="squadra_id" id="squadra_id">
-		    @foreach ([0 => 'Seleziona'] + $squadre as $id => $nome)
-		    	<option value="{{$id}}" @if ($azione->squadra_id == $id || old('squadra_id') == $id) selected="selected" @endif>{{$nome}}</option>
-		    @endforeach
-		  </select>
-		</div>	
+            <div class="form-group">
+              <label for="squadra_id">Squadra</label>
+              <select class="form-control" style="width: 100%;" name="squadra_id" id="squadra_id">
+                @foreach ([0 => 'Seleziona'] + $squadre as $id => $nome)
+                  <option value="{{$id}}" @if ($azione->squadra_id == $id || old('squadra_id') == $id) selected="selected" @endif>{{$nome}}</option>
+                @endforeach
+              </select>
+            </div>	
 
-		
-		<div class="form-group" id="distretto_wrapper" style="display: none;">
-		  <label for="distretto">Distretto</label>
-		  <input type="text" class="form-control" id="distretto" value="">
-		</div>
+            
+            <div class="form-group" id="distretto_wrapper" style="display: none;">
+              <label for="distretto">Distretto</label>
+              <input type="text" class="form-control" id="distretto" value="">
+            </div>
 
 
-		<div class="form-group" id="unita_gestione_wrapper"  style="display: none;">
-			@php
-				$azione->exists ? $selected_id = $azione->unita_gestione_id : $selected_id = 0;
-			@endphp
-			@include('admin.squadre.inc_unita_select_cascade', ['selected_id' => $selected_id])
-		</div>
+            <div class="form-group" id="unita_gestione_wrapper"  style="display: none;">
+              @php
+                $azione->exists ? $selected_id = $azione->unita_gestione_id : $selected_id = 0;
+              @endphp
+              @include('admin.squadre.inc_unita_select_cascade', ['selected_id' => $selected_id])
+            </div>
 
-		<div class="form-group" id="zone_select_wrapper"  style="display: none;">
-			@php
-				$azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
-			@endphp
-			@include('admin.squadre.inc_zone_select_cascade', ['selected_id' => $selected_id])
-		</div>	
+            <div class="form-group" id="zone_select_wrapper"  style="display: none;">
+              @php
+                $azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
+              @endphp
+              @include('admin.squadre.inc_zone_select_cascade', ['selected_id' => $selected_id])
+            </div>	
 
-	
-		<div class="form-group">
-			<label for="note">Note</label>
-			<textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $azione->note}}</textarea>
-		</div>
-		<div class="box-footer">
-		<button type="submit" class="btn btn-success">
-			@if ($azione->exists)
-				Modifica
-			@else
-				Crea
-			@endif
-		</button>
-		<a href="{{ route('azioni.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
-		</div>
-		</form>
+          
+            <div class="form-group">
+              <label for="note">Note</label>
+              <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $azione->note}}</textarea>
+            </div>
+          </div>
+          
+          <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+              @if ($azione->exists)
+                Modifica
+              @else
+                Crea
+              @endif
+            </button>
+            <a href="{{ route('azioni.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
+          </div>
 
+          </form>
+        </div>
+    </div>
+  </div>
 @endsection
 
 @section('script_footer')

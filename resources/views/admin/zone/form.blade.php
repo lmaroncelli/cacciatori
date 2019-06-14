@@ -21,83 +21,94 @@ nuova
 
 
 @section('content')
-	
-	@if ($zona->exists)
-		
-		<form action="{{ route('zone.destroy', $zona->id) }}" method="POST" id="record_delete">
-			{{ method_field('DELETE') }}
-		  {!! csrf_field() !!}
-		  <input type="hidden" name="id" value="{{$zona->id}}">
-		</form>
-	
-	<form role="form" action="{{ route('zone.update', $zona->id) }}" method="POST">
-			@method('PUT')
-	@else
-		<form role="form" action="{{ route('zone.store') }}" method="POST" enctype="multipart/form-data">
-	@endif
-		{!! csrf_field() !!}
-		
-			
-	<div class="form-group">
-	  <label for="nome">Nome</label>
-	  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $zona->nome}}" required="required">
-	</div>
+	<div class="row">    
+    <div class="col-xs-12">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Distretto</h3>
+        </div>
+        <!-- /.box-header -->
+        @if ($zona->exists)
+          
+          <form action="{{ route('zone.destroy', $zona->id) }}" method="POST" id="record_delete">
+            {{ method_field('DELETE') }}
+            {!! csrf_field() !!}
+            <input type="hidden" name="id" value="{{$zona->id}}">
+          </form>
+        
+        <form role="form" action="{{ route('zone.update', $zona->id) }}" method="POST">
+            @method('PUT')
+        @else
+          <form role="form" action="{{ route('zone.store') }}" method="POST" enctype="multipart/form-data">
+        @endif
+          {!! csrf_field() !!}
+          <div class="box-body">
+            
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $zona->nome}}" required="required">
+            </div>
 
 
-	<div class="form-group">
-	  <label for="note">Tipo</label>
-	  <select class="form-control" name="tipo" id="tipo">
-	    @foreach (App\Utility::getTipoZona() as $key => $nome)
-	      <option value="{{$key}}" @if ($zona->tipo == $key || old('zona') == $key) selected="selected" @endif>{{$nome}}</option>
-	    @endforeach
-	  </select>
-	</div>
+            <div class="form-group">
+              <label for="note">Tipo</label>
+              <select class="form-control" name="tipo" id="tipo">
+                @foreach (App\Utility::getTipoZona() as $key => $nome)
+                  <option value="{{$key}}" @if ($zona->tipo == $key || old('zona') == $key) selected="selected" @endif>{{$nome}}</option>
+                @endforeach
+              </select>
+            </div>
 
 
-		<div class="form-group">
-		  <label for="unita_gestione_id">UTG</label>
-		  <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
-		    @foreach ($utg as $id => $nome)
-		    	<option value="{{$id}}" @if ($zona->unita_gestione_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
-		    @endforeach
-		  </select>
-		</div>
+              <div class="form-group">
+                <label for="unita_gestione_id">UTG</label>
+                <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
+                  @foreach ($utg as $id => $nome)
+                    <option value="{{$id}}" @if ($zona->unita_gestione_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
+                  @endforeach
+                </select>
+              </div>
 
-		<div class="form-group" style="display: none;" id="distretto_wrapper">
-		  <label for="distretto">Distretto</label>
-		  <input type="text" class="form-control" name="distretto" id="distretto" value="" readonly="">
-		</div>
+              <div class="form-group" style="display: none;" id="distretto_wrapper">
+                <label for="distretto">Distretto</label>
+                <input type="text" class="form-control" name="distretto" id="distretto" value="" readonly="">
+              </div>
 
-		<div class="form-group" id="squadre_select">
-			@include('admin.inc_squadre_select')
-		</div>	
+              <div class="form-group" id="squadre_select">
+                @include('admin.inc_squadre_select')
+              </div>	
 
-		<div class="form-group">
-		  <label for="numero">Numero</label>
-		  <input type="text" class="form-control" name="numero" id="numero" placeholder="numero" value="{{ old('numero') != '' ?  old('numero') : $zona->numero}}" required="required">
-		</div>
+              <div class="form-group">
+                <label for="numero">Numero</label>
+                <input type="text" class="form-control" name="numero" id="numero" placeholder="numero" value="{{ old('numero') != '' ?  old('numero') : $zona->numero}}" required="required">
+              </div>
 
-		<div class="form-group">
-		  <label for="superficie">Superficie</label>
-		  <input type="text" class="form-control" name="superficie" id="superficie" placeholder="superficie" value="{{ old('superficie') != '' ?  old('superficie') : $zona->superficie}}">
-		</div>
+              <div class="form-group">
+                <label for="superficie">Superficie</label>
+                <input type="text" class="form-control" name="superficie" id="superficie" placeholder="superficie" value="{{ old('superficie') != '' ?  old('superficie') : $zona->superficie}}">
+              </div>
 
-		
-		<div class="form-group">
-			<label for="note">Note</label>
-			<textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $zona->note}}</textarea>
-		</div>
-		<div class="box-footer">
-		<button type="submit" class="btn btn-success">
-			@if ($zona->exists)
-				Modifica
-			@else
-				Crea
-			@endif
-		</button>
-		<a href="{{ route('zone.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
-		</div>
-		</form>
+              
+              <div class="form-group">
+                <label for="note">Note</label>
+                <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $zona->note}}</textarea>
+              </div>
+          </div>
+
+          <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+              @if ($zona->exists)
+                Modifica
+              @else
+                Crea
+              @endif
+            </button>
+            <a href="{{ route('zone.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
 
 @endsection
 

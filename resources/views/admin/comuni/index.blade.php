@@ -1,23 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-	<p>
-		<a href="{{ route('comuni.create') }}" title="Nuovo comune" class="btn btn-success">Nuovo comune</a>
-	</p>
-	<table class="table table-hover">
-	  <thead>
-	    <tr>
-	      <th scope="col">Nome</th>
-	      <th></th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	  	@foreach ($comuni as $comune)
-		    <tr>
-		      <td>{{$comune->nome}}</td>
-		      <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
-		    </tr>
-	  	@endforeach
-	  </tbody>
-	</table>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Elenco comuni</h3>
+            <div class="box-tools">
+              <div class="input-group input-group-sm" style="width: 150px;">
+                  <a href="{{ route('comuni.create') }}" title="Nuovo comune" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo comune</a>
+              </div>
+            </div>
+          </div>
+          <div class="box-body table-responsive no-padding">  
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($comuni as $comune)
+                  <tr>
+                    <td>{{$comune->nome}}</td>
+                    <td> <a href="{{ route('comuni.edit',$comune->id) }}" title="Modifica comune" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
 @endsection

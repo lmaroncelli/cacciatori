@@ -29,7 +29,7 @@ class Utility extends Model
 	//////////////////////////////////////////////////////
 	// coordinate di defaul per il poligono di una zona //
 	//////////////////////////////////////////////////////
-	private static $zona_coords = [
+	private static $fake_coords = [
             [
                 'lat' => '44.066493' , 'long' => '12.550754'
             ],
@@ -219,9 +219,9 @@ class Utility extends Model
 
 
 
-	public static function zonaCoords()
+	public static function fakeCoords()
 	{
-		return self::$zona_coords;
+		return self::$fake_coords;
 	}
 
 	

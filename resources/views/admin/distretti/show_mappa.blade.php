@@ -15,10 +15,15 @@ Distretto
 
 @section('content')
 	<div id="content">
-		
-		@csrf
+		<div class="row">    
+      <div class="col-xs-12">
+        <div class="box box-success">
+          @csrf
 
-		@include('admin.mappa.bottoni')
+          @include('admin.mappa.bottoni')
+        </div>
+      </div>
+		</div>
 	</div>	
 	
 	@php
@@ -163,7 +168,7 @@ Distretto
      	    	        type: "post",
      	    	        async: false,
      	    	        data : { 
-     	    	               'distretto_coords': distretto_coords, 
+     	    	               'coords': distretto_coords, 
      	    	               'distretto_id': '{{$item->id}}',
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },

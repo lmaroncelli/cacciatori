@@ -32,11 +32,13 @@ class PoligoniController extends Controller
 
         }
 
-    	$distretto_coords = $request->get('distretto_coords');
-
-      $poligono->coordinate()->delete();
-
-      $poligono->coordinate()->createMany($distretto_coords);
+    	$coords = $request->get('coords');
+      
+      if(!is_null($coords) && !empty($coords))
+        {
+        $poligono->coordinate()->delete();
+        $poligono->coordinate()->createMany($coords);
+        }
 
 
     	/*

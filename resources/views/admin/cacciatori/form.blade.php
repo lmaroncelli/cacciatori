@@ -9,66 +9,77 @@
 @endsection
 
 @section('content')
-	
-	@if ($cacciatore->exists)
-		<form role="form" action="{{ route('utenti.modifica',$cacciatore->utente->id) }}" method="POST">
-		<input type="hidden" name="utente_id" value="{{$cacciatore->utente->id}}">
-	@else
-		{{-- registro nuovo utente cacciatore --}}
-		<form method="POST" action="{{ route('register') }}">
-	@endif
-	<input type="hidden" name="user" value="cacciatore">
-		{!! csrf_field() !!}
-	
-		<div class="form-group" id="squadre_select">
-			@include('admin.inc_squadre_select')
-		</div>		
+	<div class="row">    
+    <div class="col-xs-12">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Distretto</h3>
+        </div>
+        <!-- /.box-header -->
+        @if ($cacciatore->exists)
+          <form role="form" action="{{ route('utenti.modifica',$cacciatore->utente->id) }}" method="POST">
+          <input type="hidden" name="utente_id" value="{{$cacciatore->utente->id}}">
+        @else
+          {{-- registro nuovo utente cacciatore --}}
+          <form method="POST" action="{{ route('register') }}">
+        @endif
+        <input type="hidden" name="user" value="cacciatore">
+          {!! csrf_field() !!}
+          <div class="box-body">
 
-		<div class="form-group">
-		  <label for="nome">Nome</label>
-		  <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $cacciatore->nome}}" required="required">
-		</div>
+            <div class="form-group" id="squadre_select">
+              @include('admin.inc_squadre_select')
+            </div>		
 
-		<div class="form-group">
-		  <label for="cognome">Cognome</label>
-		  <input type="text" class="form-control" name="cognome" id="cognome" placeholder="cognome" value="{{ old('cognome') != '' ?  old('cognome') : $cacciatore->cognome}}" required="required">
-		</div>
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $cacciatore->nome}}" required="required">
+            </div>
+
+            <div class="form-group">
+              <label for="cognome">Cognome</label>
+              <input type="text" class="form-control" name="cognome" id="cognome" placeholder="cognome" value="{{ old('cognome') != '' ?  old('cognome') : $cacciatore->cognome}}" required="required">
+            </div>
 
 
-		@include('auth._subform_register_cacciatore')
+            @include('auth._subform_register_cacciatore')
 
-		<div class="form-group">
-		  <label for="registro">Registro</label>
-		  <input type="text" class="form-control" name="registro" id="registro" placeholder="registro" value="{{ old('registro') != '' ?  old('registro') : $cacciatore->registro}}" required="required">
-		</div>
+            <div class="form-group">
+              <label for="registro">Registro</label>
+              <input type="text" class="form-control" name="registro" id="registro" placeholder="registro" value="{{ old('registro') != '' ?  old('registro') : $cacciatore->registro}}" required="required">
+            </div>
 
-		<div class="form-group">
-		  <label for="data_nascita">Data di nascita</label>
-		  <div class="input-group date">
-		    {{-- <div class="input-group-addon">
-		      <i class="fa fa-calendar"></i>
-		    </div> --}}
-		    <input type="text" class="form-control pull-right" id="datepicker" name="data_nascita" id="data_nascita" @if ($cacciatore->exists) value="{{ old('data_nascita') != '' ? old('data_nascita') : $cacciatore->data_nascita }}" @else value="{{ old('data_nascita')}}" @endif>
-		  </div>
-		  <!-- /.input group -->
-		</div>
+            <div class="form-group">
+              <label for="data_nascita">Data di nascita</label>
+              <div class="input-group date">
+                {{-- <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div> --}}
+                <input type="text" class="form-control pull-right" id="datepicker" name="data_nascita" id="data_nascita" @if ($cacciatore->exists) value="{{ old('data_nascita') != '' ? old('data_nascita') : $cacciatore->data_nascita }}" @else value="{{ old('data_nascita')}}" @endif>
+              </div>
+              <!-- /.input group -->
+            </div>
 
-		<div class="form-group">
-			<label for="note">Note</label>
-			<textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $cacciatore->note}}</textarea>
-		</div>
-		<div class="box-footer">
-		<button type="submit" class="btn btn-success">
-			@if ($cacciatore->exists)
-				Modifica
-			@else
-				Crea
-			@endif
-		</button>
-		<a href="{{ route('cacciatori.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
-		</div>
-		</form>
+            <div class="form-group">
+              <label for="note">Note</label>
+              <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $cacciatore->note}}</textarea>
+            </div>
+          </div>
 
+          <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+              @if ($cacciatore->exists)
+                Modifica
+              @else
+                Crea
+              @endif
+            </button>
+            <a href="{{ route('cacciatori.index') }}" title="Annulla" class="btn btn-warning pull-right">Annulla</a>
+          </div>
+          </form>
+        </div>
+    </div>
+  </div>
 @endsection
 
 @section('script_footer')

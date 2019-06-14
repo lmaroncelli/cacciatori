@@ -60,7 +60,7 @@ class ZoneController extends Controller
         // creo un poligono di 4 punti associato di default //
         //////////////////////////////////////////////////////
         $poligono = $zona->poligono()->create(['name' => 'Poligono zona '.$zona->nome]);
-        $poligono->coordinate()->createMany(Utility::zonaCoords());
+        $poligono->coordinate()->createMany(Utility::fakeCoords());
 
 
         return redirect()->route("zone.index")->with('status', $status);
@@ -78,8 +78,13 @@ class ZoneController extends Controller
 
         $poligono = $zona->poligono;
 
-        $coordinate = $poligono->coordinate->pluck('long','lat');
+        $coordinate = optional($poligono)->coordinate->pluck('long','lat');
 
+        // se per qualche motivo il poligono ha perso le coordinate le creo al volo
+        if(!$coordinate->count())
+          {
+           $poligono->coordinate()->createMany(Utility::fakeCoords()); 
+          }
         
         $poligono_distretto = $zona->unita->distretto->poligono;
         
