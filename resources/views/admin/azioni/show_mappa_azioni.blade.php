@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('titolo')
-{{$azioni->count()}} azioni 
+{{count($azioni)}} azioni su {{$zone_count}} zone
 @endsection
 
 
@@ -24,11 +24,12 @@
 @section('script_footer')
 
 	<script type="text/javascript">
-		var infoWindow;
+
 		var map;
-
 		var contentString;
+    var infoWindow;
 
+     var azioni_di_zona = JSON.parse('{!! json_encode($azioni_di_zona) !!}');
 
 				// Initialize and add the map
 				function initMap() {
@@ -48,7 +49,7 @@
 
         // creo tutte le zone delle quali ho le coordinate nell'array coordinate_zona
 
-        @foreach ($coordinate_zona as $coordinata_zona)
+        @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
           
           var zona_coords = new Array();
 
@@ -82,6 +83,13 @@
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           zona.setMap(map);
 
+          // Add a listener for the click event.
+          zona.addListener('click', function(event) {
+            showAzioni(event, {{$zona_id}});
+          });
+
+          infoWindow = new google.maps.InfoWindow;
+          
 
         @endforeach
 				
@@ -89,58 +97,27 @@
 				} // initMap
 
 
+        function showAzioni(event, zona_id)
+          {
+          //console.log(event);
+          //console.log('zona_id = '+zona_id);
+          
 
-				/** @this {google.maps.Polygon} */
-		    function showArrays(event) {
+          for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
+            const azione = azioni_di_zona[zona_id][index];
+            //console.log('azione = '+azione.dalle);
+            
+            
+          }
+         
 
-
-		    	$("#new_center").show();
-
-		    	
-		      // Since this polygon has only one path, we can call getPath() to return the
-		      // MVCArray of LatLngs.
-		      var vertices = this.getPath();
-
-		      var nome = '';
-
-		      var c_lat = event.latLng.lat();
-		      var c_long = event.latLng.lng();
-		      var c_zoom = map.getZoom();
-
-
-
-		      $("#lat").val(c_lat);
-		      $("#long").val(c_long);
-		      $("#zoom").val(c_zoom);
-		    	
-
-		     contentString = '<b>'+nome+'</b><br>' +
-		     		      'Coordinate correnti: <br>' + c_lat + ',' + c_long +
-		     		      '<br>'+
-		     		      'Zoom corrente: '+ c_zoom + '<br><br>';
-
-
-		      // Iterate over the vertices.
-		      for (var i =0; i < vertices.getLength(); i++) {
-		        var xy = vertices.getAt(i);
-		        contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
-		            xy.lng();
-		      }
-
-		      // Replace the info window's content and position.
-		      infoWindow.setContent(contentString);
+          // Replace the info window's content and position.
+		      infoWindow.setContent('ciao');
 		      infoWindow.setPosition(event.latLng);
 
 		      infoWindow.open(map);
 
-
-		 
-
-		    } // showArrays
-
-
-
-
+          }
 	</script>
 	
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY&callback=initMap" type="text/javascript"></script>
