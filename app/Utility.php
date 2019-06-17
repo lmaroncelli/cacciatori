@@ -45,6 +45,12 @@ class Utility extends Model
             
         ];
 
+	
+	private static $fake_center_map = [
+
+                'lat' => '43.88684115537241' , 'long' => '12.686753037826975', 'zoom' => '13'
+        ];  
+
   private static $tipoZona = ['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'];
 
 	/**
@@ -223,6 +229,17 @@ class Utility extends Model
 	{
 		return self::$fake_coords;
 	}
+
+	public static function fakeCenterCoords()
+	{
+		$item = new \stdClass;
+		$item->center_lat = self::$fake_center_map['lat'];
+		$item->center_long = self::$fake_center_map['long'];
+		$item->zoom = self::$fake_center_map['zoom'];
+		return $item;
+
+	}
+
 
 	
 

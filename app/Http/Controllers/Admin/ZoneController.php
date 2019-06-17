@@ -91,7 +91,7 @@ class ZoneController extends Controller
         $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
 
         
-        return view('admin.zone.show_mappa', compact('zona','poligono','coordinate', 'poligono_distretto','coordinate_distretto'));
+        return view('admin.zone.show_mappa', compact('zona','coordinate', 'coordinate_distretto'));
 
     }
 

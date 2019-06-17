@@ -4,6 +4,7 @@ namespace App;
 
 use App\Atc;
 use App\Squadra;
+use App\AzioneCaccia;
 use App\UnitaGestione;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,11 @@ class Distretto extends Model
 		public function unita()
 		{
 		    return $this->hasMany(UnitaGestione::class, 'distretto_id', 'id')->orderBy('nome');
+    }
+    
+    public function azioni()
+		{
+	  return $this->hasMany(AzioneCaccia::class, 'distretto_id', 'id');
 		}
 
 		public function poligono()

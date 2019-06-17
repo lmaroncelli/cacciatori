@@ -97,7 +97,7 @@ class DistrettiController extends Controller
           }
         
 
-         return view('admin.distretti.show_mappa', compact('distretto','poligono','coordinate','coordinate_zona'));
+         return view('admin.distretti.show_mappa', compact('distretto','coordinate','coordinate_zona'));
     }
 
     /**

@@ -19,6 +19,8 @@
                 <tr>
                   <th scope="col">Data</th>
                   <th>Squadra</th>
+                  <th>Distretto</th>
+                  <th>UTG</th>
                   <th>Zona</th>
                   <th></th>
                   <th></th>
@@ -33,6 +35,8 @@
                   <tr>
                     <td>{{$azione->getDalleAlle()}}</td>
                     <td>{{$azione->squadra->nome}}</td>
+                    <td>{{$azione->distretto->nome}}</td>
+                    <td>{{$azione->unita->nome}}</td>
                     <td>{{$azione->zona->nome}}</td>
                     <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
                     <td>

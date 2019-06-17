@@ -104,7 +104,11 @@ class AzioniCacciaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $azione = AzioneCaccia::find($id);
+      
+      $this->_saveAzione($azione, $request);
+        
+      return redirect()->route("azioni.index")->with('status', 'Azione di caccia modificata correttamente!');
     }
 
     /**

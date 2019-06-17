@@ -2,8 +2,9 @@
 
 namespace App;
 
-use App\Distretto;
 use App\Zona;
+use App\Distretto;
+use App\AzioneCaccia;
 use Illuminate\Database\Eloquent\Model;
 
 class UnitaGestione extends Model
@@ -21,6 +22,12 @@ class UnitaGestione extends Model
 		public function zone()
 		{
 		    return $this->hasMany(Zona::class, 'unita_gestione_id', 'id');
+    }
+    
+
+    public function azioni()
+		{
+	  return $this->hasMany(AzioneCaccia::class, 'unita_gestione_id', 'id');
 		}
 
 		public function getZone() 

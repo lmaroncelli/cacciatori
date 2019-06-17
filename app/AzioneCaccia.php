@@ -3,8 +3,10 @@
 namespace App;
 
 
-use App\Squadra;
 use App\Zona;
+use App\Squadra;
+use App\Distretto;
+use App\UnitaGestione;
 use Illuminate\Database\Eloquent\Model;
 
 class AzioneCaccia extends Model
@@ -20,12 +22,24 @@ class AzioneCaccia extends Model
 		public function squadra()
 		{
 		    return $this->belongsTo(Squadra::class, 'squadra_id', 'id');
-		}
+    }
+    
+    public function distretto()
+    {
+        return $this->belongsTo(Distretto::class, 'distretto_id', 'id');
+    }
+    
+    public function unita()
+    {
+        return $this->belongsTo(UnitaGestione::class, 'unita_gestione_id', 'id');
+    }
 
 		public function zona()
 		{
 		    return $this->belongsTo(Zona::class, 'zona_id', 'id');
-		}
+    }
+    
+    
 
 
 		public function getDalleAlle()

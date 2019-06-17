@@ -41,7 +41,7 @@
               <label for="nome">A.T.C. RIMINI 1</label>
             </div>
             
-            <input type="hidden" name="distretto_id" id="distretto_id" value="">
+          <input type="hidden" name="distretto_id" id="distretto_id" value="{{$azione->distretto_id}}">
             
             {{-- UNICA RIGA --}}
             <div class="row form-group">
@@ -108,7 +108,7 @@
               $azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
             @endphp
             <div class="form-group" id="zone_select_wrapper"  style="display: none;">
-              @include('admin.squadre.inc_zone_select_cascade', ['selected_id' => $selected_id])
+              @include('admin.azioni.inc_zone_select_cascade', ['selected_id' => $selected_id])
             </div>	
 
           
@@ -192,10 +192,13 @@
 
 			    	var distretto_id = distretto_id;
 
+			    	console.log('distretto_id = '+distretto_id);
+
 			    	var unita_gestione_id = 0;
 
 			    	@if ($azione->exists)
 			    		unita_gestione_id = {{$azione->unita_gestione_id}}
+              console.log('unita_gestione_id = '+unita_gestione_id);
 			    	@endif
 
 			    	
@@ -230,6 +233,7 @@
 
                   @if ($azione->exists)
                     zona_id = {{$azione->zona_id}}
+                    console.log('zona_id = '+zona_id);
                   @endif
 
                   jQuery.ajax({
@@ -244,7 +248,6 @@
                           success: function(data) {
                             jQuery("#zone_select_wrapper").html(data);
                             $("#zone_select_wrapper").show();
-                            $('.select2').select2();
                         }
 
                   });
