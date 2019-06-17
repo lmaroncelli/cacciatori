@@ -30,6 +30,7 @@
     var infoWindow;
 
      var azioni_di_zona = JSON.parse('{!! json_encode($azioni_di_zona) !!}');
+     var nomi_di_zona = JSON.parse('{!! json_encode($nomi_di_zona) !!}');
 
 				// Initialize and add the map
 				function initMap() {
@@ -102,17 +103,16 @@
           //console.log(event);
           //console.log('zona_id = '+zona_id);
           
-
+          var contentString = "Elenco azioni zona <b>" + nomi_di_zona[zona_id] + "</b>:<br/><br/>"
           for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
             const azione = azioni_di_zona[zona_id][index];
             //console.log('azione = '+azione.dalle);
-            
-            
+            contentString += azione.dalle + ' - '+ azione.alle + ': '+azione.squadra.nome + '<br/>'
           }
          
 
           // Replace the info window's content and position.
-		      infoWindow.setContent('ciao');
+		      infoWindow.setContent(contentString);
 		      infoWindow.setPosition(event.latLng);
 
 		      infoWindow.open(map);

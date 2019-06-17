@@ -60,10 +60,12 @@ class HomeController extends Controller
 
               
         $azioni_di_zona = []; 
+        $nomi_di_zona = []; 
         // RAGGRUPPO le mie azioni in base alla zona
         foreach ($azioni as $azione) 
           {
           $azioni_di_zona[$azione->zona_id][] = $azione;
+          $nomi_di_zona[$azione->zona_id] = $azione->zona->nome;
           }
         
         $azioni = $azioni->keyBy('id')->toArray();         
@@ -73,6 +75,6 @@ class HomeController extends Controller
 
         $zone_count = count($zone_ids);
 
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona'));
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona'));
     }
 }
