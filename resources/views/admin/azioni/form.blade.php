@@ -264,7 +264,7 @@
 
 			});
 
-			var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true};
+			var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true, todayBtn:true, todayHighlight: true};
 
 		
 			$("#datepicker").datepicker(_jsonObjDate);

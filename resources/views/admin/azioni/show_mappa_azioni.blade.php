@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('header_css')
+
+	<!-- bootstrap datepicker -->
+	<link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+	
+@endsection
+
 @section('titolo')
 {{count($azioni)}} azioni su {{$zone_count}} zone
 @endsection
@@ -11,8 +18,8 @@
       <div class="col-xs-12">
         <div class="box box-success">
           @csrf
-
-          @include('admin.mappa.bottoni')
+          @include('admin.azioni.calendar_azioni')
+          <div id="map"></div>
         </div>
       </div>
 		</div>
@@ -22,6 +29,10 @@
 
 
 @section('script_footer')
+
+  <!-- bootstrap datepicker -->
+	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
 
 	<script type="text/javascript">
 
@@ -48,10 +59,17 @@
 				      document.getElementById('map'), {zoom: zoom, center: center});
 
 
+          if({{$zone_count}} > 0)
+          {
+          // Create the bounds object
+          var bounds = new google.maps.LatLngBounds();
+          }
+        
+        
         // creo tutte le zone delle quali ho le coordinate nell'array coordinate_zona
 
         @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
-          
+                  
           var zona_coords = new Array();
 
           @foreach ($coordinata_zona as $lat => $long)
@@ -84,6 +102,10 @@
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           zona.setMap(map);
 
+           zona.getPath().forEach(function (path, index) {
+              bounds.extend(path);
+          });
+
           // Add a listener for the click event.
           zona.addListener('click', function(event) {
             showAzioni(event, {{$zona_id}});
@@ -94,6 +116,10 @@
 
         @endforeach
 				
+        if({{$zone_count}} > 0)
+        {
+          map.fitBounds(bounds);
+        }
 
 				} // initMap
 
@@ -125,11 +151,23 @@
 
 
 	<script type="text/javascript">
-		$(function () {
-		    
 		
-		}); // onload
-		
+    var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true, todayBtn:true, todayHighlight: true};
+		$("#datepicker")
+    .datepicker(_jsonObjDate)
+    .on('hide', function(ev) {
+        if(ev != "undefined") {
+          //var data =  ev.date.toLocaleDateString("it-IT");
+          var data =  ev.date.getFullYear() + "-" + (ev.date.getMonth() + 1) + "-" + ev.date.getDate()
+          console.log(data);
+          
+          var url = '{{ route('home') }}'+'?data='+data
+
+          document.location.href=url;
+        
+        }//if 
+      
+      });
 
 	</script>
 

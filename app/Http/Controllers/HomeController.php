@@ -19,22 +19,10 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function showMappaAttivita(Request $request)
-    {
-        $now = Carbon::now('Europe/Rome');
-        $oggi = $now->format('d-m-Y');
 
-        if (!$request->has('from') && !$request->has('to')) 
-          {
-          $from = $now->toDateString().' 00:00:00';
-          $to = $now->toDateString().' 23:59:59';
-          }
 
+    private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, $from, $to)
+      {
         // cerco tutte le azioni di questa data 
         $azioni = AzioneCaccia::with('squadra', 'distretto', 'unita','zona')
                   ->where('dalle','>=',$from)
@@ -44,7 +32,7 @@ class HomeController extends Controller
         // trovo tutte le zone facendo un loop su tutte le AZIONI
         $coordinate_zona = [];
         $zone_ids = [];
-
+        
         foreach ($azioni as $azione) 
           {
           $zona_azione = $azione->zona;
@@ -61,6 +49,7 @@ class HomeController extends Controller
               
         $azioni_di_zona = []; 
         $nomi_di_zona = []; 
+        
         // RAGGRUPPO le mie azioni in base alla zona
         foreach ($azioni as $azione) 
           {
@@ -74,7 +63,62 @@ class HomeController extends Controller
         $item = Utility::fakeCenterCoords();
 
         $zone_count = count($zone_ids);
+      }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showMappaAttivita(Request $request)
+    {
+        if($request->has('data'))
+          {
+          $from = $request->get('data').' 00:00:00';
+          $to = $request->get('data').' 23:59:59';
+          }
+        else 
+          {
+          $now = Carbon::now('Europe/Rome');
+          $from = $now->toDateString().' 00:00:00';
+          $to = $now->toDateString().' 23:59:59';
+          }   
+
+
+        
+        $azioni = null;
+        $coordinate_zona = null;
+        $item = null;
+        $zone_count = null;
+        $azioni_di_zona = null;
+        $nomi_di_zona = null;
+
+
+        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $from, $to);
 
         return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona'));
     }
+
+    public function changeDateMappaAttivitaAjax(Request $request) 
+      {
+      if($request->has('data'))
+        {
+        $from = $request->get('data').' 00:00:00';
+        $to = $request->get('data').' 23:59:59';
+        
+        $azioni = null;
+        $coordinate_zona = null;
+        $item = null;
+        $zone_count = null;
+        $azioni_di_zona = null;
+        $nomi_di_zona = null;
+
+
+        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $from, $to);
+
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona'));
+        }
+      }
+
+
 }
