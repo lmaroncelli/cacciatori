@@ -55,7 +55,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromUtgAjax')->name('get_zone_form_utg');
 
 
-	Route::resource('azioni', 'Admin\AzioniCacciaController');
+	Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
 
 
 

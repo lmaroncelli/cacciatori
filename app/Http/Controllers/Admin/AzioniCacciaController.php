@@ -38,10 +38,57 @@ class AzioniCacciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $azioni = AzioneCaccia::all();
-        return view('admin.azioni.index', compact('azioni'));
+
+        //////////////////
+        // ordinamento  //
+        //////////////////
+        $order_by='dalle';
+        $order = 'desc';
+        $ordering = 0;
+
+        if ($request->filled('order_by'))
+          {
+          $order_by=$request->get('order_by');
+          $order = $request->get('order');
+          $ordering = 1;
+          }
+        
+        $query = AzioneCaccia::with(['squadra','distretto','unita','zona'])->where('id', '>', 0);
+
+        switch ($order_by) {
+          case 'squadra_nome':
+            $query = AzioneCaccia::join('tblSquadre','tblSquadre.id','=','tblAzioniCaccia.squadra_id')->orderBy('tblSquadre.nome', $order);
+            break;
+
+          case 'distretto_nome':
+            $query = AzioneCaccia::join('tblDistretti','tblDistretti.id','=','tblAzioniCaccia.distretto_id')->orderBy('tblDistretti.nome', $order);
+            break;
+
+          case 'unita_nome':
+            $query = AzioneCaccia::join('tblUnitaGestione','tblUnitaGestione.id','=','tblAzioniCaccia.unita_gestione_id')->orderBy('tblUnitaGestione.nome', $order);
+            break;
+
+          case 'zona_nome':
+            $query = AzioneCaccia::join('tblZone','tblZone.id','=','tblAzioniCaccia.zona_id')->orderBy('tblZone.nome', $order);
+            break;
+          
+          default:
+            $query->orderBy($order_by, $order);
+        }
+        
+        $azioni = $query->get();
+        
+        $columns = [
+            'dalle' => 'Data',
+            'squadra_nome' => 'Squadra',
+            'distretto_nome' => 'Distretto',
+            'unita_nome' => 'UTG',
+            'zona_nome' => 'Zona'
+        ];
+
+        return view('admin.azioni.index', compact('azioni', 'columns'));
     }
 
     /**

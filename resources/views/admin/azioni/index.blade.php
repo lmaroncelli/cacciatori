@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
+
+@section('header_css')
+    <!-- DataTables -->
+    <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+
+@endsection
+
 @section('content')
+<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
@@ -14,14 +22,40 @@
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
-            <table class="table table-hover">
+            <table class="table table-hover" id="tbl_azioni">
               <thead>
                 <tr>
-                  <th scope="col">Data</th>
-                  <th>Squadra</th>
-                  <th>Distretto</th>
-                  <th>UTG</th>
-                  <th>Zona</th>
+                  @foreach ($columns as $field => $name)
+                  
+                    {{-- se sono il campo per cui è ordinato il listing --}}
+                    @if (app('request')->has('order_by') && app('request')->get('order_by') == $field)
+                        @php
+                            if(app('request')->get('order') == 'desc')
+                              {
+                              $new_order = 'asc';
+                              $class = "sorting_desc";
+                              }
+                            else
+                              {
+                              $new_order = 'desc';
+                              $class = "sorting_asc";
+                              }
+
+                            $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
+                        @endphp
+                    @else
+                        {{-- altrimenti ordinamento asc --}}
+                        @php
+                            $new_order = 'asc';
+                            $link = "<a href='".url()->current()."?order_by=".$field."&order=$new_order'>".$name."</a>";
+                            $class="sorting";
+                        @endphp
+                    @endif
+                    <th class="{{$class}}">
+                      {!!$link!!}
+                    </th>
+                  @endforeach
+
                   <th></th>
                   <th></th>
                 </tr>
@@ -50,4 +84,29 @@
       </div>
     </div>
   </div>
+</div>
 @endsection
+
+
+@section('script_footer')
+    <!-- DataTables -->
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
+    </script>
+    <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+
+    	    $('#tbl_azioni').DataTable({
+              'paging'      : false,
+              'lengthChange': false,
+              'searching'   : false,
+              'ordering'    : false,
+              'info'        : false,
+              'autoWidth'   : true
+            });
+
+    	});
+    </script>
+    @endsection

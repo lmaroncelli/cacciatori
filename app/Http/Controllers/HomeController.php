@@ -53,10 +53,10 @@ class HomeController extends Controller
         // RAGGRUPPO le mie azioni in base alla zona
         foreach ($azioni as $azione) 
           {
+          $azione->dalle_alle = $azione->getDalleAlle();
           $azioni_di_zona[$azione->zona_id][] = $azione;
           $nomi_di_zona[$azione->zona_id] = $azione->zona->nome;
           }
-        
         $azioni = $azioni->keyBy('id')->toArray();         
 
         // mi serve per centrare la mappa e zoommarla
@@ -76,12 +76,17 @@ class HomeController extends Controller
           {
           $from = $request->get('data').' 00:00:00';
           $to = $request->get('data').' 23:59:59';
+          
+          $to_show = Carbon::createFromFormat('Y-m-d', $request->get('data'))->format('d/m/Y');
           }
         else 
           {
           $now = Carbon::now('Europe/Rome');
           $from = $now->toDateString().' 00:00:00';
           $to = $now->toDateString().' 23:59:59';
+
+          $to_show = $now->format('d/m/Y');
+
           }   
 
 
@@ -94,9 +99,11 @@ class HomeController extends Controller
         $nomi_di_zona = null;
 
 
+
+
         $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $from, $to);
 
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona'));
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'to_show'));
     }
 
     public function changeDateMappaAttivitaAjax(Request $request) 

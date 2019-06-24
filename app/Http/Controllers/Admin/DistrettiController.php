@@ -124,11 +124,12 @@ class DistrettiController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
         $distretto = Distretto::find($id)->fill($request->all());
 
         $this->_saveUtg($request, $distretto);
 
+        $distretto->save();
+        
         return redirect()->route("distretti.index")->with('status', 'Distretto modificato correttamente!');
 
     }

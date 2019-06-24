@@ -133,7 +133,7 @@
           for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
             const azione = azioni_di_zona[zona_id][index];
             //console.log('azione = '+azione.dalle);
-            contentString += azione.dalle + ' - '+ azione.alle + ': '+azione.squadra.nome + '<br/>'
+            contentString += azione.dalle_alle + ': '+azione.squadra.nome + '<br/>'
           }
          
 

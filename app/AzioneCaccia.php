@@ -15,7 +15,7 @@ class AzioneCaccia extends Model
 
 		protected $guarded = ['id'];
 
-		 protected $dates = ['dalle','alle'];
+		protected $dates = ['dalle','alle'];
 
 
 
