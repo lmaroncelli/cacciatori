@@ -13,7 +13,7 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function register()
     {
-        view()->composer(['admin.squadre.form','admin.utg.form'],'App\Http\Composers\DistrettiFormComposer');
+        view()->composer(['admin.squadre.form','admin.utg.form'],'App\Http\Composers\DistrettiFormComposer', 'App\Http\Composers\CacciatoriFormComposer');
         view()->composer(['admin.utg.form','admin.azioni.form'],'App\Http\Composers\ZoneFormComposer');
         view()->composer(['admin.cacciatori.form','admin.zone.form','admin.azioni.form'],'App\Http\Composers\SquadreFormComposer');
         view()->composer(['admin.zone.form','admin.distretti.form','admin.azioni.form'],'App\Http\Composers\UtgFormComposer');         
