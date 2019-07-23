@@ -25,6 +25,11 @@ a:hover, a:active, a:focus {
 }          
 
 
+form#filtra_azioni div.form-group {
+  padding-right: 10px;
+}
+
+
 /* iCheck plugin Square skin, green
 ----------------------------------- */
 .icheckbox_square-green,

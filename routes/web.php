@@ -57,6 +57,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 	Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
 	Route::post('azioni','Admin\AzioniCacciaController@index')->name('azioni_search');
+	Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
 
 
 

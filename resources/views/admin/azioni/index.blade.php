@@ -16,13 +16,11 @@
           <div class="box-header">
             <h3 class="box-title">Filtri di ricerca</h3>
           </div>
-          <form action="{{ route('azioni_search') }}" method="post">
+          <form action="{{ route('azioni_search') }}" method="post" id="filtra_azioni">
             @csrf
             <div class="box-body">
                 <div class="form-group">
-                  <label>Date range:</label>
-
-                  <div class="input-group">
+                 <div class="input-group">
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </div>
@@ -30,6 +28,7 @@
                   </div>
                   <!-- /.input group -->
                 </div>
+
                 <div class="form-group">
                   <label for="squadre">Squadra:</label>
                   <select name="squadra" id="squadra" class="form-control">
@@ -42,9 +41,23 @@
                     @endforeach
                   </select>
                 </div>
+
                 <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-primary">Reset</button>
+                  <label for="zone">Zona:</label>
+                  <select name="zona" id="zona" class="form-control">
+                    @foreach(['0' => 'Selziona...'] + $zone as $id => $nome)
+                      <option value="{{$id}}" 
+                      @if ($id == $zona_selected)
+                          selected="selected"
+                      @endif
+                      >{{$nome}}</option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success">Filtra</button>
+                  <a href="{{ route('reset') }}" class="btn btn-warning">Reset</a>
                 </div>
             </div>
           </form>

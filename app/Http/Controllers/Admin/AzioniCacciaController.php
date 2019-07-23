@@ -32,7 +32,16 @@ class AzioniCacciaController extends Controller
         $azione->save();
       }
 
+    
 
+    public function reset(Request $request)
+      {
+      $request->session()->forget('datefilter');
+      $request->session()->forget('squadra');
+      $request->session()->forget('zona');
+
+      return redirect()->route("azioni.index")->with('status', 'Tutti i filtri sono stati rimossi!');
+      } 
 
     /**
      * Display a listing of the resource.
@@ -46,6 +55,10 @@ class AzioniCacciaController extends Controller
 
 
         // Filtri
+
+
+
+        // DAL AL 
 
         // se non ho la request leggo dalla sessione
         if( (!isset($request->datefilter) || $request->datefilter == '') && $request->session()->has('datefilter'))
@@ -69,6 +82,8 @@ class AzioniCacciaController extends Controller
           }
 
         
+        // SQUADRA
+
         if( !isset($request->squadra) && $request->session()->has('squadra'))
           $request->squadra = $request->session()->get('squadra');
 
@@ -81,6 +96,23 @@ class AzioniCacciaController extends Controller
           {
           $request->session()->forget('squadra');
           $squadra_selected = 0;            
+          }
+
+        
+        // ZONA
+
+        if( !isset($request->zona) && $request->session()->has('zona'))
+          $request->zona = $request->session()->get('zona');
+
+        if (isset($request->zona) && $request->zona != 0) 
+          {
+            $request->session()->put('zona', $request->zona);
+            $zona_selected = $request->zona;
+          }
+        else 
+          {
+          $request->session()->forget('zona');
+          $zona_selected = 0;            
           }
 
 
@@ -129,12 +161,15 @@ class AzioniCacciaController extends Controller
             $query->where('tblAzioniCaccia.alle','<=',$al_c);
           }
         
-          if($squadra_selected > 0)
-            {
-            $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
-
-            }
+        if($squadra_selected > 0)
+          {
+          $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
+          }
         
+        if($zona_selected > 0)
+          {
+          $query->where('tblAzioniCaccia.zona_id',$zona_selected);
+          }
 
         $azioni = $query->get();
         
@@ -147,7 +182,7 @@ class AzioniCacciaController extends Controller
         ];
 
 
-        return view('admin.azioni.index', compact('azioni', 'columns', 'init_value','squadra_selected'));
+        return view('admin.azioni.index', compact('azioni', 'columns', 'init_value','squadra_selected','zona_selected'));
     }
 
     /**
