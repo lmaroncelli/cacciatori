@@ -8,6 +8,51 @@
 @endsection
 
 @section('content')
+{{-- FILTRI DI RICERCA --}}
+<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Filtri di ricerca</h3>
+          </div>
+          <form action="{{ route('azioni_search') }}" method="post">
+            @csrf
+            <div class="box-body">
+                <div class="form-group">
+                  <label>Date range:</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </div>
+                  <input type="text" name="datefilter" value="{{$init_value}}" class="form-control pull-right">
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group">
+                  <label for="squadre">Squadra:</label>
+                  <select name="squadra" id="squadra" class="form-control">
+                    @foreach(['0' => 'Selziona...'] + $squadre as $id => $nome)
+                      <option value="{{$id}}" 
+                      @if ($id == $squadra_selected)
+                          selected="selected"
+                      @endif
+                      >{{$nome}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="reset" class="btn btn-primary">Reset</button>
+                </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
   <div class="row">
     <div class="col-xs-12">
@@ -95,6 +140,11 @@
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
     </script>
 
+    {{-- Date range picker --}}
+    <script src="{{ asset('js/moment.min.js') }}">
+    </script>
+    <script src="{{ asset('js/daterangepicker.js') }}">
+    </script>
     <script type="text/javascript">
         $(function () {
 
@@ -106,6 +156,32 @@
               'info'        : false,
               'autoWidth'   : true
             });
+
+
+          //Date range picker
+          $('input[name="datefilter"]').daterangepicker({
+              autoUpdateInput: false,
+              format: 'DD/MM/YYYY',
+              startOfWeek: 'monday',
+              language:'it',
+              opens:'right',
+              drops:'down',
+              locale: {
+                  cancelLabel: 'Clear',
+                  "format": "DD/MM/YYYY",
+              }
+          });
+
+          $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+              var dal = picker.startDate.format('DD/MM/YYYY');
+              var al = picker.endDate.format('DD/MM/YYYY');
+              $(this).val(dal + ' - ' + al);
+          });
+
+          $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+
 
     	});
     </script>
