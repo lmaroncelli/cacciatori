@@ -7,6 +7,7 @@ use App\Utility;
 use App\Distretto;
 use Carbon\Carbon;
 use App\AzioneCaccia;
+use PDF;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -49,9 +50,35 @@ class AzioniCacciaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    { 
+    {   
 
         //dd($request->all());
+
+
+        $export_pdf = 0;
+        
+        if($request->has('pdf'))
+          {
+          $export_pdf = 1;
+          }
+        
+        if(!$export_pdf)
+          {
+          // SE NON HO QUERY STRING 
+          if ($request->fullUrl() == $request->url()) 
+            {
+            $pdf_export_url = $request->url() .'?pdf'; 
+            } 
+          else 
+            {
+            $pdf_export_url = $request->fullUrl() .'&pdf'; 
+            }    
+          }
+        else
+          {
+          $pdf_export_url = $request->fullUrl();
+          }
+
 
 
         // Filtri
@@ -181,8 +208,21 @@ class AzioniCacciaController extends Controller
             'zona_nome' => 'Zona'
         ];
 
+        if ($export_pdf) 
+          {
+          $filtro_pdf[] =  "<b>N° azioni " .$azioni->count()."</b>";
 
-        return view('admin.azioni.index', compact('azioni', 'columns', 'init_value','squadra_selected','zona_selected'));
+          $chunked_element = 3;
+
+          $pdf = PDF::loadView('admin.azioni.pdf', compact( 'azioni', 'columns', 'chunked_element', 'filtro_pdf'));
+              
+          return $pdf->stream();
+          } 
+        else 
+          {
+          return view('admin.azioni.index', compact('pdf_export_url', 'azioni', 'columns', 'init_value','squadra_selected','zona_selected'));
+          }
+        
     }
 
     /**

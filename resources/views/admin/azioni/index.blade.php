@@ -58,6 +58,7 @@
                 <div class="form-group">
                   <button type="submit" class="btn btn-success">Filtra</button>
                   <a href="{{ route('reset') }}" class="btn btn-warning">Reset</a>
+                  <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
                 </div>
             </div>
           </form>
