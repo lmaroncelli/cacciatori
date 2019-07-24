@@ -43,4 +43,10 @@ class User extends Authenticatable
           // the Cacciatore model is automatically assumed to have a user_id foreign key
           return $this->hasOne('App\Cacciatore','user_id','id');
       }
+
+
+    public function hasRole($role)
+      {
+      return strtolower($role) === strtolower($this->ruolo);
+      }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use PDF;
+use App\Zona;
 use App\Squadra;
 use App\Utility;
 use App\Distretto;
 use Carbon\Carbon;
 use App\AzioneCaccia;
-use PDF;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,8 @@ class AzioniCacciaController extends Controller
 
         //dd($request->all());
 
+        $filtro_pdf = [];
+        $filtro_pdf[] = "<b>Filtri applicati:</b>";
 
         $export_pdf = 0;
         
@@ -99,6 +102,7 @@ class AzioniCacciaController extends Controller
             $dal_c = Carbon::createFromFormat('d/m/Y H i', $dal.' 0 00');
             $al_c = Carbon::createFromFormat('d/m/Y H i', $al.' 23 59');
             $init_value = $request->datefilter;
+            $filtro_pdf[] =  "Azioni eseguite dal " .$dal . " al " . $al;
           }
         else
           {
@@ -118,6 +122,8 @@ class AzioniCacciaController extends Controller
           {
             $request->session()->put('squadra', $request->squadra);
             $squadra_selected = $request->squadra;
+
+            $filtro_pdf[] =  "Azioni eseguite dalla squadra '" . Squadra::find($squadra_selected)->nome ."'";
           }
         else 
           {
@@ -135,6 +141,7 @@ class AzioniCacciaController extends Controller
           {
             $request->session()->put('zona', $request->zona);
             $zona_selected = $request->zona;
+            $filtro_pdf[] =  "Azioni eseguite nella zona '" . Zona::find($zona_selected)->nome . "'";
           }
         else 
           {

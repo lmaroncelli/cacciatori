@@ -29,7 +29,8 @@ class UtgController extends Controller
      */
     public function index()
     {
-        $utg = UnitaGestione::all();
+        //$utg = UnitaGestione::all();
+        $utg = UnitaGestione::getAll();
 
         return view('admin.utg.index', compact('utg'));
     }

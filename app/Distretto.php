@@ -6,6 +6,7 @@ use App\Atc;
 use App\Squadra;
 use App\AzioneCaccia;
 use App\UnitaGestione;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Distretto extends Model
@@ -36,11 +37,6 @@ class Distretto extends Model
 		      return $this->hasOne('App\Poligono','distretto_id','id');
 		  }
 
-		public function cacciatori()
-		  {
-		  return $this->belongsToMany('App\Cacciatore', 'tblCacciatoriSquadre', 'squadra_id', 'cacciatore_id')->withPivot('capo_squadra');
-		  }
-
 		public function atc()
 		{
 		    return $this->belongsTo(Atc::class, 'atc_id', 'id');
@@ -64,6 +60,32 @@ class Distretto extends Model
   			} 	
   			
   	 	self::delete();
-    	}
+      }
+      
+
+    
+
+      public static function getAll()
+        {
+        if (Auth::check()) 
+          {
+          if(Auth::user()->hasRole('cacciatore'))
+            {
+            // vedo solo i distretti collegati alle mie squadre
+            $squadre =  Auth::user()->cacciatore->squadre;
+            $distretti = [];
+            foreach ($squadre as $squadra) 
+              {
+              $distretti[] = $squadra->distretto;
+              }
+            
+            return collect($distretti);
+            }
+          else 
+            {
+            return Self::all();
+            }
+          }
+        }
 
 }

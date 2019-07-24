@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Distretto;
-use App\Http\Controllers\Controller;
 use App\Squadra;
+use App\Distretto;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AdminController;
 
-class DistrettiController extends Controller
+class DistrettiController extends AdminController
 {
 
 
@@ -34,7 +34,8 @@ class DistrettiController extends Controller
      */
     public function index()
     {
-        $distretti = Distretto::all();
+        //$distretti = Distretto::all();
+        $distretti = Distretto::getAll();
 
         return view('admin.distretti.index', compact('distretti'));
     }

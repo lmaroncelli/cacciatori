@@ -182,7 +182,7 @@ class RegisterController extends Controller
      */
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
     {
-        //dd($request->all());
+        
 
         $utente = User::find($utente_id);
 
@@ -190,6 +190,10 @@ class RegisterController extends Controller
           {
           $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
           $utente->ruolo = 'cacciatore';
+          if($request->has('squadre'))
+            {
+            $utente->cacciatore->squadre()->sync($request->squadre);
+            }
           }
         else
           {
