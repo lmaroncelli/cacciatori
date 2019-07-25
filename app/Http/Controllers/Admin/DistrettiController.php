@@ -6,9 +6,9 @@ use App\Squadra;
 use App\Distretto;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LoginController;
 
-class DistrettiController extends AdminController
+class DistrettiController extends LoginController
 {
 
 

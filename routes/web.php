@@ -35,13 +35,13 @@ Route::get('/home', 'HomeController@showMappaAttivita')->name('home');
 
 Route::resource('distretti', 'Admin\DistrettiController');
 Route::resource('utg', 'Admin\UtgController');
+Route::resource('squadre', 'Admin\SquadreController');
+Route::post('getZonaAjax','Admin\SelectConditionalController@getZonaAjax')->name('get_zona');
 
 
 Route::group(['middleware' => ['admin']], function () {
 
 	Route::post('getUnitaGestioneAjax','Admin\SelectConditionalController@getUnitaGestioneAjax')->name('get_unita_gestione');
-	Route::post('getZonaAjax','Admin\SelectConditionalController@getZonaAjax')->name('get_zona');
-	Route::resource('squadre', 'Admin\SquadreController');
 
 	
 	Route::resource('cacciatori', 'Admin\CacciatoriController');

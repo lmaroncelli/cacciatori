@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Distretto;
-use App\Http\Controllers\Controller;
 use App\Squadra;
-use App\UnitaGestione;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\LoginController;
 
-class SquadreController extends Controller
+class SquadreController extends LoginController
 {
 
     /**
@@ -18,7 +16,8 @@ class SquadreController extends Controller
      */
     public function index()
     {
-        $squadre = Squadra::all();
+        //$squadre = Squadra::all();
+        $squadre = Squadra::getAll();
 
         return view('admin.squadre.index', compact('squadre'));
     }

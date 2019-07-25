@@ -2,9 +2,10 @@
 
 namespace App;
 
-use App\AzioneCaccia;
-use App\Distretto;
 use App\Zona;
+use App\Distretto;
+use App\AzioneCaccia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Squadra extends Model
@@ -40,6 +41,21 @@ class Squadra extends Model
       return implode(',', $this->zone()->pluck('nome')->toArray());
       }
 
-		
+
+    
+    public static function getAll()
+      {
+      if (Auth::check()) 
+        {
+        if(Auth::user()->hasRole('cacciatore'))
+          {
+          return Auth::user()->cacciatore->squadre;
+          }
+        else 
+          {
+          return Self::all();
+          }          
+        }
+      }
 
 }

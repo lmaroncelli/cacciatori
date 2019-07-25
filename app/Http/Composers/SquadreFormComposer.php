@@ -16,7 +16,7 @@ class SquadreFormComposer
     public function compose(View $view)
     	{
 
-    	$squadre = Squadra::orderBy('nome')->pluck('nome','id')->toArray();
+    	$squadre = Squadra::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
 
 
     	$view->with(compact('squadre'));

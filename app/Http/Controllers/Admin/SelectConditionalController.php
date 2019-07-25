@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Distretto;
-use App\Http\Controllers\Controller;
-use App\Squadra;
-use App\UnitaGestione;
 use App\Zona;
+use App\Squadra;
+use App\Distretto;
+use App\UnitaGestione;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SelectConditionalController extends Controller
 {
@@ -46,6 +47,34 @@ class SelectConditionalController extends Controller
         {
         $zone += $unita->zone()->pluck('nome','id')->toArray();
         }
+
+      
+      // ATTENZIONE SE SONO UN CACCIATORE DEVO ACCEDERE SOLO ALLE ZONE ASSOCIATE ALLE MIE SQUADRE
+      
+      if(Auth::user()->hasRole('cacciatore'))
+        {
+        $squadre_cacciatore = Auth::user()->cacciatore->squadre;
+        $zone_ids = [];
+        foreach ($squadre_cacciatore as $squadra) 
+          {
+          $squadra_zone_ids = $squadra->zone()->pluck('tblZone.id')->toArray();
+          $zone_ids = array_merge($zone_ids,$squadra_zone_ids);
+          }
+          $zone_ids = array_unique($zone_ids);
+
+        if(count($zone_ids))
+          {
+          foreach ($zone as $id => $nome) 
+            {
+            if(!in_array($id, $zone_ids))
+              {
+              unset($zone[$id]);
+              }
+            }
+          }
+        }
+        
+
 
       if(!empty($zone))
         asort($zone);

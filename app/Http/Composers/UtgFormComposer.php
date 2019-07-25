@@ -16,7 +16,7 @@ class UtgFormComposer
     public function compose(View $view)
     	{
 
-    	$utg = UnitaGestione::orderBy('nome')->pluck('nome','id')->toArray();
+    	$utg = UnitaGestione::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
 
 
     	$view->with(compact('utg'));

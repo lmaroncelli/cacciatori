@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Zona;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
-use App\Zona;
+use App\Http\Controllers\Admin\LoginController;
 
-class UtgController extends Controller
+class UtgController extends LoginController
 {
 
 
