@@ -2,10 +2,11 @@
 
 namespace App;
 
-use App\AzioneCaccia;
 use App\Comune;
 use App\Squadra;
+use App\AzioneCaccia;
 use App\UnitaGestione;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Zona extends Model
@@ -76,6 +77,31 @@ class Zona extends Model
   			} 	
   			
   	 	self::delete();
-    	}
+		}
+		
+
+
+	 public static function getAll($sort_by = 'id')
+      {
+      if (Auth::check()) 
+        {
+        if(Auth::user()->hasRole('cacciatore'))
+          {
+					$squadre_cacciatore = Auth::user()->cacciatore->squadre;
+					$zone = collect([]);
+          foreach ($squadre_cacciatore as $squadra) 
+          	{
+          	$squadra_zone = $squadra->zone;
+          	$zone = $zone->merge($squadra_zone);
+          	}
+          $zone = $zone->unique();
+          return $zone->keyBy($sort_by)->sortBy($sort_by);
+        }
+        else 
+          {
+          return Self::orderBy($sort_by)->get();
+          }
+        }
+      }
 
 }

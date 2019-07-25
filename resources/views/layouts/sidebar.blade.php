@@ -53,6 +53,7 @@
           </ul>
         </li>
 
+        @if(Auth::user()->hasRole('admin'))
         {{-- Cacciatori --}}
         <li class="treeview @if (in_array('cacciatori',Request::segments())) active @endif">
           <a href="#"><i class="fa fa-folder-open-o"></i> <span>Cacciatori</span>
@@ -65,6 +66,7 @@
             <li><a href="{{ route('cacciatori.create') }}">Nuovo</a></li>
           </ul>
         </li>
+        @endif
 
       {{-- Zone --}}
       <li class="treeview @if (in_array('zone',Request::segments())) active @endif">
@@ -79,6 +81,7 @@
         </ul>
       </li>
 
+      @if(Auth::user()->hasRole('admin'))
       {{-- Province --}}
       <li class="treeview @if (in_array('province',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-envelope-o"></i> <span>Province</span>
@@ -106,6 +109,7 @@
 
         </ul>
       </li>
+      @endif
 
       {{-- Azioni --}}
       <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">

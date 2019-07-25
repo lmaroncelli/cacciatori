@@ -7,6 +7,7 @@ use App\Zona;
 use App\Squadra;
 use App\Distretto;
 use App\UnitaGestione;
+use App\Scopes\AzioniOwnedByScope;
 use Illuminate\Database\Eloquent\Model;
 
 class AzioneCaccia extends Model
@@ -18,10 +19,16 @@ class AzioneCaccia extends Model
 		protected $dates = ['dalle','alle'];
 
 
+	protected static function boot()
+    {
+        parent::boot();
 
-		public function squadra()
-		{
-		    return $this->belongsTo(Squadra::class, 'squadra_id', 'id');
+        static::addGlobalScope(new AzioniOwnedByScope);
+		}
+		
+	public function squadra()
+	{
+		return $this->belongsTo(Squadra::class, 'squadra_id', 'id');
     }
     
     public function distretto()
@@ -34,32 +41,32 @@ class AzioneCaccia extends Model
         return $this->belongsTo(UnitaGestione::class, 'unita_gestione_id', 'id');
     }
 
-		public function zona()
+	public function zona()
 		{
-		    return $this->belongsTo(Zona::class, 'zona_id', 'id');
-    }
+		return $this->belongsTo(Zona::class, 'zona_id', 'id');
+		}
     
     
 
 
-		public function getDalleAlle()
-		  {
-		  if(is_null($this->dalle) && is_null($this->alle))
-		    {
-		    return "";
-		    }
-		  
-		  if ($this->dalle->toDateString() == $this->alle->toDateString()) 
-		    {
-		    return $this->dalle->format('d/m/Y'). ' dalle '.$this->dalle->format('H:i').' alle '.$this->alle->format('H:i'); 
-		    } 
-		  else 
-		    {
-		    return 'dal '. $this->dalle->format('d/m/Y H:i'). ' al '.$this->alle->format('d/m/Y H:i'); 
-		    
-		    }
-		  
-		  }
+	public function getDalleAlle()
+		{
+
+		if(is_null($this->dalle) && is_null($this->alle))
+			{
+			return "";
+			}
+		
+		if ($this->dalle->toDateString() == $this->alle->toDateString()) 
+			{
+			return $this->dalle->format('d/m/Y'). ' dalle '.$this->dalle->format('H:i').' alle '.$this->alle->format('H:i'); 
+			}	 
+		else 
+			{
+			return 'dal '. $this->dalle->format('d/m/Y H:i'). ' al '.$this->alle->format('d/m/Y H:i'); 
+			}
+		
+		}
 
 		
 
