@@ -37,7 +37,17 @@ Route::resource('distretti', 'Admin\DistrettiController');
 Route::resource('utg', 'Admin\UtgController');
 Route::resource('squadre', 'Admin\SquadreController');
 Route::post('getZonaAjax','Admin\SelectConditionalController@getZonaAjax')->name('get_zona');
+Route::resource('zone', 'Admin\ZoneController');
+Route::post('getSquadreFromDistrettoAjax','Admin\SelectConditionalController@getSquadreFromDistrettoAjax')->name('get_squadre');
+Route::post('showDistrettoZonaAjax','Admin\SelectConditionalController@showDistrettoZonaAjax')->name('show_distretto');
+Route::post('getUtgFromDistrettoAjax','Admin\SelectConditionalController@getUtgFromDistrettoAjax')->name('get_utg');
+Route::post('getDistrettoFromSquadraAjax','Admin\SelectConditionalController@getDistrettoFromSquadraAjax')->name('get_distretto');
+Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromUtgAjax')->name('get_zone_form_utg');
 
+
+Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
+Route::post('azioni','Admin\AzioniCacciaController@index')->name('azioni_search');
+Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
 
 Route::group(['middleware' => ['admin']], function () {
 
@@ -46,22 +56,8 @@ Route::group(['middleware' => ['admin']], function () {
 	
 	Route::resource('cacciatori', 'Admin\CacciatoriController');
 	
-	Route::resource('zone', 'Admin\ZoneController');
 	Route::resource('province', 'Admin\ProvinceController');
 	Route::resource('comuni', 'Admin\ComuniController');
-
-
-	Route::post('getUtgFromDistrettoAjax','Admin\SelectConditionalController@getUtgFromDistrettoAjax')->name('get_utg');
-	Route::post('getDistrettoFromSquadraAjax','Admin\SelectConditionalController@getDistrettoFromSquadraAjax')->name('get_distretto');
-	Route::post('showDistrettoZonaAjax','Admin\SelectConditionalController@showDistrettoZonaAjax')->name('show_distretto');
-	Route::post('getSquadreFromDistrettoAjax','Admin\SelectConditionalController@getSquadreFromDistrettoAjax')->name('get_squadre');
-	Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromUtgAjax')->name('get_zone_form_utg');
-
-
-	Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
-	Route::post('azioni','Admin\AzioniCacciaController@index')->name('azioni_search');
-	Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
-
 
 
 	Route::post('salva_coordinate_poligono_ajax','Admin\PoligoniController@salvaCoordinatePoligonoAjax')->name('aggiorna_coordinate');

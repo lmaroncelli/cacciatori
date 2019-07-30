@@ -18,7 +18,8 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        $zone = Zona::all();
+        //$zone = Zona::all();
+        $zone = Zona::getAll();
 
         return view('admin.zone.index', compact('zone'));
 
