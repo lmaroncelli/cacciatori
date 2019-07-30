@@ -44,6 +44,9 @@
 		var contentString;
 
 
+    var distretto;
+
+
 		// Initialize and add the map
 		function initMap() {
 
@@ -82,20 +85,20 @@
 
           
           // Construct the polygon.
-          var distretto = new google.maps.Polygon({
+        distretto = new google.maps.Polygon({
             paths: distretto_coords,
-            strokeColor: 'yellow',
+            strokeColor: '{{$colors["distretto"]}}',
             strokeOpacity: 0.8,
             strokeWeight: 2,
-            fillColor: 'yellow',
+            fillColor: '{{$colors["distretto"]}}',
             fillOpacity: 0.35,
             editable: false,
             draggable: false
           });
 
 
-          //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-          distretto.setMap(map);
+        //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+        distretto.setMap(map);
 		 
       
       var zona_coords = new Array();
@@ -122,10 +125,10 @@
 		  // Construct the polygon.
       var zona = new google.maps.Polygon({
         paths: zona_coords,
-        strokeColor: '#FF0000',
+        strokeColor: '{{$colors["zona"]}}',
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        fillColor: '{{$colors["zona"]}}',
         fillOpacity: 0.35,
         editable: true,
         draggable: true
