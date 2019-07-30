@@ -87,10 +87,10 @@ Distretto
           // Construct the polygon.
           zona_{{$id_zona}} = new google.maps.Polygon({
             paths: zona_coords,
-            strokeColor: '#FF0000',
+            strokeColor: '{{$zona_color}}',
             strokeOpacity: 0.8,
             strokeWeight: 2,
-            fillColor: '#FF0000',
+            fillColor: '{{$zona_color}}',
             fillOpacity: 0.35,
             editable: false,
             draggable: false

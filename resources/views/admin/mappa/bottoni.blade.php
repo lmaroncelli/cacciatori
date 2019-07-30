@@ -11,8 +11,8 @@
 
 
 @if (isset($spegni) && $spegni == 'zone')
-<button id="spegni_zone" title="Spegni zone" class="btn btn-sm btn-success align-self-end">Spegni zone</button>
-<button id="accendi_zone" title="Accendi zone" class="btn btn-sm btn-success align-self-end">Accendi zone</button>
+<button id="spegni_zone" title="Spegni zone" class="btn btn-sm bg-gray color-palette align-self-end">Spegni zone</button>
+<button id="accendi_zone" title="Accendi zone" class="btn btn-sm btn-warning align-self-end">Accendi zone</button>
 @endif
 
 </div>	

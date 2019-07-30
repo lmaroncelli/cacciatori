@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -20,6 +21,11 @@ class LoginController extends BaseController
     public function __construct()
     {
         $this->middleware('auth');
+
+        $zona_color = '#0859C1';
+
+        View::share('distretto_color', $zona_color);
+
     }
 
   }
