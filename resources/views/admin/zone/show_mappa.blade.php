@@ -22,7 +22,7 @@
         <div class="box box-success">
         @csrf
 
-        @include('admin.mappa.bottoni')
+        @include('admin.mappa.bottoni', ['spegni' => 'distretto'])
         </div>
       </div>
 	  </div>
@@ -188,6 +188,15 @@
 		} //init Map
 
 
+     function spegni_distretto() {
+        distretto.setMap(null);    
+      }
+
+
+     function accendi_distretto() {
+        distretto.setMap(map);    
+      }
+
 
 		/** @this {google.maps.Polygon} */
 		function showArrays(event) {
@@ -269,6 +278,17 @@
 				 }) // ajax //
 
 		}); // click new_center
+
+
+     $("#spegni_distretto").click(function(e){
+          e.preventDefault();
+          spegni_distretto();
+      });
+
+        $("#accendi_distretto").click(function(e){
+          e.preventDefault();
+          accendi_distretto();
+      });
 
 
 	</script>

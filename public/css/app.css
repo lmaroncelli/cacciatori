@@ -90,6 +90,15 @@ form#filtra_azioni div.form-group {
     }
 
 
+
+    /* bottoni mappa */
+
+    div.box-header button {
+      margin-left:20px;
+    }
+    
+
+
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (-moz-min-device-pixel-ratio: 1.5),
