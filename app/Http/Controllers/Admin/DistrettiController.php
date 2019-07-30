@@ -93,7 +93,7 @@ class DistrettiController extends LoginController
           
             $coordinata_zona = $poligono->coordinate->pluck('long','lat');
             
-            $coordinate_zona[] = $coordinata_zona;
+            $coordinate_zona[$zona->id] = $coordinata_zona;
             }
           }
         

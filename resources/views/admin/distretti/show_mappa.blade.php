@@ -20,7 +20,7 @@ Distretto
         <div class="box box-success">
           @csrf
 
-          @include('admin.mappa.bottoni')
+          @include('admin.mappa.bottoni', ['spegni' => 'zone'])
         </div>
       </div>
 		</div>
@@ -37,8 +37,15 @@ Distretto
 	<script type="text/javascript">
 		var infoWindow;
 		var map;
-
 		var contentString;
+
+    var zone_ids = new Array();
+
+
+    @foreach ($coordinate_zona as $id_zona => $coordinata_zona)
+      var zona_{{$id_zona}};
+      zone_ids.push({{$id_zona}});
+    @endforeach
 
 
 				// Initialize and add the map
@@ -59,7 +66,7 @@ Distretto
 
         // creo tutte le zone delle quali ho le coordinate nell'array coordinate_zona
 
-        @foreach ($coordinate_zona as $coordinata_zona)
+        @foreach ($coordinate_zona as $id_zona => $coordinata_zona)
           
           var zona_coords = new Array();
 
@@ -78,7 +85,7 @@ Distretto
           @endforeach
 
           // Construct the polygon.
-          var zona = new google.maps.Polygon({
+          zona_{{$id_zona}} = new google.maps.Polygon({
             paths: zona_coords,
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
@@ -91,7 +98,7 @@ Distretto
 
 
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-          zona.setMap(map);
+          zona_{{$id_zona}}.setMap(map);
 
 
         @endforeach
@@ -184,6 +191,21 @@ Distretto
 
 
 
+
+        function spegni_zone() {
+          zone_ids.forEach(function(id){
+             eval('zona_'.concat(id)).setMap(null);  
+          })
+        }
+
+
+        function accendi_zone() {
+          zone_ids.forEach(function(id){
+             eval('zona_'.concat(id)).setMap(map);  
+          })
+        }
+
+
 				/** @this {google.maps.Polygon} */
 		    function showArrays(event) {
 
@@ -208,23 +230,24 @@ Distretto
 		      $("#zoom").val(c_zoom);
 		    	
 
-		     contentString = '<b>'+nome+'</b><br>' +
-		     		      'Coordinate correnti: <br>' + c_lat + ',' + c_long +
-		     		      '<br>'+
+		     contentString = '<b>'+nome+'</b><br><br>' +
+		     		      'Coordinate del centro correnti: <br>' + c_lat + ',' + c_long +
+		     		      '<br><br>'+
 		     		      'Zoom corrente: '+ c_zoom + '<br><br>';
 
 
-		      // Iterate over the vertices.
-		      for (var i =0; i < vertices.getLength(); i++) {
-		        var xy = vertices.getAt(i);
-		        contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
+          if (false) {
+             // Iterate over the vertices.
+            for (var i =0; i < vertices.getLength(); i++) {
+		          var xy = vertices.getAt(i);
+		          contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
 		            xy.lng();
-		      }
-
-		      // Replace the info window's content and position.
-		      infoWindow.setContent(contentString);
+		        }
+          }
+		     
+          // Replace the info window's content and position.
+          infoWindow.setContent(contentString);
 		      infoWindow.setPosition(event.latLng);
-
 		      infoWindow.open(map);
 
 
@@ -261,6 +284,20 @@ Distretto
 		    		 }) // ajax //
 
 		    }); // click new_center
+
+
+
+        $("#spegni_zone").click(function(e){
+		    		e.preventDefault();
+            spegni_zone();
+        });
+
+         $("#accendi_zone").click(function(e){
+		    		e.preventDefault();
+            accendi_zone();
+        });
+
+        
 
 	</script>
 	
