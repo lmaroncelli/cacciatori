@@ -13,6 +13,13 @@
             </div>
           </div>
           <div class="box-body table-responsive no-padding">	
+            @if (!$utg->count())
+              <div class="callout callout-warning" style="margin: 5px;">
+                <h4>Attenzione</h4>
+                <p>Nessuna unità gestione presente.</p>
+              </div>
+            @else
+                
             <table class="table table-hover">
               <colgroup>
                   <col></col>
@@ -46,6 +53,8 @@
                 @endforeach
               </tbody>
             </table>
+            @endif
+
           </div>
       </div>
     </div>

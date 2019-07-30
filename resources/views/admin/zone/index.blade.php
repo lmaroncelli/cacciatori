@@ -12,19 +12,30 @@
               </div>
             </div>
           </div>
-          <div class="box-body table-responsive no-padding">   
+          <div class="box-body table-responsive no-padding">
+            @if (!$zone->count())
+            
+            <div class="callout callout-warning" style="margin: 5px;">
+              <h4>Attenzione</h4>
+              <p>Nessuna zona/particella presente.</p>
+            </div>
+          
+            @else
+              
             <table class="table table-hover">
               <colgroup>
-                  <col></col>
-                  <col class="success"></col>
-                  <col></col>
-                  <col></col>
-                  <col></col>
+                    <col></col>
+                    <col class="success"></col>
+                    <col></col>
+                    <col></col>
+                    <col></col>
+                    <col></col>
               </colgroup>
               <thead>
                 <tr>
                   <th>Unità di gestione</th>
                   <th scope="col">Nome</th>
+                  <th>Tipo</th>
                   <th>Squadre</th>
                   <th></th>
                   <th></th>
@@ -37,8 +48,9 @@
                     @method('DELETE')
                   </form>
                   <tr>
-                    <td>{{$zona->unita->nome}}</td>
+                    <td>{{optional($zona->unita)->nome}}</td>
                     <td>{{$zona->nome}}</td>
+                    <td>{{$zona->tipo}}</td>
                     <td>{{$zona->getSquadre()}}</td>
                     <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
                     <td> <a href="{{ route('zone.show',$zona->id) }}" title="Visualizza zona" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
@@ -49,6 +61,9 @@
                 @endforeach
               </tbody>
             </table>
+
+            @endif 
+          
           </div>
       </div>
     </div>

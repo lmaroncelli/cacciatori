@@ -115,7 +115,9 @@ class UtgController extends LoginController
      */
     public function destroy($id)
     {
-        UnitaGestione::destroy($id);
+       
+        $utg = UnitaGestione::find($id);
+        $utg->destroyMe();
         
         return redirect()->route("utg.index")->with('status', 'Unità di gestione eliminata correttamente!');
 

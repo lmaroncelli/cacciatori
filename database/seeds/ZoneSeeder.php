@@ -26,7 +26,16 @@ class ZoneSeeder extends Seeder
 
 	      	if(count($coords_arr))
 		     		{
-		     		$zona = $unita->zone()->create(['nome' => $name]);
+            if (str_contains($file, 'braccata') ) 
+              {
+                $tipo="zona";
+              }
+            else
+              {
+                $tipo="particella";
+              
+              }
+		     		$zona = $unita->zone()->create(['nome' => $name, 'tipo' => $tipo]);
 		     		$poligono = $zona->poligono()->create(['name' => 'Poligono zona '.$zona->nome]);
 		     		
 		     		foreach ($coords_arr as $value) 
@@ -84,7 +93,16 @@ class ZoneSeeder extends Seeder
 	 		$distretto->unita()->delete();
 	 		$unita = $distretto->unita()->create(['nome' => 'UTG b1']);
 
-    	$files = ['b1_girata.kml', 'b2_girata.kml'];
+    	$files = ['b1_girata.kml'];
+
+      $this->_createZonaFromXml($files, $unita);
+      
+
+      $distretto = Distretto::where('nome','distretto_b2')->first();
+	 		$distretto->unita()->delete();
+	 		$unita = $distretto->unita()->create(['nome' => 'UTG b2']);
+
+    	$files = ['b2_girata.kml'];
 
     	$this->_createZonaFromXml($files, $unita);
 

@@ -39,6 +39,19 @@
           </ul>
         </li>
 
+        {{-- Zone --}}
+      <li class="treeview @if (in_array('zone',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-send-o"></i> <span>Zone/Particelle</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ route('zone.index') }}">Elenco</a></li>
+          <li><a href="{{ route('zone.create') }}">Nuovo</a></li>
+        </ul>
+      </li>
+
 
         {{-- Squadre --}}
         <li class="treeview @if (in_array('squadre',Request::segments())) active @endif">
@@ -66,18 +79,7 @@
           </ul>
         </li>
 
-      {{-- Zone --}}
-      <li class="treeview @if (in_array('zone',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-send-o"></i> <span>Zone</span>
-          <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ route('zone.index') }}">Elenco</a></li>
-          <li><a href="{{ route('zone.create') }}">Nuovo</a></li>
-        </ul>
-      </li>
+      
 
       {{-- Province --}}
       <li class="treeview @if (in_array('province',Request::segments())) active @endif">

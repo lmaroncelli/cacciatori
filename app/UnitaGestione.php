@@ -12,7 +12,15 @@ class UnitaGestione extends Model
 {
 		protected $table = 'tblUnitaGestione';
 
-		protected $fillable = ['distretto_id', 'nome', 'note'];
+    protected $fillable = ['distretto_id', 'nome', 'note'];
+    
+
+
+    public function poligono()
+		  { 
+		      // the Poligono model is automatically assumed to have a distretto_id foreign key
+		      return $this->hasOne('App\Poligono','unita_gestione_id','id');
+		  }
 
 
 		public function distretto()
@@ -62,5 +70,20 @@ class UnitaGestione extends Model
           return Self::all();
           }
         }
+      }
+
+
+    // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO
+    public function destroyMe()
+    	{
+  		$p = $this->poligono;
+  		
+  		if(!is_null($p))
+  			{
+				$p->coordinate()->delete();
+		 		$p->delete();
+  			} 	
+  			
+  	 	self::delete();
       }
 }

@@ -13,6 +13,14 @@
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
+          
+          @if (!$distretti->count())
+            <div class="callout callout-warning" style="margin: 5px;">
+                <h4>Attenzione</h4>
+                <p>Nessun distretto presente.</p>
+            </div>
+          @else
+              
             <table class="table table-hover">
               <colgroup>
                   <col></col>
@@ -49,7 +57,9 @@
                 @endforeach
               </tbody>
             </table>
-          </div>
+          @endif
+        </div>
+        
       </div>
     </div>
   </div>
