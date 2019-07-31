@@ -35,15 +35,16 @@
             <div class="form-group">
               <label for="nome">A.T.C. RIMINI 1</label>
             </div>
-
-            <div class="form-group" id="squadre_select">
-              @include('admin.distretti.inc_unita_select')
-            </div>		
             
             <div class="form-group">
               <label for="nome">Nome</label>
               <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $distretto->nome}}" required="required">
             </div>
+
+            <div class="form-group" id="squadre_select">
+              @include('admin.distretti.inc_unita_select')
+            </div>		
+            
             <div class="form-group">
               <label for="note">Note</label>
               <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $distretto->note}}</textarea>

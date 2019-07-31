@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Squadra;
+use App\Utility;
 use App\Distretto;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
@@ -15,8 +16,12 @@ class DistrettiController extends LoginController
     private function _saveUtg($request, $distretto)
       {
 
-      if($request->has('utg'))
+        UnitaGestione::where('distretto_id', $distretto->id)
+              ->update(['distretto_id' => 0]);
+        
+        if($request->has('utg'))
         {
+
         foreach ($request->get('utg') as $utg_id) 
             {
             UnitaGestione::where('id', $utg_id)
@@ -24,7 +29,7 @@ class DistrettiController extends LoginController
             } 
         }
     
-    }
+      }
 
 
     /**
@@ -64,6 +69,12 @@ class DistrettiController extends LoginController
       {
       $distretto = Distretto::create($request->all());
       $this->_saveUtg($request, $distretto);
+
+      //////////////////////////////////////////////////////
+      // creo un poligono di 4 punti associato di default //
+      //////////////////////////////////////////////////////
+      $poligono = $distretto->poligono()->create(['name' => 'Poligono distretto '.$distretto->nome]);
+      $poligono->coordinate()->createMany(Utility::fakeCoords());
 
       return redirect()->route("distretti.index")->with('status', 'Distretto creato correttamente!');
       }

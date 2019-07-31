@@ -32,6 +32,11 @@
           <div class="box-body">
         
             <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $utg->nome}}" required="required">
+            </div>
+            
+            <div class="form-group">
               <label for="distretto_id">Distretto</label>
               <select class="form-control" style="width: 100%;" name="distretto_id" id="distretto_id">
                 @foreach ($distretti as $id => $nome)
@@ -45,10 +50,7 @@
               @include('admin.inc_zone_select')
             </div>	
 
-            <div class="form-group">
-              <label for="nome">Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $utg->nome}}" required="required">
-            </div>
+            
             <div class="form-group">
               <label for="note">Note</label>
               <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $utg->note}}</textarea>

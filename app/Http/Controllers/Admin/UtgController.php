@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Zona;
+use App\Utility;
 use App\UnitaGestione;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\LoginController;
@@ -13,6 +14,10 @@ class UtgController extends LoginController
 
     private function _saveZone(Request $request, $utg)
       {
+
+        Zona::where('unita_gestione_id', $utg->id)
+              ->update(['unita_gestione_id' => 0]);
+
         if($request->has('zone'))
         {
         foreach ($request->get('zone') as $zone_id) 
@@ -21,6 +26,7 @@ class UtgController extends LoginController
                     ->update(['unita_gestione_id' => $utg->id]);
             } 
         }
+        
       }
     /**
      * Display a listing of the resource.
@@ -58,8 +64,13 @@ class UtgController extends LoginController
     public function store(Request $request)
     {
         $utg = UnitaGestione::create($request->all());
-
         $this->_saveZone($request, $utg);
+
+         //////////////////////////////////////////////////////
+        // creo un poligono di 4 punti associato di default //
+        //////////////////////////////////////////////////////
+        $poligono = $utg->poligono()->create(['name' => 'Poligono unità gestione '.$utg->nome]);
+        $poligono->coordinate()->createMany(Utility::fakeCoords());
 
         return redirect()->route("utg.index")->with('status', 'Unità di gestione creata correttamente!');
     }

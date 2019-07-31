@@ -1,14 +1,22 @@
 <?php
 
-use App\CoordinataPoligono;
-use App\Distretto;
 use App\Zona;
+use App\Utility;
+use App\Distretto;
+use App\CoordinataPoligono;
 use Illuminate\Database\Seeder;
 
 class ZoneSeeder extends Seeder
 {
 
-
+    private function _createPoligonoUnita($utg)
+      {
+       //////////////////////////////////////////////////////
+        // creo un poligono di 4 punti associato di default //
+        //////////////////////////////////////////////////////
+        $poligono = $utg->poligono()->create(['name' => 'Poligono unità gestione '.$utg->nome]);
+        $poligono->coordinate()->createMany(Utility::fakeCoords());
+      }
 
 		private function _createZonaFromXml($files, $unita)
 			{
@@ -69,8 +77,12 @@ class ZoneSeeder extends Seeder
     		}
 
 	 		$distretto = Distretto::where('nome','distretto_a1')->first();
-	 		$distretto->unita()->delete();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG a1']);
+      $distretto->unita()->delete();
+      
+      $nome_unita = 'UTG a1';
+      $unita = $distretto->unita()->create(['nome' => $nome_unita]);
+      
+      $this->_createPoligonoUnita($unita);
 
     	$files = ['a1_braccata.kml', 'a1_girata.kml'];
 
@@ -80,8 +92,12 @@ class ZoneSeeder extends Seeder
 
 
 	 		$distretto = Distretto::where('nome','distretto_a2')->first();
-	 		$distretto->unita()->delete();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG a2']);
+      $distretto->unita()->delete();
+        
+      $nome_unita = 'UTG a2';
+      $unita = $distretto->unita()->create(['nome' => $nome_unita]);
+      
+      $this->_createPoligonoUnita($unita);
 
     	$files = ['a2_braccata.kml', 'a2_girata.kml'];
 
@@ -91,7 +107,11 @@ class ZoneSeeder extends Seeder
 
 	 		$distretto = Distretto::where('nome','distretto_b1')->first();
 	 		$distretto->unita()->delete();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG b1']);
+	 		
+      $nome_unita = 'UTG b1';
+      $unita = $distretto->unita()->create(['nome' => $nome_unita]);
+      
+      $this->_createPoligonoUnita($unita);
 
     	$files = ['b1_girata.kml'];
 
@@ -99,9 +119,14 @@ class ZoneSeeder extends Seeder
       
 
       $distretto = Distretto::where('nome','distretto_b2')->first();
-	 		$distretto->unita()->delete();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG b2']);
+      $distretto->unita()->delete();
+       
+      $nome_unita = 'UTG b2';
+      $unita = $distretto->unita()->create(['nome' => $nome_unita]);
+      
+      $this->_createPoligonoUnita($unita);
 
+	 	
     	$files = ['b2_girata.kml'];
 
     	$this->_createZonaFromXml($files, $unita);
@@ -109,8 +134,11 @@ class ZoneSeeder extends Seeder
 
 
     	$distretto = Distretto::where('nome','distretto_c')->first();
-	 		$distretto->unita()->delete();
-	 		$unita = $distretto->unita()->create(['nome' => 'UTG c']);
+      $distretto->unita()->delete();
+       
+      $nome_unita = 'UTG c';
+      $unita = $distretto->unita()->create(['nome' => $nome_unita]);      
+      $this->_createPoligonoUnita($unita);
 
     	$files = ['c_braccata.kml'];
 
