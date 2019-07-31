@@ -83,7 +83,30 @@ class UtgController extends LoginController
      */
     public function show($id)
     {
-        //
+      $utg = UnitaGestione::find($id);
+
+      $poligono_utg =  $utg->poligono;
+      $coordinate_utg = $poligono_utg->coordinate->pluck('long','lat');
+
+      $distretto = $utg->distretto;
+      $poligono_distretto = $distretto->poligono;
+      $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+
+      // trovo tutte le zone facendo un loop su tutte le UTG
+      $coordinate_zona = [];
+
+      foreach ($utg->zone as $zona) 
+        {
+        $poligono = $zona->poligono;
+      
+        $coordinata_zona = $poligono->coordinate->pluck('long','lat');
+        
+        $coordinate_zona[$zona->id] = $coordinata_zona;
+        }
+
+       return view('admin.utg.show_mappa', compact('utg','coordinate_utg', 'coordinate_distretto', 'coordinate_zona'));
+
+
     }
 
     /**

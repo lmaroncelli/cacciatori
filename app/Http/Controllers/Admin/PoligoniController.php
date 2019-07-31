@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Poligono;
 use App\Zona;
 use Illuminate\Http\Request;
+use App\UnitaGestione;
 
 class PoligoniController extends Controller
 {
@@ -21,6 +22,14 @@ class PoligoniController extends Controller
          $zona = Zona::find($zona_id);
 
          $poligono = $zona->poligono;
+        }
+      elseif($request->has('utg_id'))
+        {
+        $utg_id = $request->get('utg_id');
+
+        $unita = UnitaGestione::find($utg_id);
+
+        $poligono = $unita->poligono;
         }
       else
         {
@@ -81,6 +90,12 @@ class PoligoniController extends Controller
         $zona_id = $request->get('zona_id');
 
         Zona::where('id',$zona_id)->update(['center_lat' => $lat , 'center_long' => $long, 'zoom' => $zoom ]); 
+        }
+      elseif($request->has('utg_id'))
+        {
+        $utg_id = $request->get('utg_id');
+
+        UnitaGestione::where('id',$utg_id)->update(['center_lat' => $lat , 'center_long' => $long, 'zoom' => $zoom ]); 
         }
       else
         {

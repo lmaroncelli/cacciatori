@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('titolo')
-{{$distretto->nome}}
+{{$utg->nome}}
 @endsection
 
 @section('titolo_small')
-Distretto
+Unità gestione
 @endsection
 
 
 @section('back')
-<a href="{{ route('distretti.index') }}"><i class="fa fa-step-backward"></i> back </a>
+<a href="{{ route('utg.index') }}"><i class="fa fa-step-backward"></i> back </a>
 @endsection
 
 @section('content')
@@ -20,14 +20,14 @@ Distretto
         <div class="box box-success">
           @csrf
 
-          @include('admin.mappa.bottoni', ['spegni' => 'utg'])
+          @include('admin.mappa.bottoni', ['spegni' => 'zone'])
         </div>
       </div>
 		</div>
 	</div>	
 	
 	@php
-		$item = $distretto
+		$item = $utg
 	@endphp
 @endsection
 
@@ -40,7 +40,6 @@ Distretto
 		var contentString;
 
     var zone_ids = new Array();
-    var utg_ids = new Array();
 
 
     @foreach ($coordinate_zona as $id_zona => $coordinata_zona)
@@ -48,11 +47,6 @@ Distretto
       zone_ids.push({{$id_zona}});
     @endforeach
 
-
-    @foreach ($coordinate_utg as $id_utg => $coordinata_utg)
-      var utg_{{$id_utg}};
-      utg_ids.push({{$id_utg}});
-    @endforeach
 
 
 				// Initialize and add the map
@@ -108,56 +102,13 @@ Distretto
 
 
         @endforeach
-        ////////////////////////////////////////////////////////////////
         
-        // creo tutte le utg delle quali ho le coordinate nell'array coordinate_utg
-        @foreach ($coordinate_utg as $id_utg => $coordinata_utg)
-          
-          var utg_coords = new Array();
-
-          @foreach ($coordinata_utg as $lat => $long)
-
-
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
-
-            utg_coords.push(jsonData);
-          
-          @endforeach
-
-          // Construct the polygon.
-          utg_{{$id_utg}} = new google.maps.Polygon({
-            paths: utg_coords,
-            strokeColor: '{{$colors["utg"]}}',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '{{$colors["utg"]}}',
-            fillOpacity: 0.35,
-            editable: false,
-            draggable: false
-          });
-
-
-          //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-          utg_{{$id_utg}}.setMap(map);
-
-
-        @endforeach
-
-
-
-
-      
         ///////////////////////////////////////////////////////////////
 		    
-		    var distretto_coords = new Array();
+		    var utg_coords = new Array();
 
 		    
-		   	@foreach ($coordinate as $lat => $long)
+		   	@foreach ($coordinate_utg as $lat => $long)
 		   		
 		    	var jsonData = {};
 		   		jsonData['lat'] = {{$lat}};
@@ -165,23 +116,23 @@ Distretto
 		   		
 		   		//console.log('jsonData = '+JSON.stringify(jsonData));
 
-		   		distretto_coords.push(jsonData);
+		   		utg_coords.push(jsonData);
 
 		   	@endforeach
 
-		   		//console.log(distretto_coords);
-		    	//console.log(distretto_coords);
+		   		//console.log(utg_coords);
+		    	//console.log(utg_coords);
 
 				  
 
 				  
 				  // Construct the polygon.
-		      var distretto = new google.maps.Polygon({
-		        paths: distretto_coords,
-		        strokeColor: '{{$colors["distretto"]}}',
+		      var utg = new google.maps.Polygon({
+		        paths: utg_coords,
+		        strokeColor: '{{$colors["utg"]}}',
 		        strokeOpacity: 0.8,
 		        strokeWeight: 2,
-		        fillColor: '{{$colors["distretto"]}}',
+		        fillColor: '{{$colors["utg"]}}',
 		        fillOpacity: 0.35,
 		        editable: true,
 		        draggable: true
@@ -189,10 +140,10 @@ Distretto
 
 
 		      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-		      distretto.setMap(map);
+		      utg.setMap(map);
 
 		      // Add a listener for the click event.
-		      distretto.addListener('click', showArrays);
+		      utg.addListener('click', showArrays);
 
 		     	infoWindow = new google.maps.InfoWindow;
 
@@ -200,10 +151,10 @@ Distretto
 
      	    $('#salva_coordinate').click(function(){
 
-     	    	var vertices = distretto.getPath();
+     	    	var vertices = utg.getPath();
      				console.log(vertices);
 
-     				var distretto_coords = new Array();
+     				var utg_coords = new Array();
 
      				// Iterate over the vertices.
      				for (var i =0; i < vertices.getLength(); i++) {
@@ -213,19 +164,19 @@ Distretto
 	 				  		jsonData['lat'] = xy.lat();
 	 				  		jsonData['long'] = xy.lng();
 
-	 				  		distretto_coords.push(jsonData);
+	 				  		utg_coords.push(jsonData);
 
      				}
 
-     				console.log(distretto_coords);
+     				console.log(utg_coords);
 
      	    	jQuery.ajax({
      	    	        url: '{{ route("aggiorna_coordinate") }}',
      	    	        type: "post",
      	    	        async: false,
      	    	        data : { 
-     	    	               'coords': distretto_coords, 
-     	    	               'distretto_id': '{{$item->id}}',
+     	    	               'coords': utg_coords, 
+     	    	               'utg_id': '{{$item->id}}',
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },
      	    	       	success: function(data) {
@@ -255,19 +206,7 @@ Distretto
         }
 
 
-        function spegni_utg() {
-          utg_ids.forEach(function(id){
-             eval('utg_'.concat(id)).setMap(null);  
-          })
-        }
-
-        function accendi_utg() {
-          utg_ids.forEach(function(id){
-             eval('utg_'.concat(id)).setMap(map);  
-          })
-        }
-
-
+    
 				/** @this {google.maps.Polygon} */
 		    function showArrays(event) {
 
@@ -336,7 +275,7 @@ Distretto
 		    		               'lat': c_lat, 
 		    		               'long': c_long, 
 		    		               'zoom': c_zoom, 
-		    		               'distretto_id': '{{$item->id}}',
+		    		               'utg_id': '{{$item->id}}',
 		    		               '_token': jQuery('input[name=_token]').val()
 		    		               },
 		    		       	success: function(data) {
@@ -357,17 +296,6 @@ Distretto
          $("#accendi_zone").click(function(e){
 		    		e.preventDefault();
             accendi_zone();
-        });
-
-
-        $("#spegni_utg").click(function(e){
-          e.preventDefault();
-          spegni_utg();
-        });
-
-         $("#accendi_utg").click(function(e){
-		    		e.preventDefault();
-            accendi_utg();
         });
 
         

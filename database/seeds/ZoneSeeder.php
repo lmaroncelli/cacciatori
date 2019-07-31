@@ -5,6 +5,7 @@ use App\Utility;
 use App\Distretto;
 use App\CoordinataPoligono;
 use Illuminate\Database\Seeder;
+use App\UnitaGestione;
 
 class ZoneSeeder extends Seeder
 {
@@ -74,7 +75,16 @@ class ZoneSeeder extends Seeder
     	foreach ($zone_old as $zona) 
     		{
     		$zona->destroyMe();
-    		}
+        }
+        
+      $unita_old = UnitaGestione::all();
+
+    	foreach ($unita_old as $unita) 
+    		{
+    		
+    		$unita->destroyMe(); 	
+    		
+    	 	} 
 
 	 		$distretto = Distretto::where('nome','distretto_a1')->first();
       $distretto->unita()->delete();
