@@ -104,6 +104,45 @@ Unità gestione
         @endforeach
         
         ///////////////////////////////////////////////////////////////
+         var distretto_coords = new Array();
+
+		    
+		   	@foreach ($coordinate_distretto as $lat => $long)
+		   		
+		    	var jsonData = {};
+		   		jsonData['lat'] = {{$lat}};
+		   		jsonData['lng'] = {{$long}};
+		   		
+		   		//console.log('jsonData = '+JSON.stringify(jsonData));
+
+		   		distretto_coords.push(jsonData);
+
+		   	@endforeach
+
+		   		//console.log(distretto_coords);
+		    	//console.log(distretto_coords);
+
+				  
+
+				  
+				  // Construct the polygon.
+		      var distretto = new google.maps.Polygon({
+		        paths: distretto_coords,
+		        strokeColor: '{{$colors["distretto"]}}',
+		        strokeOpacity: 0.8,
+		        strokeWeight: 2,
+		        fillColor: '{{$colors["distretto"]}}',
+		        fillOpacity: 0.35,
+		        editable: false,
+		        draggable: false
+		      });
+
+
+		      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+		      distretto.setMap(map);
+
+
+        //////////////////////////////////////////////////////////////
 		    
 		    var utg_coords = new Array();
 

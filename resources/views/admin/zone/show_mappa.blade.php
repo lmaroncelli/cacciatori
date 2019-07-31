@@ -63,6 +63,11 @@
 		      document.getElementById('map'), {zoom: zoom, center: center});
 
 
+
+
+
+
+
       // CREAZIONE DEL POLIGONO DISTRETTO
 
        var distretto_coords = new Array();
@@ -99,7 +104,50 @@
 
         //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
         distretto.setMap(map);
-		 
+        
+
+        ///////////////////////////////////////////////////////////////////////////////
+        
+        // CREAZIONE DEL POLIGONO UNITA
+
+       var utg_coords = new Array();
+
+    
+        @foreach ($coordinate_unita as $lat => $long)
+          
+          var jsonData = {};
+          jsonData['lat'] = {{$lat}};
+          jsonData['lng'] = {{$long}};
+          
+          //console.log('jsonData = '+JSON.stringify(jsonData));
+
+          utg_coords.push(jsonData);
+
+        @endforeach
+
+          //console.log(utg_coords);
+          //console.log(utg_coords);
+
+          
+          // Construct the polygon.
+        utg = new google.maps.Polygon({
+            paths: utg_coords,
+            strokeColor: '{{$colors["utg"]}}',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '{{$colors["utg"]}}',
+            fillOpacity: 0.35,
+            editable: false,
+            draggable: false
+          });
+
+
+        //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+        utg.setMap(map);
+
+      
+        
+        ///////////////////////////////////////////////////////////////////////////////
       
       var zona_coords = new Array();
 
