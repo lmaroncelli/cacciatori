@@ -15,7 +15,7 @@
   
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="utg_check" id="utg_check" class="form-check-input" checked>
+      <input type="checkbox" name="utg_check" id="utg_check" class="unita form-check-input" checked>
       Visibilità unità
     </label>
   </div>
@@ -25,7 +25,7 @@
 @if (isset($spegni) && ($spegni == 'zone' || $spegni == 'utg'))
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="zone_check" id="zone_check" class="form-check-input" checked>
+      <input type="checkbox" name="zone_check" id="zone_check" class="zona form-check-input" checked>
       Visibilità zone
     </label>
   </div>
@@ -42,13 +42,13 @@
 @if (isset($principale) && $principale == 'distretto')
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="main_editable" id="main_editable" class="form-check-input">
+      <input type="checkbox" name="main_editable" id="main_editable" class="distretto form-check-input">
         Editabile
     </label>
   </div>
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="main_draggable" id="main_draggable" class="form-check-input">
+      <input type="checkbox" name="main_draggable" id="main_draggable" class="distretto form-check-input">
         Trascinabile
     </label>
   </div>

@@ -93,8 +93,14 @@ form#filtra_azioni div.form-group {
 
     /* bottoni mappa */
 
-    div.box-header button {
+    div.box-header input[type="checkbox"] {
       margin-left:20px;
+      margin-left:40px;
+    }
+
+
+    div.box-header input[type="checkbox"].unita {
+      
     }
     
 
