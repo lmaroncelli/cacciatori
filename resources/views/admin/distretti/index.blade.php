@@ -32,7 +32,7 @@
               <thead>
                 <tr>
                   <th>A.T.C.</th>
-                  <th scope="col">Nome</th>
+                  <th scope="col">Distretto</th>
                   <th>Unità di gestione</th>
                   <th></th>
                   <th></th>

@@ -20,7 +20,7 @@ Distretto
         <div class="box box-success">
           @csrf
 
-          @include('admin.mappa.bottoni', ['spegni' => 'utg'])
+          @include('admin.mappa.bottoni', ['spegni' => 'utg', 'principale' => 'distretto'])
         </div>
       </div>
 		</div>
@@ -38,6 +38,8 @@ Distretto
 		var infoWindow;
 		var map;
 		var contentString;
+
+    var distretto;
 
     var zone_ids = new Array();
     var utg_ids = new Array();
@@ -176,15 +178,15 @@ Distretto
 
 				  
 				  // Construct the polygon.
-		      var distretto = new google.maps.Polygon({
+		      distretto = new google.maps.Polygon({
 		        paths: distretto_coords,
 		        strokeColor: '{{$colors["distretto"]}}',
 		        strokeOpacity: 0.8,
 		        strokeWeight: 2,
 		        fillColor: '{{$colors["distretto"]}}',
 		        fillOpacity: 0.35,
-		        editable: true,
-		        draggable: true
+		        editable: false,
+		        draggable: false
 		      });
 
 
@@ -268,6 +270,16 @@ Distretto
         }
 
 
+        function toggleVisibility(id, nome) {
+           if ($('#'+id).is(':checked')) {
+            eval('accendi_'+ nome + '()');
+           }
+           else {
+            eval('spegni_'+ nome + '()');
+           }
+        }
+
+
 				/** @this {google.maps.Polygon} */
 		    function showArrays(event) {
 
@@ -347,29 +359,22 @@ Distretto
 
 		    }); // click new_center
 
-
-
-        $("#spegni_zone").click(function(e){
-		    		e.preventDefault();
-            spegni_zone();
+        $("#utg_check").click(function(e){
+            toggleVisibility('utg_check', 'utg');
         });
 
-         $("#accendi_zone").click(function(e){
-		    		e.preventDefault();
-            accendi_zone();
+        $("#zone_check").click(function(e){
+            toggleVisibility('zone_check', 'zone');
         });
 
 
-        $("#spegni_utg").click(function(e){
-          e.preventDefault();
-          spegni_utg();
+        $("#main_editable").click(function(e){
+              distretto.setEditable($(this).is(':checked'));
         });
 
-         $("#accendi_utg").click(function(e){
-		    		e.preventDefault();
-            accendi_utg();
+        $("#main_draggable").click(function(e){
+              distretto.setDraggable($(this).is(':checked'));
         });
-
         
 
 	</script>
