@@ -22,7 +22,7 @@
         <div class="box box-success">
         @csrf
 
-        @include('admin.mappa.bottoni', ['spegni' => 'distretto'])
+        @include('admin.mappa.bottoni', ['principale' => 'zone'])
         </div>
       </div>
 	  </div>
@@ -45,6 +45,8 @@
 
 
     var distretto;
+    var utg;
+    var zona;
 
 
 		// Initialize and add the map
@@ -171,15 +173,15 @@
 
 		  
 		  // Construct the polygon.
-      var zona = new google.maps.Polygon({
+      zona = new google.maps.Polygon({
         paths: zona_coords,
         strokeColor: '{{$colors["zona"]}}',
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: '{{$colors["zona"]}}',
         fillOpacity: 0.35,
-        editable: true,
-        draggable: true
+        editable: false,
+        draggable: false
       });
 
 
@@ -246,6 +248,25 @@
       }
 
 
+    function spegni_utg() {
+        utg.setMap(null); 
+      }
+
+    function accendi_utg() {
+        utg.setMap(map); 
+    }
+
+
+    function toggleVisibility(id, nome) {
+          if ($('#'+id).is(':checked')) {
+          eval('accendi_'+ nome + '()');
+          }
+          else {
+          eval('spegni_'+ nome + '()');
+          }
+      }
+
+
 		/** @this {google.maps.Polygon} */
 		function showArrays(event) {
 
@@ -277,13 +298,14 @@
 		      '<br>'+
 		      'Zoom corrente: '+ c_zoom + '<br><br>';
 
-
-		  // Iterate over the vertices.
-		  for (var i =0; i < vertices.getLength(); i++) {
-		    var xy = vertices.getAt(i);
-		    contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
-		        xy.lng();
-		  }
+       if (false) {
+          // Iterate over the vertices.
+          for (var i =0; i < vertices.getLength(); i++) {
+            var xy = vertices.getAt(i);
+            contentString += '<br>' + 'Coordinate ' + i + ':<br>' + xy.lat() + ',' +
+                xy.lng();
+          }
+       }
 
 		  // Replace the info window's content and position.
 		  infoWindow.setContent(contentString);
@@ -328,15 +350,23 @@
 		}); // click new_center
 
 
-     $("#spegni_distretto").click(function(e){
-          e.preventDefault();
-          spegni_distretto();
+     $("#utg_check").click(function(e){
+          toggleVisibility('utg_check', 'utg');
       });
 
-        $("#accendi_distretto").click(function(e){
-          e.preventDefault();
-          accendi_distretto();
-      });
+    $("#distretto_check").click(function(e){
+        toggleVisibility('distretto_check', 'distretto');
+    });
+
+
+    $("#main_editable").click(function(e){
+          zona.setEditable($(this).is(':checked'));
+    });
+
+    $("#main_draggable").click(function(e){
+          zona.setDraggable($(this).is(':checked'));
+    });
+
 
 
 	</script>

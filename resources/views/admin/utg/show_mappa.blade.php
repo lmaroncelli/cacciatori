@@ -39,6 +39,9 @@ Unità gestione
 		var map;
 		var contentString;
 
+
+    var distretto;
+    var utg;
     var zone_ids = new Array();
 
 
@@ -126,7 +129,7 @@ Unità gestione
 
 				  
 				  // Construct the polygon.
-		      var distretto = new google.maps.Polygon({
+		      distretto = new google.maps.Polygon({
 		        paths: distretto_coords,
 		        strokeColor: '{{$colors["distretto"]}}',
 		        strokeOpacity: 0.8,
@@ -166,15 +169,15 @@ Unità gestione
 
 				  
 				  // Construct the polygon.
-		      var utg = new google.maps.Polygon({
+		      utg = new google.maps.Polygon({
 		        paths: utg_coords,
 		        strokeColor: '{{$colors["utg"]}}',
 		        strokeOpacity: 0.8,
 		        strokeWeight: 2,
 		        fillColor: '{{$colors["utg"]}}',
 		        fillOpacity: 0.35,
-		        editable: true,
-		        draggable: true
+		        editable: false,
+		        draggable: false
 		      });
 
 
@@ -242,6 +245,26 @@ Unità gestione
           zone_ids.forEach(function(id){
              eval('zona_'.concat(id)).setMap(map);  
           })
+        }
+
+
+        function spegni_distretto() {
+            distretto.setMap(null);  
+        }
+
+
+        function accendi_distretto() {
+          distretto.setMap(map);
+        }
+
+
+        function toggleVisibility(id, nome) {
+           if ($('#'+id).is(':checked')) {
+            eval('accendi_'+ nome + '()');
+           }
+           else {
+            eval('spegni_'+ nome + '()');
+           }
         }
 
 
@@ -327,15 +350,24 @@ Unità gestione
 
 
 
-        $("#spegni_zone").click(function(e){
-		    		e.preventDefault();
-            spegni_zone();
+        
+        $("#zone_check").click(function(e){
+            toggleVisibility('zone_check', 'zone');
         });
 
-         $("#accendi_zone").click(function(e){
-		    		e.preventDefault();
-            accendi_zone();
+        $("#distretto_check").click(function(e){
+            toggleVisibility('distretto_check', 'distretto');
         });
+
+
+        $("#main_editable").click(function(e){
+              utg.setEditable($(this).is(':checked'));
+        });
+
+        $("#main_draggable").click(function(e){
+              utg.setDraggable($(this).is(':checked'));
+        });
+
 
         
 

@@ -16,7 +16,7 @@
   <div class="form-check">
     <label class="form-check-label">
       <input type="checkbox" name="distretto_check" id="distretto_check" class="form-check-input" checked>
-      <a href="#" data-toggle="tooltip" title="Accendi o spegni il distretto disegnato sulla mappa" class="unita">Visibilità distretto</a>
+      <a href="#" data-toggle="tooltip" title="Accendi o spegni il distretto disegnato sulla mappa" class="distretto">Visibilità distretto</a>
     </label>
   </div>
 @endif
