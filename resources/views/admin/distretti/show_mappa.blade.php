@@ -111,6 +111,11 @@ Distretto
           zona_{{$id_zona}}.setMap(map);
 
 
+          google.maps.event.addListener(zona_{{$id_zona}}, 'click', function(event){
+            showInfo(event,'zona',"{{$nomi_zona[$id_zona]}}");
+          });
+
+
         @endforeach
         ////////////////////////////////////////////////////////////////
         
@@ -148,6 +153,11 @@ Distretto
 
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           utg_{{$id_utg}}.setMap(map);
+
+
+          google.maps.event.addListener(utg_{{$id_utg}}, 'click', function(event){
+            showInfo(event,'unità',"{{$nomi_utg[$id_utg]}}");
+          });
 
 
         @endforeach
@@ -280,6 +290,17 @@ Distretto
             eval('spegni_'+ nome + '()');
            }
         }
+
+
+
+
+        function showInfo(event, type, nome)
+          {
+            // Replace the info window's content and position.
+          infoWindow.setContent(type + ' <b>'+ nome + '</b>');
+		      infoWindow.setPosition(event.latLng);
+		      infoWindow.open(map);
+          }
 
 
 				/** @this {google.maps.Polygon} */

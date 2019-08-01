@@ -95,7 +95,9 @@ class DistrettiController extends LoginController
 
         // trovo tutte le zone facendo un loop su tutte le UTG
         $coordinate_utg = [];
+        $nomi_utg = [];
         $coordinate_zona = [];
+        $nomi_zona = [];
 
         foreach ($distretto->unita as $utg) 
           {
@@ -103,6 +105,7 @@ class DistrettiController extends LoginController
           $poligono_utg =  $utg->poligono;
           $coordinata_utg = $poligono_utg->coordinate->pluck('long','lat');
           $coordinate_utg[$utg->id] = $coordinata_utg;
+          $nomi_utg[$utg->id] = $utg->nome;
 
           foreach ($utg->zone as $zona) 
             {
@@ -111,10 +114,12 @@ class DistrettiController extends LoginController
             $coordinata_zona = $poligono->coordinate->pluck('long','lat');
             
             $coordinate_zona[$zona->id] = $coordinata_zona;
+
+            $nomi_zona[$zona->id] = $zona->nome;
             }
           }
       
-         return view('admin.distretti.show_mappa', compact('distretto','coordinate', 'coordinate_utg', 'coordinate_zona'));
+         return view('admin.distretti.show_mappa', compact('distretto','coordinate', 'coordinate_utg', 'nomi_utg', 'coordinate_zona', 'nomi_zona'));
     }
 
     /**
