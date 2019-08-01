@@ -11,45 +11,50 @@
 
 
 
-@if (isset($spegni) && $spegni == 'utg' )
-  
+
+@if (isset($principale) && $principale != 'distretto')
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="utg_check" id="utg_check" class="unita form-check-input" checked>
-      Visibilità unità
+      <input type="checkbox" name="distretto_check" id="distretto_check" class="form-check-input" checked>
+      <a href="#" data-toggle="tooltip" title="Accendi o spegni il distretto disegnato sulla mappa" class="unita">Visibilità distretto</a>
     </label>
   </div>
-      
 @endif
 
-@if (isset($spegni) && ($spegni == 'zone' || $spegni == 'utg'))
+@if (isset($principale) && $principale != 'utg')
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="zone_check" id="zone_check" class="zona form-check-input" checked>
-      Visibilità zone
+      <input type="checkbox" name="utg_check" id="utg_check" class="form-check-input" checked>
+      <a href="#" data-toggle="tooltip" title="Accendi o spegni le unità gestione disegnate sulla mappa" class="unita">Visibilità unità</a>
     </label>
   </div>
-  @endif
+@endif
 
-
-@if (isset($spegni) && $spegni == 'distretto')
-  <button id="spegni_distretto" title="Spegni distretto" class="btn btn-sm bg-gray color-palette align-self-end">Spegni distretto</button>
-  <button id="accendi_distretto" title="Accendi distretto" class="btn btn-sm btn-warning align-self-end">Accendi distretto</button>
+@if (isset($principale) && $principale != 'zone')
+<div class="form-check">
+  <label class="form-check-label">
+    <input type="checkbox" name="zone_check" id="zone_check" class="form-check-input" checked>
+    <a href="#" data-toggle="tooltip" title="Accendi o spegni le zone disegnate sulla mappa" class="zona">Visibilità zone</a>
+  </label>
+</div>
 @endif
 
 
 
-@if (isset($principale) && $principale == 'distretto')
+
+
+
+@if (isset($principale))
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="main_editable" id="main_editable" class="distretto form-check-input">
-        Editabile
+      <input type="checkbox" name="main_editable" id="main_editable" class="{{$principale}} form-check-input">
+        <a href="#" data-toggle="tooltip" title="Il poligno disegnato sulla mappa diventa editabile e si può modificare trascinando i vertici e creando nuovi punti sul perimetro. Ricorda sempre di cliccare il bottone 'Salva coordinate' !">Editabile</a>
     </label>
   </div>
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" name="main_draggable" id="main_draggable" class="distretto form-check-input">
-        Trascinabile
+      <input type="checkbox" name="main_draggable" id="main_draggable" class="{{$principale}} form-check-input">
+        <a href="#" data-toggle="tooltip" title="Il poligno disegnato sulla mappa diventa trascinabile tenendo premuto il pulsante sinistro del mouse. Ricorda sempre di cliccare il bottone 'Salva coordinate' !">Trascinabile</a>
     </label>
   </div>
 @endif

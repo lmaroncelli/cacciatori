@@ -20,7 +20,7 @@ Unità gestione
         <div class="box box-success">
           @csrf
 
-          @include('admin.mappa.bottoni', ['spegni' => 'zone'])
+          @include('admin.mappa.bottoni', ['principale' => 'utg'])
         </div>
       </div>
 		</div>

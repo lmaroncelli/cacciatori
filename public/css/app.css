@@ -99,8 +99,12 @@ form#filtra_azioni div.form-group {
     }
 
 
-    div.box-header input[type="checkbox"].unita {
-      
+    a.unita {
+      color: #0859C1;
+    }
+
+    a.zona {
+      color:#af0a0a;
     }
     
 

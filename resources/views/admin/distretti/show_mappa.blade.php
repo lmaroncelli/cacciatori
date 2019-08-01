@@ -20,7 +20,7 @@ Distretto
         <div class="box box-success">
           @csrf
 
-          @include('admin.mappa.bottoni', ['spegni' => 'utg', 'principale' => 'distretto'])
+          @include('admin.mappa.bottoni', ['principale' => 'distretto'])
         </div>
       </div>
 		</div>
@@ -33,6 +33,8 @@ Distretto
 
 
 @section('script_footer')
+  
+<script src="{{ asset('js/icheck.js') }}"></script>
 
 	<script type="text/javascript">
 		var infoWindow;

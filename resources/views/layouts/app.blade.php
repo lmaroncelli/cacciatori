@@ -66,6 +66,8 @@
     <!-- jQuery 3 -->
     <script src="{{ asset('js/jquery.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    
     <script src="{{ asset('js/bootstrap.js') }}"></script>
    <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
@@ -73,6 +75,9 @@
     @yield('script_footer')
     <script type="text/javascript">
         $(function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+
             $(".delete").click(function(){
 
                 var Id = $(this).data("id");
