@@ -15,7 +15,7 @@
       {{-- Distretti --}}
 
         <li class="treeview @if (in_array('distretti',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-users"></i> <span>Distretti</span>
+          <a href="#"><i class="fa fa-object-group"></i> <span>Distretti</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -28,7 +28,7 @@
 
       {{-- Utg --}}
         <li class="treeview @if (in_array('utg',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-user"></i> <span>Utg</span>
+          <a href="#"><i class="fa fa-houzz"></i> <span>Utg</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -41,7 +41,7 @@
 
         {{-- Zone --}}
       <li class="treeview @if (in_array('zone',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-send-o"></i> <span>Zone/Particelle</span>
+        <a href="#"><i class="fa fa-map-signs"></i> <span>Zone/Particelle</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -55,7 +55,7 @@
       @if(!Auth::user()->hasRole('cartografo'))
         {{-- Squadre --}}
         <li class="treeview @if (in_array('squadre',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-bullhorn"></i> <span>Squadre</span>
+          <a href="#"><i class="fa fa-users"></i> <span>Squadre</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -70,7 +70,7 @@
         @if(Auth::user()->hasRole('admin'))
         {{-- Cacciatori --}}
         <li class="treeview @if (in_array('cacciatori',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-folder-open-o"></i> <span>Cacciatori</span>
+          <a href="#"><i class="fa fa-bullseye"></i> <span>Cacciatori</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -86,7 +86,7 @@
 
       @if(Auth::user()->hasRole('admin'))
       {{-- Province --}}
-      <li class="treeview @if (in_array('province',Request::segments())) active @endif">
+      {{-- <li class="treeview @if (in_array('province',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-envelope-o"></i> <span>Province</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -97,10 +97,10 @@
           <li><a href="{{ route('province.create') }}">Nuova</a></li>
 
         </ul>
-      </li>
+      </li> --}}
 
       {{-- Comuni --}}
-      <li class="treeview @if (in_array('comuni',Request::segments())) active @endif">
+      {{-- <li class="treeview @if (in_array('comuni',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-envelope-o"></i> <span>Comuni</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -111,13 +111,13 @@
           <li><a href="{{ route('comuni.create') }}">Nuova</a></li>
 
         </ul>
-      </li>
+      </li> --}}
       @endif
 
       @if(!Auth::user()->hasRole('cartografo'))
         {{-- Azioni --}}
         <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-envelope-o"></i> <span>Attivita</span>
+          <a href="#"><i class="fa fa-tasks"></i> <span>Attivita</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
