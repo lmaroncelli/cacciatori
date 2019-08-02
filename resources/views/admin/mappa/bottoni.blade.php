@@ -59,8 +59,5 @@
   </div>
 @endif
 
-
-
-
 </div>	
 <div id="map"></div>
