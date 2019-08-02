@@ -254,6 +254,27 @@ Distretto
 
 
 
+        function spegni_distretto() {
+            distretto.setMap(null);  
+        }
+
+
+        function accendi_distretto() {
+          distretto.setMap(map);
+        }
+
+
+        function spegni_utg() {
+          utg_ids.forEach(function(id){
+             eval('utg_'.concat(id)).setMap(null);  
+          })
+        }
+
+        function accendi_utg() {
+          utg_ids.forEach(function(id){
+             eval('utg_'.concat(id)).setMap(map);  
+          })
+        }
 
         function spegni_zone() {
           zone_ids.forEach(function(id){
@@ -269,17 +290,9 @@ Distretto
         }
 
 
-        function spegni_utg() {
-          utg_ids.forEach(function(id){
-             eval('utg_'.concat(id)).setMap(null);  
-          })
-        }
+        
 
-        function accendi_utg() {
-          utg_ids.forEach(function(id){
-             eval('utg_'.concat(id)).setMap(map);  
-          })
-        }
+        
 
 
         function toggleVisibility(id, nome) {
@@ -381,6 +394,11 @@ Distretto
 		    		 }) // ajax //
 
 		    }); // click new_center
+
+
+         $("#distretto_check").click(function(e){
+            toggleVisibility('distretto_check', 'distretto');
+        });
 
         $("#utg_check").click(function(e){
             toggleVisibility('utg_check', 'utg');

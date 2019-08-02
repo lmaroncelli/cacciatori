@@ -106,6 +106,10 @@
 
         //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
         distretto.setMap(map);
+
+        google.maps.event.addListener(distretto, 'click', function(event){
+          showInfo(event,'distretto',"{{$distretto->nome}}");
+        });
         
 
         ///////////////////////////////////////////////////////////////////////////////
@@ -146,6 +150,11 @@
 
         //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
         utg.setMap(map);
+
+
+        google.maps.event.addListener(utg, 'click', function(event){
+          showInfo(event,'utg',"{{$unita->nome}}");
+        });
 
       
         
@@ -238,14 +247,14 @@
 		} //init Map
 
 
-     function spegni_distretto() {
-        distretto.setMap(null);    
-      }
+    function spegni_distretto() {
+      distretto.setMap(null);    
+    }
 
 
-     function accendi_distretto() {
-        distretto.setMap(map);    
-      }
+    function accendi_distretto() {
+      distretto.setMap(map);    
+    }
 
 
     function spegni_utg() {
@@ -254,6 +263,15 @@
 
     function accendi_utg() {
         utg.setMap(map); 
+    }
+
+
+    function spegni_zone() {
+        zona.setMap(null); 
+      }
+
+    function accendi_zone() {
+        zona.setMap(map); 
     }
 
 
@@ -266,6 +284,14 @@
           }
       }
 
+
+    function showInfo(event, type, nome)
+      {
+        // Replace the info window's content and position.
+      infoWindow.setContent(type + ' <b>'+ nome + '</b>');
+      infoWindow.setPosition(event.latLng);
+      infoWindow.open(map);
+      }
 
 		/** @this {google.maps.Polygon} */
 		function showArrays(event) {
@@ -350,12 +376,18 @@
 		}); // click new_center
 
 
-     $("#utg_check").click(function(e){
-          toggleVisibility('utg_check', 'utg');
-      });
+     
 
     $("#distretto_check").click(function(e){
         toggleVisibility('distretto_check', 'distretto');
+    });
+
+    $("#utg_check").click(function(e){
+        toggleVisibility('utg_check', 'utg');
+    });
+
+    $("#zone_check").click(function(e){
+        toggleVisibility('zone_check', 'zone');
     });
 
 

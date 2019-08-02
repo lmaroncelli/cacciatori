@@ -12,32 +12,32 @@
 
 
 
-@if (isset($principale) && $principale != 'distretto')
+{{-- @if (isset($principale) && $principale != 'distretto') --}}
   <div class="form-check">
     <label class="form-check-label">
       <input type="checkbox" name="distretto_check" id="distretto_check" class="form-check-input" checked>
       <a href="#" data-toggle="tooltip" title="Accendi o spegni il distretto disegnato sulla mappa" class="distretto">Visibilità distretto</a>
     </label>
   </div>
-@endif
+{{-- @endif --}}
 
-@if (isset($principale) && $principale != 'utg')
+{{-- @if (isset($principale) && $principale != 'utg') --}}
   <div class="form-check">
     <label class="form-check-label">
       <input type="checkbox" name="utg_check" id="utg_check" class="form-check-input" checked>
       <a href="#" data-toggle="tooltip" title="Accendi o spegni le unità gestione disegnate sulla mappa" class="unita">Visibilità unità</a>
     </label>
   </div>
-@endif
+{{-- @endif --}}
 
-@if (isset($principale) && $principale != 'zone')
+{{-- @if (isset($principale) && $principale != 'zone') --}}
 <div class="form-check">
   <label class="form-check-label">
     <input type="checkbox" name="zone_check" id="zone_check" class="form-check-input" checked>
     <a href="#" data-toggle="tooltip" title="Accendi o spegni le zone disegnate sulla mappa" class="zona">Visibilità zone</a>
   </label>
 </div>
-@endif
+{{-- @endif --}}
 
 
 

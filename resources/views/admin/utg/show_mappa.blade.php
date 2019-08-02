@@ -52,6 +52,7 @@ Unità gestione
 
 
 
+
 				// Initialize and add the map
 				function initMap() {
 
@@ -103,6 +104,10 @@ Unità gestione
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           zona_{{$id_zona}}.setMap(map);
 
+          google.maps.event.addListener(zona_{{$id_zona}}, 'click', function(event){
+            showInfo(event,'zona',"{{$nomi_zona[$id_zona]}}");
+          });
+
 
         @endforeach
         
@@ -143,6 +148,11 @@ Unità gestione
 
 		      //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
 		      distretto.setMap(map);
+
+
+          google.maps.event.addListener(distretto, 'click', function(event){
+            showInfo(event,'distretto',"{{$distretto->nome}}");
+          });
 
 
         //////////////////////////////////////////////////////////////
@@ -234,6 +244,26 @@ Unità gestione
 
 
 
+        function spegni_distretto() {
+            distretto.setMap(null);  
+        }
+
+
+        function accendi_distretto() {
+          distretto.setMap(map);
+        }
+
+
+        function spegni_utg() {
+            utg.setMap(null);  
+        }
+
+
+        function accendi_utg() {
+          utg.setMap(map);
+        }
+
+
         function spegni_zone() {
           zone_ids.forEach(function(id){
              eval('zona_'.concat(id)).setMap(null);  
@@ -248,14 +278,7 @@ Unità gestione
         }
 
 
-        function spegni_distretto() {
-            distretto.setMap(null);  
-        }
 
-
-        function accendi_distretto() {
-          distretto.setMap(map);
-        }
 
 
         function toggleVisibility(id, nome) {
@@ -268,6 +291,13 @@ Unità gestione
         }
 
 
+        function showInfo(event, type, nome)
+          {
+            // Replace the info window's content and position.
+          infoWindow.setContent(type + ' <b>'+ nome + '</b>');
+		      infoWindow.setPosition(event.latLng);
+		      infoWindow.open(map);
+          }
     
 				/** @this {google.maps.Polygon} */
 		    function showArrays(event) {
@@ -350,13 +380,18 @@ Unità gestione
 
 
 
-        
-        $("#zone_check").click(function(e){
-            toggleVisibility('zone_check', 'zone');
-        });
+
 
         $("#distretto_check").click(function(e){
             toggleVisibility('distretto_check', 'distretto');
+        });
+
+        $("#utg_check").click(function(e){
+            toggleVisibility('utg_check', 'utg');
+        });
+
+        $("#zone_check").click(function(e){
+            toggleVisibility('zone_check', 'zone');
         });
 
 

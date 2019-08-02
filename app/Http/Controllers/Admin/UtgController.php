@@ -94,6 +94,7 @@ class UtgController extends LoginController
 
       // trovo tutte le zone facendo un loop su tutte le UTG
       $coordinate_zona = [];
+      $nomi_zona = [];
 
       foreach ($utg->zone as $zona) 
         {
@@ -102,9 +103,11 @@ class UtgController extends LoginController
         $coordinata_zona = $poligono->coordinate->pluck('long','lat');
         
         $coordinate_zona[$zona->id] = $coordinata_zona;
+
+        $nomi_zona[$zona->id] = $zona->nome;
         }
 
-       return view('admin.utg.show_mappa', compact('utg','coordinate_utg', 'coordinate_distretto', 'coordinate_zona'));
+       return view('admin.utg.show_mappa', compact('distretto', 'utg','coordinate_utg', 'coordinate_distretto', 'coordinate_zona', 'nomi_zona'));
 
 
     }

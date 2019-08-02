@@ -86,17 +86,18 @@ class ZoneController extends LoginController
           {
            $poligono->coordinate()->createMany(Utility::fakeCoords()); 
           }
+        $unita = $zona->unita;
 
-        $poligono_unita = $zona->unita->poligono;
+        $poligono_unita = $unita->poligono;
         $coordinate_unita = $poligono_unita->coordinate->pluck('long','lat');
         
-        
-        $poligono_distretto = $zona->unita->distretto->poligono;
+        $distretto = $zona->unita->distretto;
+        $poligono_distretto = $distretto->poligono;
         
         $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
 
         
-        return view('admin.zone.show_mappa', compact('zona','coordinate', 'coordinate_unita', 'coordinate_distretto'));
+        return view('admin.zone.show_mappa', compact('zona','coordinate', 'unita', 'coordinate_unita', 'distretto', 'coordinate_distretto'));
 
     }
 
