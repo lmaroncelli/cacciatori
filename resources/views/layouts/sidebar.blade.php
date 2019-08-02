@@ -52,7 +52,7 @@
         </ul>
       </li>
 
-
+      @if(!Auth::user()->hasRole('cartografo'))
         {{-- Squadre --}}
         <li class="treeview @if (in_array('squadre',Request::segments())) active @endif">
           <a href="#"><i class="fa fa-bullhorn"></i> <span>Squadre</span>
@@ -65,6 +65,7 @@
             <li><a href="{{ route('squadre.create') }}">Nuova</a></li>
           </ul>
         </li>
+        @endif
 
         @if(Auth::user()->hasRole('admin'))
         {{-- Cacciatori --}}
@@ -113,19 +114,21 @@
       </li>
       @endif
 
-      {{-- Azioni --}}
-      <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-envelope-o"></i> <span>Attivita</span>
-          <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ route('azioni.index') }}">Elenco</a></li>
-          <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
+      @if(!Auth::user()->hasRole('cartografo'))
+        {{-- Azioni --}}
+        <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
+          <a href="#"><i class="fa fa-envelope-o"></i> <span>Attivita</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('azioni.index') }}">Elenco</a></li>
+            <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
 
-        </ul>
-      </li>
+          </ul>
+        </li>
+      @endif
 
 
       {{-- DOCUMENTI ELENCO --}}

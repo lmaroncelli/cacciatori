@@ -6,6 +6,8 @@ use App\AzioneCaccia;
 use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Auth; 
+
 
 class HomeController extends Controller
 {
@@ -72,6 +74,12 @@ class HomeController extends Controller
      */
     public function showMappaAttivita(Request $request)
     {
+        if(Auth::user()->hasRole('cartografo'))
+          {
+          return view('admin.home_cartografo');
+          }
+
+
         if($request->has('data'))
           {
           $from = $request->get('data').' 00:00:00';
