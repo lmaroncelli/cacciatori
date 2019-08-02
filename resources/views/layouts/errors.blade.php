@@ -18,6 +18,12 @@
 @endif
 
 
+{{-- alert jQuery --}}
+<div class="alert alert-info" id="msg_jquery" style="display:none;">
+		  
+</div>
+
+
 @if (session('error'))
 	<div class="alert alert-danger">
 		  {{ session('error') }}

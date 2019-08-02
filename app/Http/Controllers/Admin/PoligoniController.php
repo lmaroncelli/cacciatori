@@ -22,6 +22,7 @@ class PoligoniController extends Controller
          $zona = Zona::find($zona_id);
 
          $poligono = $zona->poligono;
+
         }
       elseif($request->has('utg_id'))
         {
@@ -48,7 +49,9 @@ class PoligoniController extends Controller
         $poligono->coordinate()->delete();
         $poligono->coordinate()->createMany($coords);
         }
+      
 
+        echo "Nuove coordinate salvate correttamente";
 
     	/*
     	array:5 [

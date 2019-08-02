@@ -232,7 +232,8 @@ Unità gestione
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },
      	    	       	success: function(data) {
-                      location.reload();
+                        $('#msg_jquery').html(data).fadeIn('slow');
+                        $('#msg_jquery').delay(3000).fadeOut('slow');
      	    	       }
 
      	    	 }); // ajax //
