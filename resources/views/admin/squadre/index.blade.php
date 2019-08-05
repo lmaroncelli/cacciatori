@@ -43,7 +43,7 @@
                   <td>{{$squadra->getZone()}}</td>          
                   <td>{{$squadra->getCacciatori()}}</td>     
                   <td>
-                    <select class="form-control" name="capoSquadra" id="capoSquadra" data-id_squadra="{{$squadra->id}}">
+                    <select class="form-control capoSquadra" name="capoSquadra" data-id_squadra="{{$squadra->id}}">
                       @foreach ([0 => 'Seleziona caposquadra...'] + $squadra->getCacciatoriSelect() as $id => $nome)
                         <option 
                         value="{{$id}}"
@@ -95,7 +95,7 @@
 
 
       $(function () {
-				    $('#capoSquadra').change(function(){
+				    $('.capoSquadra').change(function(){
               id_squadra = $(this).attr("data-id_squadra");
 				    	assegnaCapoSquadra(this.value, id_squadra);
 				    });

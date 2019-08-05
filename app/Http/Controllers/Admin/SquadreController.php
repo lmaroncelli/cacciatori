@@ -10,7 +10,7 @@ class SquadreController extends LoginController
 {
 
 
-    private function _aggiorna_squadra(Request $request, $squadra)
+    private function _aggiorna_squadra(Request $request, &$squadra)
       {
       
       if ($request->has('zone')) 
