@@ -32,7 +32,12 @@
         @endif
           {!! csrf_field() !!}
           <div class="box-body">
-        
+            
+             <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $squadra->nome}}" required="required">
+            </div>
+
             <div class="form-group">
               <label for="distretto_id">Distretto</label>
               <select class="form-control" style="width: 100%;" name="distretto_id" id="distretto_id">
@@ -46,10 +51,11 @@
               @include('admin.squadre.inc_zone_select_cascade')
             </div>	
 
-            <div class="form-group">
-              <label for="nome">Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $squadra->nome}}" required="required">
+
+            <div class="form-group" id="cacciatori_select">
+              @include('admin.squadre.inc_cacciatori_select_cascade')
             </div>
+           
             <div class="form-group">
               <label for="note">Note</label>
               <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $squadra->note}}</textarea>
@@ -109,7 +115,7 @@
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
 
-            @if (!$squadra->exists)
+            @if (!$squadra->exists || ($squadra->exists && !$squadra->zone()->count()))
 				      var distretto_id = $("#distretto_id").val();
               caricaZone(distretto_id);
             @endif

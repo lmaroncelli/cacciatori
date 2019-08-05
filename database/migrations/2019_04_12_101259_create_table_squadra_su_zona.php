@@ -17,7 +17,6 @@ class CreateTableSquadraSuZona extends Migration
             $table->bigIncrements('id');
             $table->integer('squadra_id')->unsigned();
             $table->integer('zona_id')->unsigned();
-            $table->enum('tipo_caccia',['girata','braccata'])->default('girata');
             $table->index('squadra_id');
             $table->index('zona_id');
             $table->timestamps();

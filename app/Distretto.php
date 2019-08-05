@@ -51,6 +51,11 @@ class Distretto extends Model
     // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO
     public function destroyMe()
     	{
+      foreach (self::squadre as $squadra) 
+        {
+        $squadra->distretto_id = 0;
+        $squadra->save();
+        }
   		$p = $this->poligono;
   		
   		if(!is_null($p))

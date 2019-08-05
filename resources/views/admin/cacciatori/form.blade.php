@@ -5,7 +5,10 @@
 	<link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 
 	<!-- Select2 -->
-	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+  
+  	{{-- bootstrap toogle button --}}
+	<link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -26,6 +29,14 @@
         <input type="hidden" name="user" value="cacciatore">
           {!! csrf_field() !!}
           <div class="box-body">
+
+            @if ($cacciatore->exists)
+						<div class="form-group has-feedback">        
+							<label class="checkbox-inline">
+							  <input type="checkbox" name="login_capabilities" value="1" @if ($cacciatore->utente->hasLoginCapabilites()) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="Login Disabilitato" data-on="Login Abilitato"> <b>LOGIN</b>
+							</label>
+						</div>
+					  @endif
 
             <div class="form-group" id="squadre_select">
               @include('admin.inc_squadre_select')
@@ -88,7 +99,10 @@
 
 	<!-- bootstrap datepicker -->
 	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
+  <script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
+  
+  {{-- bootstrap toogle button --}}
+  <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
 
 	<script type="text/javascript">
 				$(function () {

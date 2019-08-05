@@ -18,12 +18,12 @@ class CacciatoriFormComposer
       $cacciatori = [];
 
       $c = Cacciatore::orderBy('cognome')->get();
-      
+   
       foreach ($c as $cacciatore) 
         {
-        $cacciatori[$c->id] = $cacciatore->cognome.' '.$cacciatore->nome;
+        $cacciatori[$cacciatore->id] = $cacciatore->cognome.' '.$cacciatore->nome;
         }
-
+      
     	$view->with(compact('cacciatori'));
 
     }

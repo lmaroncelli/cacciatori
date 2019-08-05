@@ -17,6 +17,7 @@
               <thead>
                 <tr>
                   <th scope="col">Nome</th>
+                  <th>Login</th>
                   <th></th>
                 </tr>
               </thead>
@@ -24,6 +25,13 @@
                 @foreach ($cacciatori as $cacciatore)
                   <tr>
                     <td>{{$cacciatore->nome}}</td>
+                    <td>
+                      @if ($cacciatore->utente->login_capabilities)
+                        <i class="fa fa-check text-green"></i>
+                      @else
+                        <i class="fa fa-times text-red"></i>
+                      @endif
+                    </td>
                     <td> <a href="{{ route('cacciatori.edit',$cacciatore->id) }}" title="Modifica cacciatore" class="btn btn-success btn-sm">modifica</a> </td>
                   </tr>
                 @endforeach

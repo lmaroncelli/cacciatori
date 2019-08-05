@@ -25,7 +25,7 @@ class Zona extends Model
 
 		public function squadre()
 		{
-		    return $this->belongsToMany(Squadra::class, 'tblSquadreZone', 'zona_id', 'squadra_id')->withPivot('tipo_caccia');
+		    return $this->belongsToMany(Squadra::class, 'tblSquadreZone', 'zona_id', 'squadra_id')->withTimestamps();
 		}
 
 

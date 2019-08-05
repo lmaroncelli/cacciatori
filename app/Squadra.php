@@ -27,7 +27,7 @@ class Squadra extends Model
 
 		public function zone()
 		{
-		    return $this->belongsToMany(Zona::class, 'tblSquadreZone', 'squadra_id', 'zona_id')->withPivot('tipo_caccia');
+		    return $this->belongsToMany(Zona::class, 'tblSquadreZone', 'squadra_id', 'zona_id')->withTimestamps();
 		}
 
 		public function azioni()
@@ -41,6 +41,14 @@ class Squadra extends Model
       return implode(',', $this->zone()->pluck('nome')->toArray());
       }
 
+
+    public function destroyMe()
+    	{
+    	self::cacciatori()->detach();
+    	self::zone()->detach();
+			
+			self::delete();
+    	}
 
     
     public static function getAll()

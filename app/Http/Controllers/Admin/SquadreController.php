@@ -9,6 +9,22 @@ use App\Http\Controllers\Admin\LoginController;
 class SquadreController extends LoginController
 {
 
+
+    private function _aggiorna_squadra(Request $request, $squadra)
+      {
+      
+      if ($request->has('zone')) 
+        {
+        $squadra->zone()->sync($request->get('zone'));
+        }
+
+      if ($request->has('cacciatori')) 
+        {
+        $squadra->cacciatori()->sync($request->get('cacciatori'));
+        }
+
+      }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,11 +64,9 @@ class SquadreController extends LoginController
   
       $squadra = Squadra::create($request->all());
       
-      if ($request->has('zone')) 
-        {
-        $squadra->zone()->sync($request->get('zone'));
-        }
 
+      $this->_aggiorna_squadra($request, $squadra);
+    
       return redirect()->route("squadre.index")->with('status', 'Squadra creata correttamente!');
 
     }
@@ -98,13 +112,20 @@ class SquadreController extends LoginController
           }
         }
       
-
       if(!is_null($squadra->zone))
         {
         $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
         }
       
-       return view('admin.squadre.form', compact('squadra', 'zone', 'zone_associate'));
+
+      if(!is_null($squadra->cacciatori))
+        {
+        $cacciatori_squadra = $squadra->cacciatori->pluck('nome','id')->toArray();
+        }
+
+
+
+       return view('admin.squadre.form', compact('squadra', 'zone', 'zone_associate','cacciatori_squadra'));
 
     }
 
@@ -122,11 +143,9 @@ class SquadreController extends LoginController
 
         $squadra->fill($request->all())->save();
 
-        if ($request->has('zone')) 
-          {
-          $squadra->zone()->sync($request->get('zone'));
-          }
-
+      
+        $this->_aggiorna_squadra($request, $squadra);
+      
         return redirect()->route("squadre.index")->with('status', 'Squadra modificata correttamente!');
     }
 
@@ -138,7 +157,10 @@ class SquadreController extends LoginController
      */
     public function destroy($id)
     {
-        //
+      $squadra = Squadra::find($id);
+      $squadra->destroyMe();
+
+      return redirect()->route("squadre.index")->with('status', 'Squadra eliminata correttamente!');
     }
 
 }

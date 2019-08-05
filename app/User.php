@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'ruolo'
+        'name', 'email', 'password', 'ruolo', 'login_capabilities'
     ];
 
     /**
@@ -48,5 +48,13 @@ class User extends Authenticatable
     public function hasRole($role)
       {
       return strtolower($role) === strtolower($this->ruolo);
+      }
+
+    /**
+     * [hasLoginCapabilites definisce se un utente può fare login n base al boolean login_capabilities MA l'admin può FARE SEMPRE LOGIN]
+     */
+    public function hasLoginCapabilites()
+      {
+      return $this->ruolo == 'admin' || $this->login_capabilities;
       }
 }

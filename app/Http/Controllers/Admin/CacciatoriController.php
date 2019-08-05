@@ -72,7 +72,7 @@ class CacciatoriController extends Controller
     public function edit($id)
     {
         
-        $cacciatore = Cacciatore::find($id);
+        $cacciatore = Cacciatore::with('utente')->find($id);
         
         $squadre_associate = $cacciatore->squadre->pluck('id')->toArray();
         
