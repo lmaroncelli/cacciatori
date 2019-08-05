@@ -53,9 +53,11 @@ Route::group(['middleware' => ['admin']], function () {
 
 	Route::post('getUnitaGestioneAjax','Admin\SelectConditionalController@getUnitaGestioneAjax')->name('get_unita_gestione');
 
-	
+  
+	Route::post('assegnaCapoSquadra', 'Admin\CacciatoriController@assegnaCapoSquadraAjax')->name('assegna_capo_squadra');  
 	Route::resource('cacciatori', 'Admin\CacciatoriController');
-	
+  
+  
 	Route::resource('province', 'Admin\ProvinceController');
 	Route::resource('comuni', 'Admin\ComuniController');
 

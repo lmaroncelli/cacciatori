@@ -14,11 +14,12 @@ class Squadra extends Model
 
 		protected $fillable = ['distretto_id', 'nome', 'note','unita_gestione_id'];
 
-		public function cacciatori()
+    
+    public function cacciatori()
 		  {
-		  return $this->belongsToMany('App\Cacciatore', 'tblCacciatoriSquadre', 'squadra_id', 'cacciatore_id')->withPivot('capo_squadra');
-		  }
-
+		  return $this->belongsToMany('App\Cacciatore', 'tblCacciatoriSquadre', 'squadra_id', 'cacciatore_id')->withPivot('capo_squadra')->withTimestamps();
+      }
+      
 		public function distretto()
 		{
 		    return $this->belongsTo(Distretto::class, 'distretto_id', 'id');
@@ -39,6 +40,32 @@ class Squadra extends Model
     public function getZone() 
       {
       return implode(',', $this->zone()->pluck('nome')->toArray());
+      }
+    
+    
+
+    public function getCapoSquadra()
+      {
+      return $this->cacciatori()->wherePivot('capo_squadra',1)->first();
+      }
+
+    public function getCacciatoriSelect() 
+      {
+      $cacciatori_arr = [];
+      
+      foreach (self::cacciatori()->orderBy('cognome')->get() as $c) 
+        {
+        $cacciatori_arr[$c->id] = $c->cognome.' '.$c->nome;
+        }
+      
+      return $cacciatori_arr;
+      }
+    
+
+    public function getCacciatori() 
+      {
+      
+      return implode(',', $this->getCacciatoriSelect());
       }
 
 

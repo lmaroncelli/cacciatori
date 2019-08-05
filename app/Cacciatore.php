@@ -30,7 +30,7 @@ class Cacciatore extends Model
 
 	public function squadre()
 	  {
-	  return $this->belongsToMany('App\Squadra', 'tblCacciatoriSquadre', 'cacciatore_id', 'squadra_id')->withPivot('capo_squadra');
+	  return $this->belongsToMany('App\Squadra', 'tblCacciatoriSquadre', 'cacciatore_id', 'squadra_id')->withPivot('capo_squadra')->withTimestamps();
 	  }
 
 

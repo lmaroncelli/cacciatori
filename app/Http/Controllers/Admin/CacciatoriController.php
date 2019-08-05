@@ -90,4 +90,24 @@ class CacciatoriController extends Controller
     {
         //
     }
+
+
+    public function assegnaCapoSquadraAjax(Request $request)
+      {
+        $cacciatore_id = $request->cacciatore_id;
+        $squadra_id = $request->squadra_id;
+
+
+        DB::table('tblCacciatoriSquadre')
+        ->where('squadra_id', $squadra_id)
+        ->update(['capo_squadra' => 0]);
+
+        DB::table('tblCacciatoriSquadre')
+        ->where('cacciatore_id', $cacciatore_id)
+        ->where('squadra_id', $squadra_id)
+        ->update(['capo_squadra' => 1]);
+
+        echo "Caposquadra assegnato correttamente";
+
+      }
 }
