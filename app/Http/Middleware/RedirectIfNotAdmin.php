@@ -21,8 +21,8 @@ class RedirectIfNotAdmin
         
         if(!$user || $user->ruolo != 'admin')
             // OPPURE redirect alla home !!!
-            abort('403','Impossibile accedere. Privilegi insufficienti!');
-            //redirect('/login');
+            //abort('403','Impossibile accedere. Privilegi insufficienti!');
+            return redirect()->route('login')->with('status', 'Impossibile accedere. Privilegi insufficienti!');;
         return $next($request);
     }
 }

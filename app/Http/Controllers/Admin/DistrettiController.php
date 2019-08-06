@@ -13,6 +13,24 @@ class DistrettiController extends LoginController
 {
 
 
+  /** 
+   * Siccome una UG può avere solo un distretto, faccio selezionare solo le UG che NON HANNO GIA' UN DISTRETTO
+   */
+    private function _getUnita($unita_associate = [])
+      {
+      $utg = UnitaGestione::getAll($sort_by = 'nome');
+      
+      // keeping only those items that pass a given truth test:
+      $utg_filtered =  $utg->filter(function ($u) use ($unita_associate) {
+                          return ( !$u->distretto_id || in_array($u->id, $unita_associate) );
+                    });
+
+      return $utg_filtered->pluck('nome','id');
+      }
+
+
+
+
     private function _saveUtg($request, $distretto)
       {
 
@@ -56,7 +74,9 @@ class DistrettiController extends LoginController
 
         $unita_associate = $distretto->unita->pluck('id')->toArray();
 
-        return view('admin.distretti.form', compact('distretto','unita_associate'));
+        $utg = $this->_getUnita();
+
+        return view('admin.distretti.form', compact('distretto','unita_associate', 'utg'));
     }
 
     /**
@@ -134,7 +154,9 @@ class DistrettiController extends LoginController
 
         $unita_associate = $distretto->unita->pluck('id')->toArray();
 
-        return view('admin.distretti.form', compact('distretto','unita_associate'));
+         $utg = $this->_getUnita($unita_associate);
+
+        return view('admin.distretti.form', compact('distretto','unita_associate', 'utg'));
     }
 
     /**

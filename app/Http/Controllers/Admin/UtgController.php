@@ -12,6 +12,19 @@ class UtgController extends LoginController
 {
 
 
+    private function _getZone($zone_associate = [])
+      {
+      $zone = Zona::getAll($sort_by = 'nome');
+
+      // keeping only those items that pass a given truth test:
+      $zone_filtered =  $zone->filter(function ($z) use ($zone_associate) {
+                          return ( !$z->unita_gestione_id || in_array($z->id, $zone_associate) );
+                    });
+
+      return $zone_filtered->pluck('nome','id');
+      }
+
+
     private function _saveZone(Request $request, $utg)
       {
 
@@ -50,9 +63,9 @@ class UtgController extends LoginController
     {
         $utg = new UnitaGestione;
 
-        $zone_associate = $utg->zone->pluck('id')->toArray();
+        $zone = $this->_getZone();
 
-        return view('admin.utg.form', compact('utg','zone_associate'));
+        return view('admin.utg.form', compact('utg', 'zone'));
     }
 
     /**
@@ -124,7 +137,9 @@ class UtgController extends LoginController
 
         $zone_associate = $utg->zone->pluck('id')->toArray();
 
-        return view('admin.utg.form', compact('utg','zone_associate'));
+        $zone = $this->_getZone($zone_associate);
+
+        return view('admin.utg.form', compact('utg','zone_associate', 'zone'));
 
     }
 
@@ -136,10 +151,12 @@ class UtgController extends LoginController
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {        
         $utg = UnitaGestione::find($id)->fill($request->all());
 
         $this->_saveZone($request, $utg);
+
+        $utg->save();
 
         return redirect()->route("utg.index")->with('status', 'Unità di gestione modificata correttamente!');
     }

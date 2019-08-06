@@ -35,6 +35,13 @@ class Cacciatore extends Model
 
 
 
+	public function getSquadreACapo()
+    {
+    return implode(',', $this->squadre()->wherePivot('capo_squadra',1)->pluck('nome')->toArray());
+    }
+
+
+
 	public function setDataNascitaAttribute($value)
 	 	{
 	  if ($value == '0000-00-00') 

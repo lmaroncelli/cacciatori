@@ -145,7 +145,8 @@ class SquadreController extends LoginController
 
       
         $this->_aggiorna_squadra($request, $squadra);
-      
+
+
         return redirect()->route("squadre.index")->with('status', 'Squadra modificata correttamente!');
     }
 

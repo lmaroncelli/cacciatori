@@ -17,6 +17,7 @@
               <thead>
                 <tr>
                   <th scope="col">Nome</th>
+                  <th>CapoSquadra</th>
                   <th>Login</th>
                   <th></th>
                 </tr>
@@ -24,7 +25,8 @@
               <tbody>
                 @foreach ($cacciatori as $cacciatore)
                   <tr>
-                    <td>{{$cacciatore->nome}}</td>
+                    <td>{{$cacciatore->nome}} {{$cacciatore->cognome}}</td>
+                    <td>{{$cacciatore->getSquadreACapo()}}</td>
                     <td>
                       @if ($cacciatore->utente->login_capabilities)
                         <i class="fa fa-check text-green"></i>

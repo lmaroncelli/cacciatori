@@ -307,7 +307,9 @@ class AzioniCacciaController extends Controller
      */
     public function destroy($id)
     {
-        //
+      AzioneCaccia::destroy($id);
+
+      return redirect()->route("azioni.index")->with('status', 'Azione eliminata correttamente!');        
     }
 
 }
