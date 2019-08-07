@@ -18,6 +18,7 @@ class CreateCacciatore extends Migration
             $table->integer('user_id')->unsigned()->nullable()->default(null);
             $table->string('nome')->default('');
             $table->string('cognome')->default('');
+            $table->string('telefono')->default('');
             $table->string('registro')->nullable()->default(null);
             $table->date('data_nascita')->nullable()->default(null);
             $table->text('nota')->nullable()->default(null);

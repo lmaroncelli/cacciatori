@@ -49,6 +49,17 @@ class Squadra extends Model
       return $this->cacciatori()->wherePivot('capo_squadra',1)->first();
       }
 
+
+    public function getNomeCapoSquadra()
+      {
+        if (!is_null($caposquadra = $this->getCapoSquadra())) {
+          return $caposquadra->nome . ' ' . $caposquadra->cognome;
+        } else {
+          return '';
+        }
+        
+      }
+
     public function getCacciatoriSelect() 
       {
       $cacciatori_arr = [];

@@ -55,7 +55,14 @@ class HomeController extends Controller
         // RAGGRUPPO le mie azioni in base alla zona
         foreach ($azioni as $azione) 
           {
+          if (is_null($azione->note)) 
+            {
+            $azione->note = '';
+            }
           $azione->dalle_alle = $azione->getDalleAlle();
+          $azione->nomesquadra = $azione->squadra->nome;
+          $azione->caposquadra = $azione->squadra->getNomeCapoSquadra();
+          $azione->tel_capo = optional($azione->squadra->getCapoSquadra())->telefono;
           $azioni_di_zona[$azione->zona_id][] = $azione;
           $nomi_di_zona[$azione->zona_id] = $azione->zona->nome;
           }

@@ -32,7 +32,7 @@
           <form role="form" action="{{ route('azioni.update', $azione->id) }}" method="POST">
           {{ method_field('PUT') }}
         @else
-          <form role="form" action="{{ route('azioni.create') }}" method="POST" enctype="multipart/form-data">
+          <form role="form" action="{{ route('azioni.store') }}" method="POST" enctype="multipart/form-data">
         @endif
           {!! csrf_field() !!}
           <div class="box-body">

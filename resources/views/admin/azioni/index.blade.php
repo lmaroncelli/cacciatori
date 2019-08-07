@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="squadre">Squadra:</label>
+                  <label for="azioni">Squadra:</label>
                   <select name="squadra" id="squadra" class="form-control">
                     @foreach(['0' => 'Selziona...'] + $squadre as $id => $nome)
                       <option value="{{$id}}" 
@@ -81,6 +81,13 @@
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
+            {{-- ATTENZIONE: se lo metto dentro la tabella il dataTables mi toglie i form  --}}
+            @foreach ($azioni as $azione)
+              <form action="{{ route('azioni.destroy', $azione->id) }}" id="form_{{$azione->id}}" method="POST">
+                {!! csrf_field() !!}
+                @method('DELETE')
+              </form>
+            @endforeach
             <table class="table table-hover" id="tbl_azioni">
               <thead>
                 <tr>
@@ -121,10 +128,6 @@
               </thead>
               <tbody>
                 @foreach ($azioni as $azione)
-                  <form action="{{ route('azioni.destroy', $azione->id) }}" id="form_{{$azione->id}}" method="POST">
-                    {!! csrf_field() !!}
-                    @method('DELETE')
-                  </form>
                   <tr>
                     <td>{{$azione->getDalleAlle()}}</td>
                     <td>{{optional($azione->squadra)->nome}}</td>

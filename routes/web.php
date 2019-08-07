@@ -45,9 +45,9 @@ Route::post('getDistrettoFromSquadraAjax','Admin\SelectConditionalController@get
 Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromUtgAjax')->name('get_zone_form_utg');
 
 
-Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
-Route::post('azioni','Admin\AzioniCacciaController@index')->name('azioni_search');
 Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
+Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search');
+Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
 
 Route::group(['middleware' => ['admin']], function () {
 
