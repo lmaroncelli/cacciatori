@@ -27,7 +27,7 @@
                 <th scope="col">Nome</th>
                 <th>Zone</th>
                 <th>Cacciatori</th>
-                <th></th>
+                @role('admin')<th></th>@endrole
                 <th></th>
               </tr>
             </thead>
@@ -41,7 +41,9 @@
                   <td>{{optional($squadra->distretto)->nome}}</td>
                   <td>{{$squadra->nome}}</td>
                   <td>{{$squadra->getZone()}}</td>          
-                  <td>{{$squadra->getCacciatori()}}</td>     
+                  <td>{{$squadra->getCacciatori()}}</td>
+
+                  @role('admin')
                   <td>
                     <select class="form-control capoSquadra" name="capoSquadra" data-id_squadra="{{$squadra->id}}">
                       @foreach ([0 => 'Seleziona caposquadra...'] + $squadra->getCacciatoriSelect() as $id => $nome)
@@ -54,7 +56,8 @@
                       @endforeach
                     </select>
                   </div>  
-                  </td>     
+                  </td>
+                  @endrole
                   <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
                   <td>
                     <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$squadra->id}}"><i class="fa fa-trash"></i> elimina</button>

@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\CoordinataPoligono;
-use App\Distretto;
-use App\Http\Controllers\Controller;
-use App\Poligono;
 use App\Zona;
-use Illuminate\Http\Request;
+use App\Distretto;
 use App\UnitaGestione;
+use App\CoordinataPoligono;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\LoginController;
 
-class PoligoniController extends Controller
+class PoligoniController extends LoginController
 {
     public function salvaCoordinatePoligonoAjax(Request $request) 
     	{

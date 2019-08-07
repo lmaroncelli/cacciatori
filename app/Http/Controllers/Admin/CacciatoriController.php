@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Cacciatore;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ModificaCacciatoreRequest;
 use App\User;
+use App\Cacciatore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Admin\LoginController;
 
-class CacciatoriController extends Controller
+class CacciatoriController extends LoginController
 {
     /**
      * Display a listing of the resource.

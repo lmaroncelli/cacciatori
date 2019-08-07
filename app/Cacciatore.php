@@ -26,13 +26,16 @@ class Cacciatore extends Model
  	}
 
 
-
-
 	public function squadre()
 	  {
 	  return $this->belongsToMany('App\Squadra', 'tblCacciatoriSquadre', 'cacciatore_id', 'squadra_id')->withPivot('capo_squadra')->withTimestamps();
 	  }
 
+
+  public function getSquadre()
+    {
+    return implode(',', $this->squadre()->pluck('nome')->toArray());
+    }
 
 
 	public function getSquadreACapo()

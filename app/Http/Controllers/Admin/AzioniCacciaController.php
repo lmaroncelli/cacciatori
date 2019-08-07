@@ -10,10 +10,10 @@ use App\Distretto;
 use Carbon\Carbon;
 use App\AzioneCaccia;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\LoginController;
 
-class AzioniCacciaController extends Controller
+class AzioniCacciaController extends LoginController
 {
 
 

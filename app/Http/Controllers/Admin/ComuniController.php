@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Comune;
-use App\Http\Controllers\Controller;
 use App\Provincia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\LoginController;
 
-class ComuniController extends Controller
+class ComuniController extends LoginController
 {
     /**
      * Display a listing of the resource.
