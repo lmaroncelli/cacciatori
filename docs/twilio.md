@@ -2,7 +2,7 @@
 
 account
 lmaroncelli@gmail.com
-Labietta610?!?
+<solita>610?!?
 
 ho verificato il mio numero personale (per le incoming calls on Twilio)
 
@@ -16,8 +16,8 @@ composer require twilio/sdk
 
 aggiungere file .env
 
-TWILIO_SID=AC7576f0befa61d73c8bf20315da31ed8a
-TWILIO_TOKEN=84b5fc8a254787a55ee74af215814615
+TWILIO_SID=
+84b5fc8a254787a55ee74af215814615
 TWILIO_FROM=+12093250779
 
 
