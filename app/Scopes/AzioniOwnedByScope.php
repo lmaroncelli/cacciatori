@@ -22,7 +22,8 @@ class AzioniOwnedByScope implements Scope
           {
           if(Auth::user()->hasRole('cacciatore'))
             {
-            $builder->where('tblAzioniCaccia.user_id', '=', Auth::id());  
+            $squadre_cacciatore_capo_ids = Auth::user()->cacciatore->squadreACapo->pluck('id');
+            $builder->where('tblAzioniCaccia.user_id', '=', Auth::id())->orWhereIn('tblAzioniCaccia.squadra_id',$squadre_cacciatore_capo_ids);
             }
           }
     }

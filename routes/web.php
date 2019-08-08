@@ -46,7 +46,7 @@ Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromU
 
 
 Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
-Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search');
+Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')->middleware('log');
 Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
 
 Route::group(['middleware' => ['admin']], function () {
