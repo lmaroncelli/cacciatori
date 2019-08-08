@@ -33,6 +33,9 @@ Route::get('/home', 'HomeController@showMappaAttivita')->name('home');
 
 
 
+Route::get('/reply', 'SmsController@reply')->name('reply_sms');
+
+
 Route::resource('distretti', 'Admin\DistrettiController');
 Route::resource('utg', 'Admin\UtgController');
 Route::resource('squadre', 'Admin\SquadreController');
