@@ -93,10 +93,7 @@ class SmsController extends Controller
 
       $azione->save();
 
-    
-      
-
-       $response_body = "Azione inserita correttamente dal numero: ".$number;
+      $response_body = "Azione inserita correttamente dal numero: ".$number;
 
 
       $response = new MessagingResponse();
@@ -112,9 +109,14 @@ class SmsController extends Controller
        // Set the content-type to XML to send back TwiML from the PHP Helper Library
       header("content-type: text/xml");
       
-      echo "<Response>
-            <Say>Errore: ".$e->getMessage()."</Say>
-          </Response>";
+      $response = new MessagingResponse();
+
+      $response->message(
+          $e->getMessage()
+      );
+
+      echo $response;
+      
       }
     
     }
