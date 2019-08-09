@@ -61,6 +61,11 @@
             </div>
 
             <div class="form-group">
+              <label for="telefono">Telefono</label>
+              <input type="text" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="{{ old('telefono') != '' ?  old('telefono') : $cacciatore->telefono}}" required="required">
+            </div>
+
+            <div class="form-group">
               <label for="data_nascita">Data di nascita</label>
               <div class="input-group date">
                 {{-- <div class="input-group-addon">

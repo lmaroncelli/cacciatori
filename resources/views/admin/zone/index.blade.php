@@ -26,6 +26,7 @@
               <colgroup>
                     <col></col>
                     <col class="success"></col>
+                    <col class="success"></col>
                     <col></col>
                     <col></col>
                     <col></col>
@@ -34,6 +35,7 @@
               <thead>
                 <tr>
                   <th>Unità di gestione</th>
+                  <th>ID</th>
                   <th scope="col">Nome</th>
                   <th>Tipo</th>
                   <th>Squadre</th>
@@ -49,6 +51,7 @@
                   </form>
                   <tr>
                     <td>{{optional($zona->unita)->nome}}</td>
+                    <td>{{$zona->id}}</td>
                     <td>{{$zona->nome}}</td>
                     <td>{{$zona->tipo}}</td>
                     <td>{{$zona->getSquadre()}}</td>

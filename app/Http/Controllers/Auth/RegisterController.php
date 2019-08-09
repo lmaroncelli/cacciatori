@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Cacciatore;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ModificaUtenteRequest;
 use App\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Cacciatore;
+use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\ModificaUtenteRequest;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -47,6 +48,15 @@ class RegisterController extends Controller
     }
 
 
+
+    public function _validate(Request $request)
+      {
+         $request->validate([
+            'telefono' => ['required', new PhoneNumber]
+        ]);
+      }
+
+
     /**
      * Handle a registration request for the application.
      *
@@ -55,6 +65,9 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+
+        $this->_validate($request);
+
         if ($request->has('user') && $request->get('user') == 'cacciatore') 
           {
           $name = $request->get('nome') . ' ' . $request->get('cognome');
@@ -183,6 +196,7 @@ class RegisterController extends Controller
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
     {
         
+        $this->_validate($request);
 
         $utente = User::find($utente_id);
 

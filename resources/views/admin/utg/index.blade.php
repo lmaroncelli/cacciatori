@@ -24,6 +24,7 @@
               <colgroup>
                   <col></col>
                   <col class="success"></col>
+                  <col class="success"></col>
                   <col></col>
                   <col></col>
                   <col></col>
@@ -31,6 +32,7 @@
               <thead>
                 <tr>
                   <th>Distretto</th>
+                  <th>ID</th>
                   <th scope="col">Nome</th>
                   <th>Zone</th>
                   <th></th>
@@ -44,6 +46,7 @@
                   </form>
                   <tr>
                     <td>{{optional($unita->distretto)->nome}}</td>
+                    <td>{{$unita->id}}</td>
                     <td>{{$unita->nome}}</td>
                     <td>{{$unita->getZone()}}</td>
 
