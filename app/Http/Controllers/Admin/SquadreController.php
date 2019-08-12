@@ -9,6 +9,14 @@ use App\Http\Controllers\Admin\LoginController;
 class SquadreController extends LoginController
 {
 
+     public function __construct()
+      {
+      $this->middleware('notRole:cacciatore')->only(['create','destroy']);
+      
+      // Invoke parent
+      parent::__construct();
+      }
+
 
     private function _aggiorna_squadra(Request $request, &$squadra)
       {

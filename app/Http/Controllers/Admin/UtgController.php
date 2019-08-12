@@ -14,7 +14,7 @@ class UtgController extends LoginController
 
     public function __construct()
       {
-      $this->middleware('notRole:cacciatore')->only(['create']);
+      $this->middleware('notRole:cacciatore')->only(['create','destroy']);
       
       // Invoke parent
       parent::__construct();

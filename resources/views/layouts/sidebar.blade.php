@@ -68,7 +68,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('squadre.index') }}">Elenco</a></li>
+            @not_role('cacciatore')
             <li><a href="{{ route('squadre.create') }}">Nuova</a></li>
+            @endnot_role
           </ul>
         </li>
       @endnot_role

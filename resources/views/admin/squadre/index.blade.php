@@ -6,11 +6,12 @@
       <div class="box">
           <div class="box-header">
             <h3 class="box-title">Elenco squadre</h3>
-
             <div class="box-tools">
+              @not_role('cacciatore')
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('squadre.create') }}" title="Nuova squadra" class="btn btn-success"><i class="fa fa-plus"></i> Nuova Squadra</a>
               </div>
+              @endnot_role
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -20,6 +21,10 @@
                 <col class="success"></col>
                 <col></col>
                 <col></col>
+                @not_role('cacciatore')
+                <col></col>
+                <col></col>
+                @endnot_role
             </colgroup>
             <thead>
               <tr>
@@ -28,7 +33,10 @@
                 <th>Zone</th>
                 <th>Cacciatori</th>
                 @role('admin')<th></th>@endrole
+                @not_role('cacciatore')
                 <th></th>
+                <th></th>
+                @endnot_role
               </tr>
             </thead>
             <tbody>
@@ -58,10 +66,13 @@
                   </div>  
                   </td>
                   @endrole
+                  
+                  @not_role('cacciatore')
                   <td> <a href="{{ route('squadre.edit',$squadra->id) }}" title="Modifica squadra" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
                   <td>
                     <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$squadra->id}}"><i class="fa fa-trash"></i> elimina</button>
                   </td>
+                  @endnot_role
                 </tr>
               @endforeach
             </tbody>
