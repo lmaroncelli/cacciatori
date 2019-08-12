@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckIfNotRole
+class ForbiddenIfRole
 {
     /**
      * Handle an incoming request.
@@ -20,13 +20,13 @@ class CheckIfNotRole
 
         $role = $request->role;
 
-        if($user && !is_null($role) && $user->ruolo != $role)
-          {
-            return $next($request);
-          }
-        else 
+        if($user && !is_null($role) && $user->ruolo == $role)
           {
           return back()->with('status', 'Non hai i permessi !!');
+          }
+          else 
+          {
+          return $next($request);
           }
     }
 }
