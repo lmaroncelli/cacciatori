@@ -62,7 +62,9 @@ class UtentiController extends Controller
      */
     public function edit($id)
     {
-        //
+      $utente = User::find($id);
+      
+      return view('admin.utenti.form', compact('utente'));
     }
 
     /**

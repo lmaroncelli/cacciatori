@@ -7,9 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco unità di gestione</h3>
             <div class="box-tools">
-              <div class="input-group input-group-sm" style="width: 150px;">
-                  <a href="{{ route('utg.create') }}" title="Nuova Unità gestione" class="btn btn-success"><i class="fa fa-plus"></i> Nuova Unità gestione</a>
-              </div>
+              @not_role('cacciatore')
+                <div class="input-group input-group-sm" style="width: 150px;">
+                    <a href="{{ route('utg.create') }}" title="Nuova Unità gestione" class="btn btn-success"><i class="fa fa-plus"></i> Nuova Unità gestione</a>
+                </div>
+              @endnot_role
             </div>
           </div>
           <div class="box-body table-responsive no-padding">	
@@ -26,7 +28,10 @@
                   <col class="success"></col>
                   <col class="success"></col>
                   <col></col>
+                  @not_role('cacciatore')
                   <col></col>
+                  <col></col>
+                  @endnot_role
                   <col></col>
               </colgroup>
               <thead>
@@ -35,6 +40,10 @@
                   <th>ID</th>
                   <th scope="col">Nome</th>
                   <th>Zone</th>
+                  @not_role('cacciatore')
+                  <th></th>
+                  <th></th>
+                  @endnot_role
                   <th></th>
                 </tr>
               </thead>
@@ -50,13 +59,17 @@
                     <td>{{$unita->nome}}</td>
                     <td>{{$unita->getZone()}}</td>
 
+                    @not_role('cacciatore')
                     <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
-                    
+                    @endnot_role
+
                     <td> <a href="{{ route('utg.show',$unita->id) }}" title="Visualizza unita" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
 
+                    @not_role('cacciatore')
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$unita->id}}"><i class="fa fa-trash"></i> elimina</button>
                     </td>
+                    @endnot_role
                   </tr>
                 @endforeach
               </tbody>

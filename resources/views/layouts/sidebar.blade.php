@@ -22,7 +22,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('distretti.index') }}">Elenco</a></li>
+            @not_role('cacciatore')
             <li><a href="{{ route('distretti.create') }}">Nuovo</a></li>
+            @endnot_role
           </ul>
         </li>
 
@@ -35,7 +37,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('utg.index') }}">Elenco</a></li>
+            @not_role('cacciatore')
             <li><a href="{{ route('utg.create') }}">Nuovo</a></li>
+            @endnot_role
           </ul>
         </li>
 
@@ -48,7 +52,9 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('zone.index') }}">Elenco</a></li>
+          @not_role('cacciatore')
           <li><a href="{{ route('zone.create') }}">Nuovo</a></li>
+          @endnot_role
         </ul>
       </li>
 

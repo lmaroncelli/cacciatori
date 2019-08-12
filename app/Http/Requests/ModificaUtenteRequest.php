@@ -24,7 +24,6 @@ class ModificaUtenteRequest extends FormRequest
     public function rules()
     {   
        $rules =  [
-               /*'username' => 'required|string|max:20|unique:users,username,'.$this->get('utente_id'),*/ 
                'email' => 'required|string|email|max:255|unique:users,email,'.$this->get('utente_id'),
            ];
 

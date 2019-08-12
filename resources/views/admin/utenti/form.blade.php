@@ -16,11 +16,12 @@
     <div class="col-xs-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Utente</h3>
+          <h3 class="box-title">Utente @if ($utente->exists) ({{$utente->ruolo}}) @endif</h3>
         </div>
         <!-- /.box-header -->
         @if ($utente->exists)
           <form role="form" action="{{ route('utenti.modifica',$utente->id) }}" method="POST">
+            <input type="hidden" name="utente_id" value="{{$utente->id}}">
         @else
           {{-- registro nuovo utente cacciatore --}}
           <form method="POST" action="{{ route('register') }}">
@@ -34,31 +35,26 @@
 							  <input type="checkbox" name="login_capabilities" value="1" @if ($utente->hasLoginCapabilites()) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="Login Disabilitato" data-on="Login Abilitato"> <b>LOGIN</b>
 							</label>
             </div>
-            @else
-              <div class="form-group">
-                <label for="ruolo">Ruolo</label>
-                <select class="form-control" name="ruolo" id="ruolo">
-                  <option value="consultatore" 
-                    @if (old('ruolo') == 'consultatore') selected="selected" @endif
-                    >Consultatore</option>
-                  <option value="cartografo"
-                    @if (old('ruolo') == 'cartografo') selected="selected" @endif                  
-                    >Cartografo</option>
-                </select>
-              </div>
             @endif
+              
+            <div class="form-group">
+              <label for="ruolo">Ruolo</label>
+              <select class="form-control" name="ruolo" id="ruolo">
+                 
+                  @foreach (['consultatore', 'cartografo', 'admin'] as $ruolo)
+                    <option value="{{$ruolo}}"
+                      @if ($utente->ruolo == $ruolo || old('ruolo') == $ruolo) selected="selected" @endif                  
+                      >{{ucfirst($ruolo)}}</option>
+                  @endforeach
+              </select>
+            </div>
             
             <div class="form-group">
-              <label for="nome">Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $utente->nome}}" required="required">
+              <label for="name">Nome</label>
+              <input type="text" class="form-control" name="name" id="name" placeholder="name" value="{{ old('name') != '' ?  old('name') : $utente->name}}" required="required">
             </div>
 
-            <div class="form-group">
-              <label for="cognome">Cognome</label>
-              <input type="text" class="form-control" name="cognome" id="cognome" placeholder="cognome" value="{{ old('cognome') != '' ?  old('cognome') : $utente->cognome}}" required="required">
-            </div>
-
-
+          
             @include('auth._subform_register_utente')
 
 

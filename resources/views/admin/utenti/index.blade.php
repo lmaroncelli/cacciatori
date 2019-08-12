@@ -17,6 +17,7 @@
               <thead>
                 <tr>
                   <th scope="col">Nome</th>
+                  <th>Email</th>
                   <th>Ruolo</th>
                   <th>Login</th>
                   <th></th>
@@ -26,15 +27,28 @@
                 @foreach ($utenti as $utente)
                   <tr>
                     <td>{{$utente->name}}</td>
-                    <td>{{$utente->ruolo}}</td>
+                    <td>{{$utente->email}}</td>
+                    <td>{{ucfirst($utente->ruolo)}}</td>
                     <td>
-                      @if ($utente->login_capabilities)
+                      @if ($utente->login_capabilities || $utente->hasRole('admin'))
                         <i class="fa fa-check text-green"></i>
                       @else
                         <i class="fa fa-times text-red"></i>
                       @endif
                     </td>
-                    <td> <a href="{{ route('utenti.edit',$utente->id) }}" title="Modifica utente" class="btn btn-success btn-sm">modifica</a> </td>
+                    <td>
+                      {{-- modifico solo se:
+                        - non è un admin
+                        - è un admin e sono IO
+                        - oppure io sono lmaroncelli@gmail.com
+                       --}}
+                      @if(Auth::user()->email == 'lmaroncelli@gmail.com' || !$utente->hasRole('admin') || Auth::id() == $utente->id)
+                        <a href="{{ route('utenti.edit',$utente->id) }}" title="Modifica utente" class="btn btn-success btn-sm">modifica</a>
+                      @else
+                       <a href="{{ route('utenti.edit',$utente->id) }}" title="Modifica utente" class="btn btn-success btn-sm disabled">modifica</a>
+                      @endif
+
+                    </td>
                   </tr>
                 @endforeach
               </tbody>

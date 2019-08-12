@@ -71,7 +71,7 @@ class RegisterController extends Controller
 
         $this->_validatePhone($request);
       
-        $ruolo = $request->has('ruolo') ? $request->ruolo : 'admin';
+        $ruolo = $request->has('ruolo') ? $request->get('ruolo') : 'admin';
 
         $name = $request->get('nome') . ' ' . $request->get('cognome');
         $new_request['name'] = $name;
@@ -102,9 +102,8 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
+    { 
         $validation_rules = [
-              /*'username' => 'required|string|max:20|unique:users', */
               'email' => 'required|string|email|max:255|unique:users',
               'password' => 'required|string|min:6|confirmed',
           ];
@@ -125,7 +124,7 @@ class RegisterController extends Controller
             'data_nascita.date_format' => 'La data di nascita non ha un formato valido',
             ];
 
-        /*aggiungo le regole di validazione per il volontario*/
+        /*aggiungo le regole di validazione per il cacciatore*/
         if ( array_key_exists('user', $data) && $data['user'] == 'cacciatore' ) 
           {
           $validation_rules['data_nascita'] = 'required|date_format:d/m/Y';
@@ -194,84 +193,87 @@ class RegisterController extends Controller
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
     { 
       $utente = User::find($utente_id);
-      
+
+      $ruolo = $request->has('ruolo') ? $request->ruolo : 'admin';
+
       if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
+        {
+        $this->_validatePhone($request);
+        $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
+        if($request->has('squadre'))
           {
-          $this->_validatePhone($request);
-          $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
-          $utente->ruolo = 'cacciatore';
-          if($request->has('squadre'))
-            {
-            $utente->cacciatore->squadre()->sync($request->squadre);
-            }
+          $utente->cacciatore->squadre()->sync($request->squadre);
           }
-        else
+        }
+      else 
+        {
+        $utente->name = $request->get('name');
+        }
+        
+      $utente->email = $request->get('email');
+      $utente->ruolo = $ruolo;
+      
+      // $utente->username = $request->get('username');
+
+      if ($request->filled('login_capabilities')) 
+        {
+        $utente->login_capabilities = true;
+        }
+      else
+        {
+        $utente->login_capabilities = false;
+        }
+
+      if ($request->filled('password')) 
+        {
+        $utente->password = Hash::make($request->get('password'));
+        }
+
+      DB::transaction(function() use ($request, $utente) {
+
+        $utente->save();
+
+        if ( !is_null($utente) && $request->has('ruolo') && $request->get('ruolo') == 'cacciatore')
           {
-          $utente->name = $request->get('name');
-          }
+            
+          $cacciatore = $utente->cacciatore;
+          /////////////////////////////////////////////////////////////////////
+          // ho inserito il salvataggio della data come Carbon in un mutator //
+          /////////////////////////////////////////////////////////////////////
+          $cacciatore->fill($request->except('elimina'));
+          $cacciatore->save();
 
-        $utente->email = $request->get('email');
-        /*$utente->username = $request->get('username');*/
-
-        if ($request->filled('login_capabilities')) 
-          {
-          $utente->login_capabilities = true;
-          }
-        else
-          {
-          $utente->login_capabilities = false;
-          }
-
-        if ($request->filled('password')) 
-          {
-          $utente->password = Hash::make($request->get('password'));
-          }
-
-        DB::transaction(function() use ($request, $utente) {
-
-          $utente->save();
-
-          if ( !is_null($utente) && $request->has('ruolo') && $request->get('ruolo') == 'cacciatore')
-            {
-              
-            $cacciatore = $utente->cacciatore;
-            /////////////////////////////////////////////////////////////////////
-            // ho inserito il salvataggio della data come Carbon in un mutator //
-            /////////////////////////////////////////////////////////////////////
-            $cacciatore->fill($request->except('elimina'));
-            $cacciatore->save();
-
-            if ($request->filled('elimina') && $request->get('elimina') == 1) 
-              {
-
-              //$user = $cacciatore->utente;
-              
-              // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
-              // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
-              $cacciatore->delete();
-
-              //$user->login_capabilities = false;
-              //$user->save();
-              } 
-            }  
-
-        });
-
-
-        if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
-          {
           if ($request->filled('elimina') && $request->get('elimina') == 1) 
             {
-            return redirect('cacciatori')->with('status', 'Cacciatore eliminato!');
+
+            //$user = $cacciatore->utente;
+            
+            // Now, when you call the delete method on the model, the deleted_at column will be set to the current date and time. 
+            // And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+            $cacciatore->delete();
+
+            //$user->login_capabilities = false;
+            //$user->save();
             } 
-          else 
-            {
-            return redirect('cacciatori')->with('status', 'Cacciatore modificato correttamente!');
-            }  
-          }
-        else
+          }  
+
+      });
+
+
+      if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
+        {
+        if ($request->filled('elimina') && $request->get('elimina') == 1) 
           {
-          return redirect('utenti')->with('status', 'Admin modificato correttamente!');
-          }
+          return redirect('cacciatori')->with('status', 'Cacciatore eliminato!');
+          } 
+        else 
+          {
+          return redirect('cacciatori')->with('status', 'Cacciatore modificato correttamente!');
+          }  
+        }
+      else
+        {
+        return redirect('utenti')->with('status', 'Utente con ruolo <b>'.$ruolo.'</b> modificato correttamente!');
+        }
     }
 }

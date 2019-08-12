@@ -12,6 +12,14 @@ class UtgController extends LoginController
 {
 
 
+    public function __construct()
+      {
+      $this->middleware('notRole:cacciatore')->only(['create']);
+      
+      // Invoke parent
+      parent::__construct();
+      }
+
     private function _getZone($zone_associate = [])
       {
       $zone = Zona::getAll($sort_by = 'nome');

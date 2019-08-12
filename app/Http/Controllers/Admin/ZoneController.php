@@ -11,6 +11,16 @@ use Illuminate\Http\Request;
 
 class ZoneController extends LoginController
 {
+
+     public function __construct()
+      {
+      $this->middleware('notRole:cacciatore')->only(['create']);
+      
+      // Invoke parent
+      parent::__construct();
+      }
+
+      
     /**
      * Display a listing of the resource.
      *

@@ -13,6 +13,15 @@ class DistrettiController extends LoginController
 {
 
 
+   public function __construct()
+    {
+      $this->middleware('notRole:cacciatore')->only(['create']);
+      
+      // Invoke parent
+      parent::__construct();
+    }
+
+
   /** 
    * Siccome una UG può avere solo un distretto, faccio selezionare solo le UG che NON HANNO GIA' UN DISTRETTO
    */
