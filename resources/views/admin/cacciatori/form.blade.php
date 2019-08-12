@@ -16,7 +16,7 @@
     <div class="col-xs-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Distretto</h3>
+          <h3 class="box-title">Cacciatore</h3>
         </div>
         <!-- /.box-header -->
         @if ($cacciatore->exists)
@@ -26,7 +26,7 @@
           {{-- registro nuovo utente cacciatore --}}
           <form method="POST" action="{{ route('register') }}">
         @endif
-        <input type="hidden" name="user" value="cacciatore">
+        <input type="hidden" name="ruolo" value="cacciatore">
           {!! csrf_field() !!}
           <div class="box-body">
 
@@ -62,7 +62,7 @@
 
             <div class="form-group">
               <label for="telefono">Telefono</label>
-              <input type="text" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="{{ old('telefono') != '' ?  old('telefono') : $cacciatore->telefono}}" required="required">
+              <input type="text" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="{{ old('telefono') != '' ?  old('telefono') : $cacciatore->telefono}}">
             </div>
 
             <div class="form-group">

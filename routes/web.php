@@ -23,14 +23,12 @@ use App\Http\Controllers\showMappaAttivita;
 // la home diventa il mio loginForm
 Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
-Route::post('utenti/modifica/{utente_id}', 'Auth\RegisterController@modificaUtente')->name('utenti.modifica');
+
 
 Auth::routes();
 
 
-
 Route::get('/home', 'HomeController@showMappaAttivita')->name('home');
-
 
 
 Route::get('/reply', 'SmsController@reply')->name('reply_sms');
@@ -53,6 +51,10 @@ Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_
 Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
 
 Route::group(['middleware' => ['admin']], function () {
+
+  Route::post('utenti/modifica/{utente_id}', 'Auth\RegisterController@modificaUtente')->name('utenti.modifica');
+  
+  Route::resource('utenti', 'Admin\UtentiController');
 
 	Route::post('getUnitaGestioneAjax','Admin\SelectConditionalController@getUnitaGestioneAjax')->name('get_unita_gestione');
 

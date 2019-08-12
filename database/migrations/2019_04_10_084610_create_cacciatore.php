@@ -16,12 +16,12 @@ class CreateCacciatore extends Migration
         Schema::create('tblCacciatori', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->nullable()->default(null);
-            $table->string('nome')->default('');
-            $table->string('cognome')->default('');
-            $table->string('telefono')->default('');
+            $table->string('nome')->default('')->nullable();
+            $table->string('cognome')->default('')->nullable();
+            $table->string('telefono')->default('')->nullable();
             $table->string('registro')->nullable()->default(null);
             $table->date('data_nascita')->nullable()->default(null);
-            $table->text('nota')->nullable()->default(null);
+            $table->text('note')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
         });

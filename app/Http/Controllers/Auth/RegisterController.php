@@ -49,11 +49,14 @@ class RegisterController extends Controller
 
 
 
-    public function _validate(Request $request)
+    public function _validatePhone(Request $request)
       {
-         $request->validate([
-            'telefono' => ['required', new PhoneNumber]
-        ]);
+         if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore' && $request->filled('login_capabilities')) 
+         {
+            $request->validate([
+                'telefono' => ['required', new PhoneNumber]
+            ]);
+         }
       }
 
 
@@ -66,18 +69,13 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
 
-        $this->_validate($request);
+        $this->_validatePhone($request);
+      
+        $ruolo = $request->has('ruolo') ? $request->ruolo : 'admin';
 
-        if ($request->has('user') && $request->get('user') == 'cacciatore') 
-          {
-          $name = $request->get('nome') . ' ' . $request->get('cognome');
-          $new_request['name'] = $name;
-          $new_request['ruolo'] = 'cacciatore';
-          }
-        else
-          {
-          $new_request['ruolo'] = 'admin';
-          }
+        $name = $request->get('nome') . ' ' . $request->get('cognome');
+        $new_request['name'] = $name;
+        $new_request['ruolo'] = $ruolo;
        
         $request->merge($new_request);
         
@@ -86,13 +84,13 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
 
-        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+        if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
           {
           return redirect('cacciatori')->with('status', 'Cacciatore creato correttamente!');
           }
         else
           {
-          return redirect('utenti')->with('status', 'Admin reato correttamente!');
+          return redirect('utenti')->with('status', 'Utente con ruolo <b>'.$ruolo.'</b> creato correttamente!');
           }
 
     }
@@ -194,14 +192,12 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function modificaUtente(ModificaUtenteRequest $request, $utente_id)
-    {
-        
-        $this->_validate($request);
-
-        $utente = User::find($utente_id);
-
-        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+    { 
+      $utente = User::find($utente_id);
+      
+      if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
           {
+          $this->_validatePhone($request);
           $utente->name = $request->get('nome') . ' ' . $request->get('cognome');
           $utente->ruolo = 'cacciatore';
           if($request->has('squadre'))
@@ -235,7 +231,7 @@ class RegisterController extends Controller
 
           $utente->save();
 
-          if ( !is_null($utente) && $request->has('user') && $request->get('user') == 'cacciatore')
+          if ( !is_null($utente) && $request->has('ruolo') && $request->get('ruolo') == 'cacciatore')
             {
               
             $cacciatore = $utente->cacciatore;
@@ -262,7 +258,7 @@ class RegisterController extends Controller
         });
 
 
-        if ($request->has('user') && $request->get('user') == 'cacciatore') 
+        if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
           {
           if ($request->filled('elimina') && $request->get('elimina') == 1) 
             {

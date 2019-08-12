@@ -80,7 +80,21 @@
             <li><a href="{{ route('cacciatori.create') }}">Nuovo</a></li>
           </ul>
         </li>
-      @endrole
+
+        {{-- Utenti --}}
+        <li class="treeview @if (in_array('utenti',Request::segments())) active @endif">
+          <a href="#"><i class="fa fa-user"></i> <span>Utenti</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('utenti.index') }}">Elenco</a></li>
+            <li><a href="{{ route('utenti.create') }}">Nuovo</a></li>
+          </ul>
+        </li>
+      
+        @endrole
 
       
 

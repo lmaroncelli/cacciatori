@@ -57,4 +57,6 @@ class User extends Authenticatable
       {
       return $this->ruolo == 'admin' || $this->login_capabilities;
       }
+
+      
 }

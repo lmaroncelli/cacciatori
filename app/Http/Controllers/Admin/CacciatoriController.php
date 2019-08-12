@@ -18,7 +18,7 @@ class CacciatoriController extends LoginController
     public function index()
     {
         
-        $cacciatori = Cacciatore::all();
+        $cacciatori = Cacciatore::with(['utente'])->get();
 
         return view('admin.cacciatori.index', compact('cacciatori'));
     }
