@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\LoginController;
 
-class UtentiController extends Controller
+class UtentiController extends LoginController
 {
 
     public function __construct()
