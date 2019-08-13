@@ -14,11 +14,9 @@ class ForbiddenIfRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role)
     {
         $user = Auth::user();
-
-        $role = $request->role;
 
         if($user && !is_null($role) && $user->ruolo == $role)
           {

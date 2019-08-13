@@ -72,9 +72,6 @@ class RegisterController extends Controller
         $this->_validatePhone($request);
       
         $ruolo = $request->has('ruolo') ? $request->get('ruolo') : 'admin';
-
-        $name = $request->get('nome') . ' ' . $request->get('cognome');
-        $new_request['name'] = $name;
         $new_request['ruolo'] = $ruolo;
        
         $request->merge($new_request);

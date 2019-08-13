@@ -6,8 +6,7 @@
 
     <!-- Sidebar Menu -->
 
-
-    {{-- ASSOCIAZIONE --}}
+    @not_role('consultatore')
     <ul class="sidebar-menu" data-widget="tree">      
       
 
@@ -178,7 +177,7 @@
 
     </ul>
     <!-- /.sidebar-menu -->
-
+    @endnot_role
 
     
   </section>

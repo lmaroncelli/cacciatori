@@ -10,6 +10,16 @@ use App\Http\Controllers\Admin\LoginController;
 
 class CacciatoriController extends LoginController
 {
+
+    public function __construct()
+      {
+      
+        $this->middleware('forbiddenIfRole:consultatore');
+      
+        // Invoke parent
+        parent::__construct();
+      }
+
     /**
      * Display a listing of the resource.
      *

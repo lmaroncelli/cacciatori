@@ -23,7 +23,7 @@
           <form role="form" action="{{ route('utenti.modifica',$utente->id) }}" method="POST">
             <input type="hidden" name="utente_id" value="{{$utente->id}}">
         @else
-          {{-- registro nuovo utente cacciatore --}}
+          {{-- registro nuovo utente --}}
           <form method="POST" action="{{ route('register') }}">
         @endif
           {!! csrf_field() !!}

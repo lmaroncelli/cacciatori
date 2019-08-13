@@ -16,7 +16,7 @@ class DistrettiController extends LoginController
    public function __construct()
     {
       $this->middleware('forbiddenIfRole:cacciatore')->only(['create','destroy']);
-      
+      $this->middleware('forbiddenIfRole:consultatore');
       // Invoke parent
       parent::__construct();
     }

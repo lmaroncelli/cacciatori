@@ -17,6 +17,7 @@
               <thead>
                 <tr>
                   <th scope="col">Nome</th>
+                  <th>Email</th>
                   <th>Squadre</th>
                   <th>CapoSquadra</th>
                   <th>Login</th>
@@ -27,6 +28,7 @@
                 @foreach ($cacciatori as $cacciatore)
                   <tr>
                     <td>{{$cacciatore->nome}} {{$cacciatore->cognome}}</td>
+                    <td>{{$cacciatore->utente->email}}</td>
                     <td>{{$cacciatore->getSquadre()}}</td>
                     <td>{{$cacciatore->getSquadreACapo()}}</td>
                     <td>

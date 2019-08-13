@@ -8,6 +8,17 @@ use App\Http\Controllers\Controller;
 
 class UtentiController extends Controller
 {
+
+    public function __construct()
+      {
+      
+        $this->middleware('forbiddenIfRole:cacciatore');
+        $this->middleware('forbiddenIfRole:consultatore');
+      
+      // Invoke parent
+      parent::__construct();
+      }
+
     /**
      * Display a listing of the resource.
      *
