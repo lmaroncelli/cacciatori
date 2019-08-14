@@ -44,6 +44,11 @@ class Zona extends Model
 		      // the Poligono model is automatically assumed to have a zona_id foreign key
 		      return $this->hasOne('App\Poligono','zona_id','id');
 		  }
+    
+    public function referenti()
+      {
+          return $this->belongsToMany('App\Referente', 'tblReferentiZone', 'zona_id', 'referente_id');
+      }
 
 
 

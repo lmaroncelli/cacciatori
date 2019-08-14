@@ -64,7 +64,9 @@ Route::group(['middleware' => ['admin']], function () {
   
   
 	Route::resource('province', 'Admin\ProvinceController');
-	Route::resource('comuni', 'Admin\ComuniController');
+  Route::resource('comuni', 'Admin\ComuniController');
+  
+	Route::resource('referenti', 'Admin\ReferentiController');
 
 
 	Route::post('salva_coordinate_poligono_ajax','Admin\PoligoniController@salvaCoordinatePoligonoAjax')->name('aggiorna_coordinate');

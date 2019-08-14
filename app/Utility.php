@@ -52,6 +52,11 @@ class Utility extends Model
         ];  
 
   private static $tipoZona = ['zona' => 'Zona di braccata', 'particella' => 'Particella di girata'];
+  
+  private static $dipartimentoReferente = ['Carabinieri' => 'Carabinieri', 'Forestale' => 'Forestale', 'Municipale' => 'Municipale', 'Polizia' => 'Polizia'];
+
+
+  
 
 	/**
 	 * Prende l'id del visitatore
@@ -259,6 +264,12 @@ class Utility extends Model
   public static function getTipoZona()
   {
     return self::$tipoZona;
+  }
+
+
+    public static function getDipartimentoReferente()
+  {
+    return self::$dipartimentoReferente;
   }
 
 

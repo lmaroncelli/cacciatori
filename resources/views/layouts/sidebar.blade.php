@@ -106,33 +106,19 @@
       
 
       @role('admin')
-      {{-- Province --}}
-      {{-- <li class="treeview @if (in_array('province',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-envelope-o"></i> <span>Province</span>
+      {{-- Referenti --}}
+      <li class="treeview @if (in_array('referenti',Request::segments())) active @endif">
+        <a href="#"><i class="fa fa-send-o"></i> <span>Referenti</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ route('province.index') }}">Elenco</a></li>
-          <li><a href="{{ route('province.create') }}">Nuova</a></li>
+          <li><a href="{{ route('referenti.index') }}">Elenco</a></li>
+          <li><a href="{{ route('referenti.create') }}">Nuovo</a></li>
 
         </ul>
-      </li> --}}
-
-      {{-- Comuni --}}
-      {{-- <li class="treeview @if (in_array('comuni',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-envelope-o"></i> <span>Comuni</span>
-          <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ route('comuni.index') }}">Elenco</a></li>
-          <li><a href="{{ route('comuni.create') }}">Nuova</a></li>
-
-        </ul>
-      </li> --}}
+      </li>
       @endrole
 
       @not_role('cartografo')

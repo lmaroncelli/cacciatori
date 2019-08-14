@@ -51,7 +51,7 @@ nuova
 
 
             <div class="form-group">
-              <label for="note">Tipo</label>
+              <label for="tipo">Tipo</label>
               <select class="form-control" name="tipo" id="tipo">
                 @foreach (App\Utility::getTipoZona() as $key => $nome)
                   <option value="{{$key}}" @if ($zona->tipo == $key || old('zona') == $key) selected="selected" @endif>{{$nome}}</option>
