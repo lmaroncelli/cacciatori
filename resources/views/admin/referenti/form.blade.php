@@ -33,7 +33,6 @@
             <div class="form-group">
               <label for="dipartimento">Dipartimento</label>
               <select class="form-control" name="dipartimento" id="dipartimento">
-                old = {{old('dipartimento')}}
                 @foreach (App\Utility::getDipartimentoReferente() as $key => $nome)
                   <option value="{{$key}}" @if ($ref->dipartimento == $key || old('dipartimento') == $key) selected="selected" @endif>{{$nome}}</option>
                 @endforeach

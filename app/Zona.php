@@ -51,7 +51,6 @@ class Zona extends Model
       }
 
 
-
 		public function setSuperficieAttribute($value)
 	   {
 	    $this->attributes['superficie'] =  (float) str_ireplace(',', '.', $value);

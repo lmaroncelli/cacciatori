@@ -15,4 +15,17 @@ class Referente extends Model
           return $this->belongsToMany('App\Zone', 'tblReferentiZone', 'referente_id', 'zona_id');
       }
 
+          
+    public static function getAllSelect()
+      {
+        $referenti = [];
+        foreach (Self::all() as $ref) 
+          {
+          $referenti[$ref->id] = $ref->nome . ': ' . $ref->telefono . ' - ' . $ref->dipartimento; 
+          }
+        
+          return $referenti;
+      }
+
+
 }

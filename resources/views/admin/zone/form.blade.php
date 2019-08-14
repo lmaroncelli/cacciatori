@@ -110,6 +110,39 @@ nuova
     </div>
   </div>
 
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#referentiModal">
+  Assegna Referenti
+</button>
+
+<!-- Modal -->
+<form action="" method="POST"  id="assegnaReferentiForm">
+<input type="hidden" name="zona_id" value="{{$zona->id}}">
+<div class="modal fade" id="referentiModal" tabindex="-1" role="dialog" aria-labelledby="referentiModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+              <label for="referente">Referente</label>
+              <select multiple="multiple"  class="form-control select2" data-placeholder="Seleziona i referenti" name="referente" id="referente" style="width: 100%;">
+                @foreach (App\Referente::getAllSelect() as $key => $nome)
+                  <option value="{{$key}}" @if (old('referente') == $key) selected="selected" @endif>{{$nome}}</option>
+                @endforeach
+              </select>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="assegnaReferenti">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 @endsection
 
 
@@ -180,6 +213,28 @@ nuova
 				    	showDistretto(this.value);
 				    });
 
-				});
+        });
+        
+
+        $(function() {
+
+            $("#assegnaReferenti").click(function(){
+              var data = $('#assegnaReferentiForm').serialize();    
+              jQuery.ajax({
+					        url: '{{ route('assegna_referenti_zona') }}',
+					        type: "post",
+					        async: false,
+					        data : { 
+					                data: data,
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+
+					        } // success
+					    }); // ajax
+            }); // end click
+
+       }); // function
+
 	</script>
 @endsection

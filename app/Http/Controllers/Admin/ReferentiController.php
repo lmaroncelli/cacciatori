@@ -29,6 +29,30 @@ class ReferentiController extends LoginController
         ]);
       }
 
+
+
+    public function assegnaReferentiZonaAjax(Request $request)
+      {
+      
+        $params_arr = explode('&', $request->get('data'));
+        
+        foreach ($params_arr as $value) 
+          {
+          list($k, $v) = explode('=',  $value);
+          if ($k == 'zona_id') 
+            {
+            $zona_id = $v;
+            }  
+          else 
+            {
+            $referente[] = $v;
+            }
+          }
+        
+          dd($zona_id, $referente);
+
+      }
+
     /**
      * Display a listing of the resource.
      *
