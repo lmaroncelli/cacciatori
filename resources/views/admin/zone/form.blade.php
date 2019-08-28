@@ -26,12 +26,12 @@ nuova
       <div class="box box-success">
         <div class="box-header with-border">
           <h3 class="box-title">Zona</h3> 
-          @if ($zona->exists && $zona->referenti()->count()) 
+          @if ($zona->exists) 
             <div class="text" style="margin:10px 0">Referenti: <span id="elenco_referenti">{{$zona->getReferenti()}}</span></div>
           @endif
           <div>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#referentiModal">
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#referentiModal" id="triggerModal">
               Assegna Referenti
             </button>
           </div>
@@ -228,6 +228,12 @@ nuova
         
           $(function() {
 
+            
+              $("#triggerModal").click(function(){
+                $("#msg").html('');
+              });
+
+
               $("#assegnaReferenti").click(function(){
                 var data = $('#assegnaReferentiForm').serialize();    
                 jQuery.ajax({
@@ -241,9 +247,23 @@ nuova
   					       	success: function(data) {
                         if(data == 'ok') {
                           $("#msg").html('<div class="alert alert-success alert-dismissible">Referenti asseganti correttamente</div>');
-                          var elenco = '{{$zona->getReferenti()}}';
-                          console.log('elenco =' +elenco);
-                          $("#elenco_referenti").text(elenco);
+                          
+                          ///////////////////////////////////////
+                          jQuery.ajax({
+                              url: '{{ route('aggiorna_referenti_zona') }}',
+                              type: "post",
+                              async: false,
+                              data : { 
+                                      zona_id: '{{$zona->id}}',
+                                    '_token': jQuery('input[name=_token]').val()
+                                    },
+                              success: function(data) {
+                                  $("#elenco_referenti").text(data);
+                              } // success
+                          }); // ajax
+
+                          ///////////////////////////////////////
+                          
                         }
                         else {
                           $("#msg").html('<div class="alert alert-danger alert-dismissible">Si è verificato un errore imprevisto</div>');

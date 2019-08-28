@@ -30,7 +30,15 @@ class ReferentiController extends LoginController
         ]);
       }
 
+    
 
+    public function aggiornaReferentiZonaAjax(Request $request)
+      {
+      $zona_id = $request->get('zona_id');
+      $zona = Zona::find($zona_id);
+
+      return $zona->getReferenti();
+      }
 
     public function assegnaReferentiZonaAjax(Request $request)
       {
@@ -58,7 +66,7 @@ class ReferentiController extends LoginController
           } 
         catch (\Exception $e) 
           {
-          $zona->referenti()->delete();
+          $zona->referenti()->sync([]);
           }
 
         
@@ -161,6 +169,10 @@ class ReferentiController extends LoginController
      */
     public function destroy($id)
     {
-        //
+      $referente = Referente::find($id);
+      $referente->zone()->sync([]);
+      $referente->delete();
+
+      return redirect()->route("referenti.index")->with('status', "Referente eliminato correttamente");
     }
 }

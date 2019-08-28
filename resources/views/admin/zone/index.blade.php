@@ -45,6 +45,7 @@
                   <th>Tipo</th>
                   <th>Squadre</th>
                   @not_role('cacciatore')                  
+                  <th>Referenti</th>
                   <th></th>
                   <th></th>
                   @endnot_role
@@ -65,6 +66,9 @@
                     <td>{{$zona->getSquadre()}}</td>
                     
                     @not_role('cacciatore')
+                    <td>
+                    {{ $zona->referenti->count() ? 'Sì' : 'No' }}
+                    </td>
                     <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
                     @endnot_role
                     

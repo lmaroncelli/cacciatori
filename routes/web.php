@@ -67,7 +67,9 @@ Route::group(['middleware' => ['admin']], function () {
   Route::resource('comuni', 'Admin\ComuniController');
   
 
-	Route::post('assegnaReferentiZona', 'Admin\ReferentiController@assegnaReferentiZonaAjax')->name('assegna_referenti_zona');  
+  Route::post('assegnaReferentiZona', 'Admin\ReferentiController@assegnaReferentiZonaAjax')->name('assegna_referenti_zona');  
+  Route::post('aggiornaReferentiZona', 'Admin\ReferentiController@aggiornaReferentiZonaAjax')->name('aggiorna_referenti_zona');  
+  
 	Route::resource('referenti', 'Admin\ReferentiController');
 
 

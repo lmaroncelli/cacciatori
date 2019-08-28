@@ -94,7 +94,7 @@ class Zona extends Model
 				$p->coordinate()->delete();
 		 		$p->delete();
   			} 	
-  			
+  		$this->referenti()->sync([]);
   	 	self::delete();
 		}
 		
