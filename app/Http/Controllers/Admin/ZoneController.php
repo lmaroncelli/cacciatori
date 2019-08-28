@@ -87,7 +87,7 @@ class ZoneController extends LoginController
      */
     public function show($id)
     {
-        $zona = Zona::with('unita.distretto')->find($id);
+        $zona = Zona::with(['unita.distretto', 'referenti'])->find($id);
 
         $poligono = $zona->poligono;
 

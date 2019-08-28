@@ -12,9 +12,14 @@ class Referente extends Model
 
       public function zone()
       {
-          return $this->belongsToMany('App\Zone', 'tblReferentiZone', 'referente_id', 'zona_id');
+          return $this->belongsToMany('App\Zona', 'tblReferentiZone', 'referente_id', 'zona_id');
       }
 
+    
+    public function getZone() 
+    {
+    return implode(', ', $this->zone()->orderBy('nome')->pluck('nome')->toArray());
+    }
           
     public static function getAllSelect()
       {

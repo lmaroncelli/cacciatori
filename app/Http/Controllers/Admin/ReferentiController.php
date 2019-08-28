@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Zona;
 use App\Referente;
 use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
@@ -49,7 +50,20 @@ class ReferentiController extends LoginController
             }
           }
         
-          dd($zona_id, $referente);
+        $zona = Zona::find($zona_id);
+        
+        try 
+          {
+          $zona->referenti()->sync($referente);
+          } 
+        catch (\Exception $e) 
+          {
+          $zona->referenti()->delete();
+          }
+
+        
+        
+        echo "ok";
 
       }
 
@@ -60,7 +74,7 @@ class ReferentiController extends LoginController
      */
     public function index()
     {
-        $ref = Referente::all();
+        $ref = Referente::with('zone')->get();
 
         return view('admin.referenti.index', compact('ref'));
     }

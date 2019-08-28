@@ -68,6 +68,21 @@ class Zona extends Model
     return implode(',', $this->squadre()->pluck('nome')->toArray());
     }
 
+    public function getReferenti() 
+    {
+    $to_return = [];
+    $arr = $this->referenti()->pluck('nome', 'dipartimento')->toArray();
+    foreach ($arr as $dip => $n) {
+      $to_return[] = $n . ' - ' . $dip;
+    }
+    return implode(', ',$to_return);
+    }
+
+    public function getReferentiIds()
+      {
+        return $this->referenti()->pluck('tblReferenti.id')->toArray();
+      }
+
 		
     // cancella anche il POLIGONO (e le COORDINATE) ASSOCIATO
     public function destroyMe()
@@ -103,7 +118,7 @@ class Zona extends Model
         }
         else 
           {
-          return Self::orderBy($sort_by)->get();
+          return Self::with('referenti')->orderBy($sort_by)->get();
           }
         }
       }

@@ -19,6 +19,7 @@
                   <th scope="col">Nome</th>
                   <th>Numero</th>
                   <th>Dipartimento</th>
+                  <th>Zone di assegnazione</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -33,6 +34,7 @@
                     <td>{{$referente->nome}}</td>
                     <td>{{$referente->telefono}}</td>
                     <td>{{$referente->dipartimento}}</td>
+                    <td>{{$referente->getZone()}}</td>
                     <td> <a href="{{ route('referenti.edit',$referente->id) }}" title="Modifica referente" class="btn btn-success btn-sm">modifica</a> </td>
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$referente->id}}"><i class="fa fa-trash"></i> elimina</button>

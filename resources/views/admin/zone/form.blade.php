@@ -25,7 +25,16 @@ nuova
     <div class="col-xs-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Distretto</h3>
+          <h3 class="box-title">Zona</h3> 
+          @if ($zona->exists && $zona->referenti()->count()) 
+            <div class="text" style="margin:10px 0">Referenti: <span id="elenco_referenti">{{$zona->getReferenti()}}</span></div>
+          @endif
+          <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#referentiModal">
+              Assegna Referenti
+            </button>
+          </div>
         </div>
         <!-- /.box-header -->
         @if ($zona->exists)
@@ -110,39 +119,39 @@ nuova
     </div>
   </div>
 
-  <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#referentiModal">
-  Assegna Referenti
-</button>
 
-<!-- Modal -->
-<form action="" method="POST"  id="assegnaReferentiForm">
-<input type="hidden" name="zona_id" value="{{$zona->id}}">
-<div class="modal fade" id="referentiModal" tabindex="-1" role="dialog" aria-labelledby="referentiModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-              <label for="referente">Referente</label>
-              <select multiple="multiple"  class="form-control select2" data-placeholder="Seleziona i referenti" name="referente" id="referente" style="width: 100%;">
-                @foreach (App\Referente::getAllSelect() as $key => $nome)
-                  <option value="{{$key}}" @if (old('referente') == $key) selected="selected" @endif>{{$nome}}</option>
-                @endforeach
-              </select>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="assegnaReferenti">Save changes</button>
+@if ($zona->exists)
+  <!-- Modal -->
+  <form action="" method="POST"  id="assegnaReferentiForm">
+  <input type="hidden" name="zona_id" value="{{$zona->id}}">
+  <div class="modal fade" id="referentiModal" tabindex="-1" role="dialog" aria-labelledby="referentiModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Assegna i referenti di zona</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+                <label for="referente">Referenti</label>
+                <span id="msg"></span>
+                <select multiple="multiple"  class="form-control select2" data-placeholder="Seleziona i referenti" name="referente" id="referente" style="width: 100%;">
+                  @foreach (App\Referente::getAllSelect() as $key => $nome)
+                    <option value="{{$key}}" @if ( in_array($key, $zona->getReferentiIds()) || old('referente') == $key ) selected="selected" @endif>{{$nome}}</option>
+                  @endforeach
+                </select>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="assegnaReferenti">Save changes</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</form>
+  </form>
+@endif
+
 @endsection
 
 
@@ -215,26 +224,37 @@ nuova
 
         });
         
+        @if ($zona->exists)
+        
+          $(function() {
 
-        $(function() {
+              $("#assegnaReferenti").click(function(){
+                var data = $('#assegnaReferentiForm').serialize();    
+                jQuery.ajax({
+  					        url: '{{ route('assegna_referenti_zona') }}',
+  					        type: "post",
+  					        async: false,
+  					        data : { 
+  					                data: data,
+  					               '_token': jQuery('input[name=_token]').val()
+  					               },
+  					       	success: function(data) {
+                        if(data == 'ok') {
+                          $("#msg").html('<div class="alert alert-success alert-dismissible">Referenti asseganti correttamente</div>');
+                          var elenco = '{{$zona->getReferenti()}}';
+                          console.log('elenco =' +elenco);
+                          $("#elenco_referenti").text(elenco);
+                        }
+                        else {
+                          $("#msg").html('<div class="alert alert-danger alert-dismissible">Si è verificato un errore imprevisto</div>');
+                        }
+  					        } // success
+  					    }); // ajax
+              }); // end click
 
-            $("#assegnaReferenti").click(function(){
-              var data = $('#assegnaReferentiForm').serialize();    
-              jQuery.ajax({
-					        url: '{{ route('assegna_referenti_zona') }}',
-					        type: "post",
-					        async: false,
-					        data : { 
-					                data: data,
-					               '_token': jQuery('input[name=_token]').val()
-					               },
-					       	success: function(data) {
+         }); // function
 
-					        } // success
-					    }); // ajax
-            }); // end click
-
-       }); // function
-
-	</script>
+        @endif
+	
+  </script>
 @endsection
