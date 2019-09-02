@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Cacciatore;
 use App\AzioneCaccia;
 use App\UnitaGestione;
+use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use Twilio\TwiML\MessagingResponse;
 
@@ -93,8 +94,47 @@ class SmsController extends Controller
 
       $azione->save();
 
+      
+      $avviso_referenti = "";
+      try 
+        {
+
+        // Creo un messaggio leggibile da inviare ai referenti
+        $readable_msg = "È stata creata un'azione di caccia che avverrà dal $azione->dalle al $azione->alle nella zona/particella $zona->nome";
+        
+        $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+        
+        if(count($referenti_zona_tel))
+          {
+          $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+          
+          foreach ($referenti_zona_tel as $number) 
+            {
+              $twilio->messages
+                    ->create(
+                            $number, // to
+                            array(
+                                "body" => $readable_msg,
+                                "from" => env('TWILIO_FROM')
+                            )
+                    );
+            } // for numeri
+
+          } // if telefoni
+        
+        } 
+      catch (\Exception $e) 
+        {
+        $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
+        }
+      
+
       $response_body = "Azione inserita correttamente dal numero: ".$number;
 
+      if(!empty($avviso_referenti))
+        {
+        $response_body .= $avviso_referenti;
+        }
 
       $response = new MessagingResponse();
 
