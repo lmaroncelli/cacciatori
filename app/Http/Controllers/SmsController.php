@@ -63,7 +63,7 @@ class SmsController extends Controller
       // devo verificare la correttezza di UG e ZONA
       $ug = UnitaGestione::find($ug_id);
 
-      if(is_null($ug) || $ug->distretto_id != $distretto->id)
+      if(is_null($ug))
         {
         throw new \Exception('Unita gestione non valida!');
         }
@@ -96,15 +96,17 @@ class SmsController extends Controller
 
       
       $avviso_referenti = "";
-      try 
-        {
 
-        // Creo un messaggio leggibile da inviare ai referenti
-        $readable_msg = "È stata creata un'azione di caccia che avverrà dal $azione->dalle al $azione->alle nella zona/particella $zona->nome";
-        
-        $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
-        
-        if(count($referenti_zona_tel))
+
+      // Creo un messaggio leggibile da inviare ai referenti
+      $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nella $zona->tipo $zona->nome";
+      
+      $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+      
+      if(count($referenti_zona_tel))
+        {
+          
+        try 
           {
           $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
           
@@ -119,15 +121,17 @@ class SmsController extends Controller
                             )
                     );
             } // for numeri
+          } 
+        catch (\Exception $e) 
+          {
+          $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
+          }
 
-          } // if telefoni
-        
-        } 
-      catch (\Exception $e) 
+        } // if telefoni
+      else 
         {
-        $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
+        $avviso_referenti = " ATTENZIONE: Nessun numero da contattare per i referenti di zona";        
         }
-      
 
       $response_body = "Azione inserita correttamente dal numero: ".$number;
 

@@ -27,6 +27,7 @@
             <table class="table table-hover">
               <colgroup>
                     <col></col>
+                    <col></col>
                     <col class="success"></col>
                     <col class="success"></col>
                     <col></col>
@@ -39,6 +40,7 @@
               </colgroup>
               <thead>
                 <tr>
+                  <th>ID UG</th>                  
                   <th>Unità di gestione</th>
                   <th>ID</th>
                   <th scope="col">Nome</th>
@@ -59,6 +61,7 @@
                     @method('DELETE')
                   </form>
                   <tr>
+                    <td>{{optional($zona->unita)->id}}</td>
                     <td>{{optional($zona->unita)->nome}}</td>
                     <td>{{$zona->id}}</td>
                     <td>{{$zona->nome}}</td>
