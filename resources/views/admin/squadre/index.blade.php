@@ -32,7 +32,7 @@
                 <th scope="col">Nome</th>
                 <th>Zone</th>
                 <th>Cacciatori</th>
-                @role('admin')<th></th>@endrole
+                @role('admin')<th>Caposquadra</th>@endrole
                 @not_role_and(['cacciatore','admin_ro'])
                 <th></th>
                 <th></th>
