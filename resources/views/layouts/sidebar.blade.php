@@ -21,9 +21,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('distretti.index') }}">Elenco</a></li>
-            @not_role('cacciatore')
-            <li><a href="{{ route('distretti.create') }}">Nuovo</a></li>
-            @endnot_role
+            @not_role_and(['cacciatore','admin_ro'])
+              <li><a href="{{ route('distretti.create') }}">Nuovo</a></li>
+            @endnot_role_and
           </ul>
         </li>
 
@@ -36,9 +36,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('utg.index') }}">Elenco</a></li>
-            @not_role('cacciatore')
+            @not_role_and(['cacciatore','admin_ro'])
             <li><a href="{{ route('utg.create') }}">Nuovo</a></li>
-            @endnot_role
+            @endnot_role_and
           </ul>
         </li>
 
@@ -51,9 +51,9 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('zone.index') }}">Elenco</a></li>
-          @not_role('cacciatore')
+           @not_role_and(['cacciatore','admin_ro'])
           <li><a href="{{ route('zone.create') }}">Nuovo</a></li>
-          @endnot_role
+          @endnot_role_and
         </ul>
       </li>
 
@@ -67,14 +67,14 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('squadre.index') }}">Elenco</a></li>
-            @not_role('cacciatore')
+            @not_role_and(['cacciatore','admin_ro'])
             <li><a href="{{ route('squadre.create') }}">Nuova</a></li>
-            @endnot_role
+            @endnot_role_and
           </ul>
         </li>
       @endnot_role
 
-      @role('admin')
+      @role_or(['admin', 'admin_ro'])
         {{-- Cacciatori --}}
         <li class="treeview @if (in_array('cacciatori',Request::segments())) active @endif">
           <a href="#"><i class="fa fa-bullseye"></i> <span>Cacciatori</span>
@@ -84,7 +84,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('cacciatori.index') }}">Elenco</a></li>
+            @not_role('admin_ro')
             <li><a href="{{ route('cacciatori.create') }}">Nuovo</a></li>
+            @endnot_role
           </ul>
         </li>
 
@@ -97,15 +99,16 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('utenti.index') }}">Elenco</a></li>
+            @not_role('admin_ro')
             <li><a href="{{ route('utenti.create') }}">Nuovo</a></li>
+            @endnot_role
           </ul>
         </li>
-      
-        @endrole
+      @endrole_or
 
       
 
-      @role('admin')
+      @role_or(['admin', 'admin_ro'])
       {{-- Referenti --}}
       <li class="treeview @if (in_array('referenti',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-send-o"></i> <span>Referenti</span>
@@ -115,8 +118,9 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('referenti.index') }}">Elenco</a></li>
+          @not_role('admin_ro')
           <li><a href="{{ route('referenti.create') }}">Nuovo</a></li>
-
+          @endnot_role
         </ul>
       </li>
       @endrole
@@ -131,8 +135,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('azioni.index') }}">Elenco</a></li>
+            @not_role('admin_ro')
             <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
-
+            @endnot_role
           </ul>
         </li>
       @endnot_role

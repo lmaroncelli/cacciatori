@@ -7,9 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco cacciatori</h3>
             <div class="box-tools">
+              @not_role('admin_ro')
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('cacciatori.create') }}" title="Nuovo cacciatore" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo cacciatore</a>
               </div>
+              @endnot_role
             </div>
           </div>
           <div class="box-body table-responsive no-padding">	
@@ -21,7 +23,9 @@
                   <th>Squadre</th>
                   <th>CapoSquadra</th>
                   <th>Login</th>
+                  @not_role('admin_ro')
                   <th></th>
+                  @endnot_role
                 </tr>
               </thead>
               <tbody>
@@ -38,7 +42,9 @@
                         <i class="fa fa-times text-red"></i>
                       @endif
                     </td>
+                    @not_role('admin_ro')
                     <td> <a href="{{ route('cacciatori.edit',$cacciatore->id) }}" title="Modifica cacciatore" class="btn btn-success btn-sm">modifica</a> </td>
+                    @endnot_role
                   </tr>
                 @endforeach
               </tbody>

@@ -7,11 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco distretti</h3>
             <div class="box-tools">
-              @not_role('cacciatore')
+              @not_role_and(['cacciatore','admin_ro'])
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('distretti.create') }}" title="Nuovo distretto" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo distretto</a>
               </div>
-              @endnot_role
+              @endnot_role_and
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -56,17 +56,17 @@
                     <td>{{$distretto->nome}}</td>
                     <td>{{$distretto->getUnita()}}</td>
                     
-                    @not_role('cacciatore')
+                    @not_role_and(['cacciatore','admin_ro'])
                     <td> <a href="{{ route('distretti.edit',$distretto->id) }}" title="Modifica distretto" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
-                    @endnot_role
+                    @endnot_role_and
                     
                     <td> <a href="{{ route('distretti.show',$distretto->id) }}" title="Visualizza distretto" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
                     
-                    @not_role('cacciatore')
+                    @not_role_and(['cacciatore','admin_ro'])
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$distretto->id}}"><i class="fa fa-trash"></i> elimina</button>
                     </td>
-                    @endnot_role
+                    @endnot_role_and
                   </tr>
                 @endforeach
               </tbody>

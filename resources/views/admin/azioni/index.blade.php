@@ -75,9 +75,11 @@
             <h3 class="box-title">Elenco attività</h3>
 
             <div class="box-tools">
+              @not_role('admin_ro')
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('azioni.create') }}" title="Nuovo distretto" class="btn btn-success"><i class="fa fa-plus"></i> Nuova attività</a>
               </div>
+              @endnot_role
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -121,9 +123,10 @@
                       {!!$link!!}
                     </th>
                   @endforeach
-
+                  @not_role('admin_ro')
                   <th></th>
                   <th></th>
+                  @endnot_role
                 </tr>
               </thead>
               <tbody>
@@ -134,10 +137,12 @@
                     <td>{{optional($azione->distretto)->nome}}</td>
                     <td>{{optional($azione->unita)->nome}}</td>
                     <td>{{optional($azione->zona)->nome}}</td>
+                    @not_role('admin_ro')
                     <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$azione->id}}"><i class="fa fa-trash"></i> elimina</button>
                     </td>
+                    @endnot_role
                   </tr>
                 @endforeach
               </tbody>

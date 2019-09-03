@@ -7,11 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco zone</h3>
             <div class="box-tools">
-              @not_role('cacciatore')
+              @not_role_and(['cacciatore','admin_ro'])
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('zone.create') }}" title="Nuova Zona" class="btn btn-success"><i class="fa fa-plus"></i> Nuova zona</a>
               </div>
-              @endnot_role
+              @endnot_role_and
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -32,10 +32,10 @@
                     <col class="success"></col>
                     <col></col>
                     <col></col>
-                    @not_role('cacciatore')
+                    @not_role_and(['cacciatore','admin_ro'])
                     <col></col>
                     <col></col>
-                    @endnot_role
+                    @endnot_role_and
                     <col></col>
               </colgroup>
               <thead>
@@ -46,11 +46,11 @@
                   <th scope="col">Nome</th>
                   <th>Tipo</th>
                   <th>Squadre</th>
-                  @not_role('cacciatore')                  
+                  @not_role_and(['cacciatore','admin_ro'])                  
                   <th>Referenti</th>
                   <th></th>
                   <th></th>
-                  @endnot_role
+                  @endnot_role_and
                   <th></th>
                 </tr>
               </thead>
@@ -68,20 +68,20 @@
                     <td>{{$zona->tipo}}</td>
                     <td>{{$zona->getSquadre()}}</td>
                     
-                    @not_role('cacciatore')
+                    @not_role_and(['cacciatore','admin_ro'])
                     <td>
                     {{ $zona->referenti->count() ? 'Sì' : 'No' }}
                     </td>
                     <td> <a href="{{ route('zone.edit',$zona->id) }}" title="Modifica zona" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
-                    @endnot_role
+                    @endnot_role_and
                     
                     <td> <a href="{{ route('zone.show',$zona->id) }}" title="Visualizza zona" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
                     
-                    @not_role('cacciatore')
+                    @not_role_and(['cacciatore','admin_ro'])
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$zona->id}}"><i class="fa fa-trash"></i> elimina</button>
                     </td>
-                    @endnot_role
+                    @endnot_role_and
 
                   </tr>
                 @endforeach

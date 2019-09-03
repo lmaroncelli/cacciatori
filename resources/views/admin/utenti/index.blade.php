@@ -7,9 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco utenti</h3>
             <div class="box-tools">
+              @not_role('admin_ro')
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('utenti.create') }}" title="Nuovo utente" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo utente</a>
               </div>
+              @endnot_role
             </div>
           </div>
           <div class="box-body table-responsive no-padding">	
@@ -20,7 +22,9 @@
                   <th>Email</th>
                   <th>Ruolo</th>
                   <th>Login</th>
+                  @not_role('admin_ro')
                   <th></th>
+                  @endnot_role
                 </tr>
               </thead>
               <tbody>
@@ -36,6 +40,7 @@
                         <i class="fa fa-times text-red"></i>
                       @endif
                     </td>
+                    @not_role('admin_ro')
                     <td>
                       {{-- modifico solo se:
                         - non è un admin
@@ -49,6 +54,7 @@
                       @endif
 
                     </td>
+                    @endnot_role
                   </tr>
                 @endforeach
               </tbody>

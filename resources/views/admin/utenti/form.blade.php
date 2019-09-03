@@ -41,7 +41,7 @@
               <label for="ruolo">Ruolo</label>
               <select class="form-control" name="ruolo" id="ruolo">
                  
-                  @foreach (['consultatore', 'cartografo', 'admin'] as $ruolo)
+                  @foreach (['consultatore', 'cartografo', 'admin', 'admin_ro'] as $ruolo)
                     <option value="{{$ruolo}}"
                       @if ($utente->ruolo == $ruolo || old('ruolo') == $ruolo) selected="selected" @endif                  
                       >{{ucfirst($ruolo)}}</option>

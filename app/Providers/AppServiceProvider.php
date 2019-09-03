@@ -32,5 +32,13 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('not_role', function ($role) {
           return !Auth::user()->hasRole($role);
         });
+
+        Blade::if('not_role_and', function ($roles) {
+          return !Auth::user()->hasRole($roles[0]) && !Auth::user()->hasRole($roles[1]);
+        });
+
+        Blade::if('role_or', function ($roles) {
+          return Auth::user()->hasRole($roles[0]) || Auth::user()->hasRole($roles[1]);
+        });
     }
 }

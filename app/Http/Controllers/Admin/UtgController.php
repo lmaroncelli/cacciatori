@@ -16,6 +16,7 @@ class UtgController extends LoginController
       {
       
         $this->middleware('forbiddenIfRole:cacciatore')->only(['create','destroy']);
+        $this->middleware('forbiddenIfRole:admin_ro')->only(['create','destroy']);
         $this->middleware('forbiddenIfRole:consultatore');
       
       // Invoke parent

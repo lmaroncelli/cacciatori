@@ -18,6 +18,15 @@ class AzioniCacciaController extends LoginController
 
 
 
+    public function __construct()
+      {
+      $this->middleware('forbiddenIfRole:admin_ro')->only(['create','destroy']);
+      
+      // Invoke parent
+      parent::__construct();
+      }
+
+
     public function _saveAzione(&$azione, $request)
       {
         $dalle = $request->get('data'). ' ' . $request->get('dal');
