@@ -23,7 +23,9 @@
             </div>
           
             @else
-              
+            <div>
+              {{$order_by}} {{$order}}
+            </div>
             <table class="table table-hover">
               <colgroup>
                     <col></col>
@@ -40,11 +42,11 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>ID UG</th>                  
-                  <th>Unità di gestione</th>
-                  <th>ID</th>
-                  <th scope="col">Nome</th>
-                  <th>Tipo</th>
+                  <th><a href="{{url()->current()}}?order_by=id_utg&order={{ $order_by=='id_utg' && $order=='asc' ? 'desc' : 'asc' }}">ID UG</a></th>
+                  <th><a href="{{url()->current()}}?order_by=utg&order={{ $order_by=='utg' && $order=='asc' ? 'desc' : 'asc' }}">Unità di gestione</a></th>
+                  <th><a href="{{url()->current()}}?order_by=id&order={{ $order_by=='id' && $order=='asc' ? 'desc' : 'asc' }}">ID</a></th>
+                  <th scope="col"><a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a></th>
+                  <th><a href="{{url()->current()}}?order_by=tipo&order={{ $order_by=='tipo' && $order=='asc' ? 'desc' : 'asc' }}">Tipo</a></th>
                   <th>Squadre</th>
                   @not_role_and(['cacciatore','admin_ro'])                  
                   <th>Referenti</th>

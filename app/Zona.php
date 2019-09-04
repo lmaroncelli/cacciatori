@@ -6,6 +6,7 @@ use App\Comune;
 use App\Squadra;
 use App\AzioneCaccia;
 use App\UnitaGestione;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -99,8 +100,24 @@ class Zona extends Model
 		}
 		
 
+   public function scopeJoinUtg($query, $sort_by, $order) 
+    {
+      if ($sort_by == 'utg') 
+        {
+        $campo_utg = 'nome'; 
+        } 
+      else 
+        {
+        $campo_utg = 'id';
+        }
+       
+       return $query->leftJoin('tblUnitaGestione', 'tblZone.unita_gestione_id', '=', 'tblUnitaGestione.id')
+              ->orderBy('tblUnitaGestione.'.$campo_utg,$order)
+              ->get();
+    }
 
-	 public static function getAll($sort_by = 'id')
+
+	 public static function getAll($sort_by = 'id', $order = 'asc')
       {
       if (Auth::check()) 
         {
@@ -114,11 +131,40 @@ class Zona extends Model
           	$zone = $zone->merge($squadra_zone);
           	}
           $zone = $zone->unique();
-          return $zone->keyBy($sort_by)->sortBy($sort_by);
-        }
+          if ($order == 'asc') 
+            {
+            return $zone->keyBy($sort_by)->sortBy($sort_by);
+            } 
+          else 
+            {
+            return $zone->keyBy($sort_by)->sortByDesc($sort_by);
+            }
+          }
         else 
           {
-          return Self::with('referenti')->orderBy($sort_by)->get();
+
+          if ($sort_by == 'utg' || $sort_by == 'id_utg') 
+            {
+
+            return Self::with('referenti','unita')->joinUtg($sort_by, $order);
+             
+
+            } 
+          else 
+            {
+
+            if ($order == 'asc') 
+              {
+              return Self::with('referenti')->orderBy($sort_by)->get();
+              } 
+            else 
+              {
+              return Self::with('referenti')->orderByDesc($sort_by)->get();
+              }
+            
+            }
+
+          
           }
         }
       }

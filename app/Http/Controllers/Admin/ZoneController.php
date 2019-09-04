@@ -29,14 +29,22 @@ class ZoneController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$zone = Zona::all();
-        $zone = Zona::getAll();
+        
+        $order_by='nome';
+        $order = 'asc';
+        $ordering = 0;
 
-        return view('admin.zone.index', compact('zone'));
+        if ($request->filled('order_by'))
+         {
+           $order_by = $request->get('order_by');
+           $order = $request->get('order');
+           $ordering = 1;
+         }
 
-        return redirect()->route("zone")->with('status', 'Zona creata correttamente!');
+        $zone = Zona::getAll($order_by, $order);
+        return view('admin.zone.index', compact('zone','order_by', 'order'));
     }
 
     /**

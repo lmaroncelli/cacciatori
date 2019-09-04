@@ -38,7 +38,7 @@ Route::resource('distretti', 'Admin\DistrettiController');
 Route::resource('utg', 'Admin\UtgController');
 Route::resource('squadre', 'Admin\SquadreController');
 Route::post('getZonaAjax','Admin\SelectConditionalController@getZonaAjax')->name('get_zona');
-Route::resource('zone', 'Admin\ZoneController');
+Route::resource('zone', 'Admin\ZoneController')->middleware('log');
 Route::post('getSquadreFromDistrettoAjax','Admin\SelectConditionalController@getSquadreFromDistrettoAjax')->name('get_squadre');
 Route::post('showDistrettoZonaAjax','Admin\SelectConditionalController@showDistrettoZonaAjax')->name('show_distretto');
 Route::post('getUtgFromDistrettoAjax','Admin\SelectConditionalController@getUtgFromDistrettoAjax')->name('get_utg');
