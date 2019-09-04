@@ -45,7 +45,16 @@ class UnitaGestione extends Model
     }
 
 
-    public static function getAll()
+    public function scopeJoinDistretto($query, $order) 
+    {
+              
+      return $query->leftJoin('tblDistretti', 'tblUnitaGestione.distretto_id', '=', 'tblDistretti.id')
+              ->orderBy('tblDistretti.nome', $order)
+              ->get();
+    } 
+
+
+    public static function getAll($sort_by = 'id', $order = 'asc')
       {
       if (Auth::check()) 
         {
@@ -62,12 +71,40 @@ class UnitaGestione extends Model
                 $utg[$u->id] = $u;
               }
             }
+
+          if ($order == 'asc') 
+            {
+            return collect($utg)->keyBy($sort_by)->sortBy($sort_by);
+            } 
+          else 
+            {
+            return collect($utg)->keyBy($sort_by)->sortByDesc($sort_by);
+            }
           
-          return collect($utg);
           }
         else 
           {
-          return Self::all();
+
+          if ($sort_by == 'distretto') 
+            {
+            return Self::with('distretto')->JoinDistretto($order);
+            } 
+          else 
+            {
+            
+            if ($order == 'asc') 
+              {
+              return Self::all()->keyBy($sort_by)->sortBy($sort_by);
+              } 
+            else 
+              {
+              return Self::all()->keyBy($sort_by)->sortByDesc($sort_by);
+              }
+            
+            }
+          
+          
+          
           }
         }
       }

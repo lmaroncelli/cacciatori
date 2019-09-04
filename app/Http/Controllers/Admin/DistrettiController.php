@@ -65,12 +65,21 @@ class DistrettiController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$distretti = Distretto::all();
-        $distretti = Distretto::getAll();
+        
+        $order_by='nome';
+        $order = 'asc';
 
-        return view('admin.distretti.index', compact('distretti'));
+        if ($request->filled('order_by'))
+          {
+            $order_by = $request->get('order_by');
+            $order = $request->get('order');
+          }
+
+        $distretti = Distretto::getAll($order_by, $order);
+
+        return view('admin.distretti.index', compact('distretti','order_by', 'order'));
     }
 
     /**

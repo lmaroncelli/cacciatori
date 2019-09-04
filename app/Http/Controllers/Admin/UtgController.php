@@ -57,12 +57,20 @@ class UtgController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //$utg = UnitaGestione::all();
-        $utg = UnitaGestione::getAll();
+    public function index(Request $request)
+    {   
+        $order_by='id';
+        $order = 'asc';
 
-        return view('admin.utg.index', compact('utg'));
+        if ($request->filled('order_by'))
+         {
+           $order_by = $request->get('order_by');
+           $order = $request->get('order');
+         }
+
+        $utg = UnitaGestione::getAll($order_by, $order);
+
+        return view('admin.utg.index', compact('utg', 'order_by', 'order'));
     }
 
     /**

@@ -21,7 +21,9 @@
                 <p>Nessuna unità gestione presente.</p>
               </div>
             @else
-                
+            <div>
+              {{$order_by}}, {{$order}}
+            </div>
             <table class="table table-hover">
               <colgroup>
                   <col></col>
@@ -36,9 +38,21 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>Distretto</th>
-                  <th>ID</th>
-                  <th scope="col">Nome</th>
+                  <th @if ($order_by=='distretto')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=distretto&order={{ $order_by=='distretto' && $order=='asc' ? 'desc' : 'asc' }}">Distretto</a>
+                  </th>
+                  <th @if ($order_by=='id')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=id&order={{ $order_by=='id' && $order=='asc' ? 'desc' : 'asc' }}">ID</a>
+                  </th>
+                  <th scope="col" @if ($order_by=='nome')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
+                  </th>
                   <th>Zone</th>
                   @not_role_and(['cacciatore','admin_ro'])
                   <th></th>

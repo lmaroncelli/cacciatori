@@ -88,8 +88,15 @@ class Squadra extends Model
 			self::delete();
     	}
 
-    
-    public static function getAll()
+    public function scopeJoinDistretto($query, $order) 
+    {
+              
+      return $query->leftJoin('tblDistretti', 'tblSquadre.distretto_id', '=', 'tblDistretti.id')
+              ->orderBy('tblDistretti.nome', $order)
+              ->get();
+    } 
+
+    public static function getAll($sort_by = 'id', $order = 'asc')
       {
       if (Auth::check()) 
         {
@@ -99,7 +106,24 @@ class Squadra extends Model
           }
         else 
           {
-          return Self::all();
+          if ($sort_by == 'distretto') 
+            {
+            return Self::with('distretto')->JoinDistretto($order);
+            } 
+          else 
+            {
+
+            if ($order == 'asc') 
+              {
+              return Self::all()->keyBy($sort_by)->sortBy($sort_by);
+              } 
+            else 
+              {
+              return Self::all()->keyBy($sort_by)->sortByDesc($sort_by);
+              }
+
+            }
+          
           }          
         }
       }

@@ -34,13 +34,11 @@ class ZoneController extends LoginController
         
         $order_by='nome';
         $order = 'asc';
-        $ordering = 0;
 
         if ($request->filled('order_by'))
          {
            $order_by = $request->get('order_by');
            $order = $request->get('order');
-           $ordering = 1;
          }
 
         $zone = Zona::getAll($order_by, $order);

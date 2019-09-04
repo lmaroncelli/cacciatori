@@ -22,7 +22,9 @@
                 <p>Nessun distretto presente.</p>
             </div>
           @else
-              
+              <div>
+              {{$order_by}} {{$order}}
+            </div>
             <table class="table table-hover">
               <colgroup>
                   <col></col>
@@ -36,7 +38,11 @@
               <thead>
                 <tr>
                   <th>A.T.C.</th>
-                  <th scope="col">Distretto</th>
+                  <th scope="col" @if ($order_by=='nome')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Distretto</a>
+                  </th>
                   <th>Unità di gestione</th>
                   @not_role('cacciatore')
                   <th></th>

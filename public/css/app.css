@@ -122,6 +122,20 @@ form#filtra_azioni div.form-group {
       background-color: #222d32!important;
     }
 
+
+    /* icone ordinamento header tabelle */
+    
+    th.sort_asc:after {
+      font-family: "FontAwesome"; font-weight: 300; color: #449d44; content: "\f160"; margin-left: 5px; 
+    }
+
+    th.sort_desc:after {
+      font-family: "FontAwesome"; font-weight: 300; color: #449d44; content: "\f161"; margin-left: 5px; 
+    }
+
+
+
+
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (-moz-min-device-pixel-ratio: 1.5),

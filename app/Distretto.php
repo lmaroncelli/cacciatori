@@ -83,12 +83,13 @@ class Distretto extends Model
 
     
 
-    public static function getAll($sort_by = 'id')
+    public static function getAll($sort_by = 'id', $order = 'asc')
       {
       if (Auth::check()) 
         {
         if(Auth::user()->hasRole('cacciatore'))
           {
+
           // vedo solo i distretti collegati alle mie squadre
           $squadre =  Auth::user()->cacciatore->squadre;
           $distretti = [];
@@ -98,12 +99,27 @@ class Distretto extends Model
             }
           
           $distretti_collection = collect($distretti);
-            
-          return $distretti_collection->keyBy($sort_by)->sortBy($sort_by);
-        }
+          if ($order == 'asc') 
+            {
+            return $distretti_collection->keyBy($sort_by)->sortBy($sort_by);
+            } 
+          else 
+            {
+            return $distretti_collection->keyBy($sort_by)->sortByDesc($sort_by);
+            }
+          
+          }
         else 
           {
-          return Self::orderBy($sort_by)->get();
+          if ($order == 'asc') 
+            {
+            return Self::orderBy($sort_by)->get();
+            } 
+          else 
+            {
+            return Self::orderByDesc($sort_by)->get();
+            }
+          
           }
         }
       }

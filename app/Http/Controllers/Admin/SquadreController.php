@@ -40,12 +40,20 @@ class SquadreController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$squadre = Squadra::all();
-        $squadre = Squadra::getAll();
+        $order_by='nome';
+        $order = 'asc';
 
-        return view('admin.squadre.index', compact('squadre'));
+        if ($request->filled('order_by'))
+         {
+           $order_by = $request->get('order_by');
+           $order = $request->get('order');
+         }
+
+        $squadre = Squadra::getAll($order_by, $order);
+
+        return view('admin.squadre.index', compact('squadre', 'order_by', 'order'));
     }
 
     /**

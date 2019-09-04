@@ -28,8 +28,16 @@
             </colgroup>
             <thead>
               <tr>
-                <th>Distretto</th>
-                <th scope="col">Nome</th>
+                <th @if ($order_by=='distretto')
+                  class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                  @endif>
+                    <a href="{{url()->current()}}?order_by=distretto&order={{ $order_by=='distretto' && $order=='asc' ? 'desc' : 'asc' }}">Distretto</a>
+                </th>
+                <th scope="col" @if ($order_by=='nome')
+                  class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                  @endif>
+                    <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
+                </th>
                 <th>Zone</th>
                 <th>Cacciatori</th>
                 @role('admin')<th>Caposquadra</th>@endrole
