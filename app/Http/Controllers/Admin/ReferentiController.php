@@ -81,11 +81,20 @@ class ReferentiController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $ref = Referente::with('zone')->get();
+      $order_by='nome';
+      $order = 'asc';
 
-        return view('admin.referenti.index', compact('ref'));
+      if ($request->filled('order_by'))
+        {
+          $order_by = $request->get('order_by');
+          $order = $request->get('order');
+        }
+      
+      $ref = Referente::with('zone')->orderBy($order_by, $order)->get();
+
+      return view('admin.referenti.index', compact('ref', 'order_by', 'order'));
     }
 
     /**

@@ -164,7 +164,7 @@ class AzioniCacciaController extends LoginController
         //////////////////
         $order_by='dalle';
         $order = 'desc';
-        $ordering = 0;
+        $ordering = 1;
 
         
 

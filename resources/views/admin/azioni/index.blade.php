@@ -101,12 +101,12 @@
                             if(app('request')->get('order') == 'desc')
                               {
                               $new_order = 'asc';
-                              $class = "sorting_desc";
+                              $class = "sort_desc";
                               }
                             else
                               {
                               $new_order = 'desc';
-                              $class = "sorting_asc";
+                              $class = "sort_asc";
                               }
 
                             $link = "<a href='".url()->current()."?order_by=".$field."&order=".$new_order."'>".$name."</a>";
@@ -116,7 +116,7 @@
                         @php
                             $new_order = 'asc';
                             $link = "<a href='".url()->current()."?order_by=".$field."&order=$new_order'>".$name."</a>";
-                            $class="sorting";
+                            $class="";
                         @endphp
                     @endif
                     <th class="{{$class}}">

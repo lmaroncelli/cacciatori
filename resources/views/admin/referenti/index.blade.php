@@ -18,9 +18,17 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">Nome</th>
+                  <th scope="col" @if ($order_by=='nome')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
+                  </th>
                   <th>Numero</th>
-                  <th>Dipartimento</th>
+                  <th @if ($order_by=='dipartimento')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=dipartimento&order={{ $order_by=='dipartimento' && $order=='asc' ? 'desc' : 'asc' }}">Dipartimento</a>
+                  </th>
                   <th>Zone di assegnazione</th>
                   @not_role('admin_ro')
                   <th></th>
