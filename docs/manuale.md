@@ -1,3 +1,9 @@
+
+
+
+
+
+
 # Utenti, Ruoli e permessi
 
 
@@ -24,6 +30,30 @@ Ogni utente ha associato un ruolo; i ruoli sono:
 
 - Per quanto rigaurda il servizio di invio SMS qui ci sono i prezzi per i msg in Italiahttps://www.twilio.com/sms/pricing/it 
 al momento è $ 0.0883 / message per tutti gli operatori. Poi ci sono anche delle formule più convenienti se cresce il volume dei dati, ma non credo che al momento sia da considerare.
+
+
+
+# Inserire azione di caccia tramite SMS
+
+- La Provincia avrà un numero acquistato sulla piattaforma Twilio per ricevere i messaggi
+- Ogni numero che invia messaggi al numero Twilio di cui sopra (numeri dei capisquadra), deve essere preventivamente registrato e abilitato sualla stessa piattaforma
+
+
+Un cacciatore/caposquadra che vuole creare un'azione di caccia via SMS deve comporre un SMS del tipo
+
+<data_azione>#<dalle>#<alle>#<ID unità di gestione>#<ID Zona/>Particella>
+03/09/2019#05:00#10:00#48#69
+
+Il sistema verificherà la correttezza dei dati inseriti, in particolare:
+
+- il numero di chi fa la richiesta deve appartenere ad un cacciatore/caposquadra della app
+- la data contenga 2 cifre per giorno e mese e 4 per anno (dd/mm/yyyy)
+- le ore e i minuti siano in doppia cifra (eventualmente con gli zeri davanti) (hh:mm)
+- la validità dell'identificativo dell'unità di gestione e della zona e che siano correttamente legate (la zona sia effettivamente all'interno dell'unità nella applicazione). A questo proposito il sistema mostra nei listing zone/particelle gli ID di entrambe le entità (colonne "ID" e "ID UG")
+
+
+Il sistema risponderà all'SMS per l'inserimento di un'azione di caccia con un messaggio che tutto è andato a buon fine oppure con un avviso di errore descrittivo del problema.
+Successivamente all'invio del SMS da parte di un cacciatore il sistema notificherà in automatico i referenti di Zona; nel caso in cui non fosse possibile notificarli (non ci sono referenti, oppure non hanno un telefono associato), il cacciatore, oltre al messaggio di corretto inserimento dell'azione, riceverebbe un avviso di mancato recapito ai referenti.
 
 
 

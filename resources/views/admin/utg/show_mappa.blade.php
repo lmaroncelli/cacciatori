@@ -114,7 +114,9 @@ Unità gestione
         ///////////////////////////////////////////////////////////////
          var distretto_coords = new Array();
 
-		    
+
+        @if (!is_null($coordinate_distretto))
+          
 		   	@foreach ($coordinate_distretto as $lat => $long)
 		   		
 		    	var jsonData = {};
@@ -125,14 +127,17 @@ Unità gestione
 
 		   		distretto_coords.push(jsonData);
 
-		   	@endforeach
+         @endforeach
+         
+        @endif
 
 		   		//console.log(distretto_coords);
 		    	//console.log(distretto_coords);
 
 				  
 
-				  
+        if(distretto_coords.length !== 0) {
+
 				  // Construct the polygon.
 		      distretto = new google.maps.Polygon({
 		        paths: distretto_coords,
@@ -151,8 +156,10 @@ Unità gestione
 
 
           google.maps.event.addListener(distretto, 'click', function(event){
-            showInfo(event,'distretto',"{{$distretto->nome}}");
+            showInfo(event,'distretto',"{{optional($distretto)->nome}}");
           });
+        
+        }
 
 
         //////////////////////////////////////////////////////////////

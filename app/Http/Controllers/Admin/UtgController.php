@@ -121,8 +121,17 @@ class UtgController extends LoginController
       $coordinate_utg = $poligono_utg->coordinate->pluck('long','lat');
 
       $distretto = $utg->distretto;
-      $poligono_distretto = $distretto->poligono;
-      $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+
+      if(!is_null($distretto))
+        {
+        $poligono_distretto = $distretto->poligono;
+        $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+        }
+      else 
+        {
+        $poligono_distretto = null;
+        $coordinate_distretto = null;
+        }
 
       // trovo tutte le zone facendo un loop su tutte le UTG
       $coordinate_zona = [];

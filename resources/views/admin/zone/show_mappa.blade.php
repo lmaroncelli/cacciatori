@@ -3,7 +3,14 @@
 
 
 @section('titolo')
-{{$zona->unita->distretto->nome}} > {{$zona->unita->nome}} > {{$zona->nome}}
+
+@if (!is_null($distretto) && !is_null($unita))
+  {{$zona->unita->distretto->nome}} > 
+
+  {{$zona->unita->nome}} > 
+@endif
+
+{{$zona->nome}}
 @endsection
 
 @section('titolo_small')
@@ -74,42 +81,48 @@
 
        var distretto_coords = new Array();
 
-    
-        @foreach ($coordinate_distretto as $lat => $long)
-          
-          var jsonData = {};
-          jsonData['lat'] = {{$lat}};
-          jsonData['lng'] = {{$long}};
-          
-          //console.log('jsonData = '+JSON.stringify(jsonData));
+        @if (!is_null($coordinate_distretto))
 
-          distretto_coords.push(jsonData);
+          @foreach ($coordinate_distretto as $lat => $long)
+            
+            var jsonData = {};
+            jsonData['lat'] = {{$lat}};
+            jsonData['lng'] = {{$long}};
+            
+            //console.log('jsonData = '+JSON.stringify(jsonData));
 
-        @endforeach
+            distretto_coords.push(jsonData);
+
+          @endforeach
+        
+        @endif
 
           //console.log(distretto_coords);
           //console.log(distretto_coords);
 
-          
-          // Construct the polygon.
-        distretto = new google.maps.Polygon({
-            paths: distretto_coords,
-            strokeColor: '{{$colors["distretto"]}}',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '{{$colors["distretto"]}}',
-            fillOpacity: 0.35,
-            editable: false,
-            draggable: false
-          });
+        if(distretto_coords.length !== 0) {
+
+             // Construct the polygon.
+            distretto = new google.maps.Polygon({
+                paths: distretto_coords,
+                strokeColor: '{{$colors["distretto"]}}',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '{{$colors["distretto"]}}',
+                fillOpacity: 0.35,
+                editable: false,
+                draggable: false
+              });
 
 
-        //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-        distretto.setMap(map);
+            //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+            distretto.setMap(map);
 
-        google.maps.event.addListener(distretto, 'click', function(event){
-          showInfo(event,'distretto',"{{$distretto->nome}}");
-        });
+            google.maps.event.addListener(distretto, 'click', function(event){
+              showInfo(event,'distretto',"{{optional($distretto)->nome}}");
+            });
+
+        }
         
 
         ///////////////////////////////////////////////////////////////////////////////
@@ -118,43 +131,49 @@
 
        var utg_coords = new Array();
 
-    
-        @foreach ($coordinate_unita as $lat => $long)
-          
-          var jsonData = {};
-          jsonData['lat'] = {{$lat}};
-          jsonData['lng'] = {{$long}};
-          
-          //console.log('jsonData = '+JSON.stringify(jsonData));
+         @if (!is_null($coordinate_unita))
 
-          utg_coords.push(jsonData);
+            @foreach ($coordinate_unita as $lat => $long)
+              
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
 
-        @endforeach
+              utg_coords.push(jsonData);
+
+            @endforeach
+          
+          @endif
 
           //console.log(utg_coords);
           //console.log(utg_coords);
 
-          
-          // Construct the polygon.
-        utg = new google.maps.Polygon({
-            paths: utg_coords,
-            strokeColor: '{{$colors["utg"]}}',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '{{$colors["utg"]}}',
-            fillOpacity: 0.35,
-            editable: false,
-            draggable: false
-          });
+        if(utg_coords.length !== 0) {
+
+            // Construct the polygon.
+            utg = new google.maps.Polygon({
+                paths: utg_coords,
+                strokeColor: '{{$colors["utg"]}}',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '{{$colors["utg"]}}',
+                fillOpacity: 0.35,
+                editable: false,
+                draggable: false
+              });
 
 
-        //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-        utg.setMap(map);
+            //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+            utg.setMap(map);
 
 
-        google.maps.event.addListener(utg, 'click', function(event){
-          showInfo(event,'utg',"{{$unita->nome}}");
-        });
+            google.maps.event.addListener(utg, 'click', function(event){
+              showInfo(event,'utg',"{{optional($unita)->nome}}");
+            });
+
+        }
 
       
         

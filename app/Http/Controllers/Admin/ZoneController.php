@@ -107,14 +107,35 @@ class ZoneController extends LoginController
           }
         $unita = $zona->unita;
 
-        $poligono_unita = $unita->poligono;
-        $coordinate_unita = $poligono_unita->coordinate->pluck('long','lat');
-        
-        $distretto = $zona->unita->distretto;
-        $poligono_distretto = $distretto->poligono;
-        
-        $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+        if (!is_null($unita)) 
+          {
+          $poligono_unita = $unita->poligono;
+          $coordinate_unita = $poligono_unita->coordinate->pluck('long','lat');
+          
+          $distretto = $zona->unita->distretto;
+          
+          if(!is_null($distretto))
+            {
+            $poligono_distretto = $distretto->poligono;
+            $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+            }
+          else 
+            {
+            $poligono_distretto = null;
+            $coordinate_distretto = null;
+            }
+          } 
+        else 
+          {
+          $poligono_unita = null;
+          $coordinate_unita = null;
 
+          $distretto = null;
+          $poligono_distretto = null;
+          $coordinate_distretto = null;
+          }
+        
+        
         
         return view('admin.zone.show_mappa', compact('zona','coordinate', 'unita', 'coordinate_unita', 'distretto', 'coordinate_distretto'));
 

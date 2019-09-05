@@ -21,9 +21,6 @@
                 <p>Nessuna unità gestione presente.</p>
               </div>
             @else
-            <div>
-              {{$order_by}}, {{$order}}
-            </div>
             <table class="table table-hover">
               <colgroup>
                   <col></col>
