@@ -25,12 +25,20 @@ class CacciatoriController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        $cacciatori = Cacciatore::with(['utente'])->get();
+        $order_by='cognome';
+        $order = 'asc';
 
-        return view('admin.cacciatori.index', compact('cacciatori'));
+        if ($request->filled('order_by'))
+          {
+            $order_by = $request->get('order_by');
+            $order = $request->get('order');
+          }
+        
+        $cacciatori = Cacciatore::getAll($order_by, $order);
+
+        return view('admin.cacciatori.index', compact('cacciatori', 'order_by', 'order'));
     }
 
     /**

@@ -24,11 +24,21 @@ class UtentiController extends LoginController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-     $utenti = User::where('ruolo','!=','cacciatore')->get();
 
-      return view('admin.utenti.index', compact('utenti'));   
+    $order_by='name';
+    $order = 'asc';
+
+    if ($request->filled('order_by'))
+      {
+        $order_by = $request->get('order_by');
+        $order = $request->get('order');
+      }
+
+     $utenti = User::where('ruolo','!=','cacciatore')->orderBy($order_by, $order)->get();
+
+    return view('admin.utenti.index', compact('utenti', 'order_by', 'order'));   
     }
 
     /**

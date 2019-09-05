@@ -92,6 +92,7 @@ class Squadra extends Model
     {
               
       return $query->leftJoin('tblDistretti', 'tblSquadre.distretto_id', '=', 'tblDistretti.id')
+              ->select('tblSquadre.*')
               ->orderBy('tblDistretti.nome', $order)
               ->get();
     } 

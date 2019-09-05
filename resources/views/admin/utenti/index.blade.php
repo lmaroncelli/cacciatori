@@ -18,9 +18,21 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">Nome</th>
-                  <th>Email</th>
-                  <th>Ruolo</th>
+                  <th scope="col" @if ($order_by=='name')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=name&order={{ $order_by=='name' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
+                  </th>
+                  <th @if ($order_by=='email')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=email&order={{ $order_by=='email' && $order=='asc' ? 'desc' : 'asc' }}">Email</a>
+                  </th>
+                  <th @if ($order_by=='ruolo')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=ruolo&order={{ $order_by=='ruolo' && $order=='asc' ? 'desc' : 'asc' }}">Ruolo</a>
+                  </th>
                   <th>Login</th>
                   @not_role('admin_ro')
                   <th></th>

@@ -18,10 +18,18 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">Nome</th>
-                  <th>Email</th>
+                  <th scope="col" @if ($order_by=='cognome')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=cognome&order={{ $order_by=='cognome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
+                  </th>
+                  <th @if ($order_by=='email')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=email&order={{ $order_by=='email' && $order=='asc' ? 'desc' : 'asc' }}">Email</a>
+                  </th>
                   <th>Squadre</th>
-                  <th>CapoSquadra</th>
+                  <th>CapoSquadra di</th>
                   <th>Login</th>
                   @not_role('admin_ro')
                   <th></th>
@@ -31,7 +39,7 @@
               <tbody>
                 @foreach ($cacciatori as $cacciatore)
                   <tr>
-                    <td>{{$cacciatore->nome}} {{$cacciatore->cognome}}</td>
+                    <td>{{$cacciatore->cognome}} {{$cacciatore->nome}} </td>
                     <td>{{$cacciatore->utente->email}}</td>
                     <td>{{$cacciatore->getSquadre()}}</td>
                     <td>{{$cacciatore->getSquadreACapo()}}</td>

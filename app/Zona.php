@@ -102,18 +102,20 @@ class Zona extends Model
 
    public function scopeJoinUtg($query, $sort_by, $order) 
     {
-      if ($sort_by == 'utg') 
-        {
-        $campo_utg = 'nome'; 
-        } 
-      else 
-        {
-        $campo_utg = 'id';
-        }
+      
+    if ($sort_by == 'utg') 
+      {
+      $campo_utg = 'nome'; 
+      } 
+    else 
+      {
+      $campo_utg = 'id';
+      }
        
-       return $query->leftJoin('tblUnitaGestione', 'tblZone.unita_gestione_id', '=', 'tblUnitaGestione.id')
-              ->orderBy('tblUnitaGestione.'.$campo_utg,$order)
-              ->get();
+    return $query->leftJoin('tblUnitaGestione', 'tblZone.unita_gestione_id', '=', 'tblUnitaGestione.id')
+            ->select('tblZone.*')
+            ->orderBy('tblUnitaGestione.'.$campo_utg,$order)
+            ->get();
     }
 
 

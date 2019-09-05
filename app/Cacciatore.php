@@ -69,6 +69,30 @@ class Cacciatore extends Model
 	  return Carbon::parse($value)->format('d/m/Y');
 		}
 
+  
+  public function scopeJoinUtente($query, $sort_by, $order) 
+    {
+             
+    return $query->leftJoin('users', 'tblCacciatori.user_id', '=', 'users.id')
+            ->select('tblCacciatori.*')
+            ->orderBy('users.email',$order)
+            ->get();
+    }
+  
+  public static function getAll($sort_by = 'id', $order = 'asc')
+      {
+      
+      if ($sort_by == 'email') 
+        {
+        return Self::with('utente')->joinUtente($sort_by, $order);
+        } 
+      else 
+        {
+        return Self::with('utente')->orderBy($sort_by, $order)->get();
+        }
+      
 
-
+      
+      }
+    
 }
