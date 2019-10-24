@@ -13,11 +13,13 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         
-        $this->call(DistrettiSeeder::class);
-        
-        $this->call(ZoneSeeder::class);
+        $this->call(DistrettiMultiSeeder::class);
+
+        $this->call(UnitaMultiSeeder::class);
+
+        $this->call(ZoneMultiSeeder::class);
  				
-        $this->call(CacciatoriSeeder::class);
+        // $this->call(CacciatoriSeeder::class);
      		
         //$this->call(PolignoSeeder::class);
 

@@ -25,7 +25,7 @@ class DistrettiSeeder extends Seeder
     		
     	 	} 
 
-    	$files = ['distretto_a1.kml', 'distretto_a2.kml','distretto_b1.kml', 'distretto_b2.kml', 'distretto_c.kml'];
+    	$files = ['241019/ATC_RN1_DG-cinghiale.kml'];
 
 
       foreach ($files as $file) 
