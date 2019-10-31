@@ -30,9 +30,9 @@ class UnitaGestione extends Model
 
 		public function zone()
 		{
-		    return $this->hasMany(Zona::class, 'unita_gestione_id', 'id');
+      return $this->belongsToMany('App\Zona', 'tblUnitaZone', 'unita_id', 'zona_id');
     }
-    
+      
 
     public function azioni()
 		{

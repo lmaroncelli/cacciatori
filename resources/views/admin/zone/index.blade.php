@@ -40,15 +40,7 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th @if ($order_by=='id_utg')
-                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
-                    @endif>
-                    <a href="{{url()->current()}}?order_by=id_utg&order={{ $order_by=='id_utg' && $order=='asc' ? 'desc' : 'asc' }}">ID UG</a>
-                  </th>
-                  <th @if ($order_by=='utg')
-                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
-                    @endif>
-                    <a href="{{url()->current()}}?order_by=utg&order={{ $order_by=='utg' && $order=='asc' ? 'desc' : 'asc' }}">Unità di gestione</a>
+                  <th>Unità di gestione</a>
                   </th>
                   <th @if ($order_by=='id')
                     class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
@@ -81,8 +73,7 @@
                     @method('DELETE')
                   </form>
                   <tr>
-                    <td>{{optional($zona->unita)->id}}</td>
-                    <td>{{optional($zona->unita)->nome}}</td>
+                    <td>{{$zona->getUnita()}}</td>
                     <td>{{$zona->id}}</td>
                     <td>{{$zona->nome}}</td>
                     <td>{{$zona->tipo}}</td>

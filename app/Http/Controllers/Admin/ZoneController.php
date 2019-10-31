@@ -152,8 +152,9 @@ class ZoneController extends LoginController
       $zona = Zona::find($id);
 
       $squadre_associate = $zona->squadre->pluck('nome','id')->toArray();
+      $unita_associate = $zona->unita->pluck('nome','id')->toArray();
 
-      return view('admin.zone.form', compact('zona','squadre_associate'));
+      return view('admin.zone.form', compact('zona','squadre_associate','unita_associate'));
     }
 
     /**

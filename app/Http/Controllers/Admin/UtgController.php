@@ -25,30 +25,18 @@ class UtgController extends LoginController
 
     private function _getZone($zone_associate = [])
       {
-      $zone = Zona::getAll($sort_by = 'nome');
-
-      // keeping only those items that pass a given truth test:
-      $zone_filtered =  $zone->filter(function ($z) use ($zone_associate) {
-                          return ( !$z->unita_gestione_id || in_array($z->id, $zone_associate) );
-                    });
-
-      return $zone_filtered->pluck('nome','id');
+      $zone = Zona::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
+      
+      return $zone;
       }
 
 
     private function _saveZone(Request $request, $utg)
       {
 
-        Zona::where('unita_gestione_id', $utg->id)
-              ->update(['unita_gestione_id' => 0]);
-
-        if($request->has('zone'))
+      if($request->has('zone'))
         {
-        foreach ($request->get('zone') as $zone_id) 
-            {
-            Zona::where('id', $zone_id)
-                    ->update(['unita_gestione_id' => $utg->id]);
-            } 
+        $utg->zone()->sync($request->get('zone')); 
         }
         
       }

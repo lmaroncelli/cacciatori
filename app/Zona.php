@@ -19,9 +19,20 @@ class Zona extends Model
 
 		public function unita()
 		{
-		    return $this->belongsTo(UnitaGestione::class, 'unita_gestione_id', 'id');
-		}
+      return $this->belongsToMany('App\UnitaGestione', 'tblUnitaZone', 'zona_id', 'unita_id');
 
+    }
+
+    public function getUnita() 
+    {
+    return implode(',', $this->unita()->pluck('nome')->toArray());
+    }
+
+
+    public function roles()
+      {
+          return $this->belongsToMany('App\Role', 'role_user_table', 'user_id', 'role_id');
+      }
 
 
 		public function squadre()
