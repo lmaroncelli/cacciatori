@@ -178,7 +178,8 @@ class SelectConditionalController extends Controller
      $unita_gestione_id = $request->get('unita_gestione_id');
      if(!is_null($unita = UnitaGestione::find($unita_gestione_id)))
        {
-       if(!is_null($distretto = $unita->distretto()->first()))
+        // attenzione adesso $unita_gestione_id è un array e $unità è una collection!!!
+       if(!is_null($distretto = $unita->first()->distretto))
          {
          $res['nome'] = $distretto->nome;
          $res['id'] = $distretto->id;

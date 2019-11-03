@@ -17,8 +17,7 @@ class UtgFormComposer
     	{
 
     	$utg = UnitaGestione::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
-
-
+			
     	$view->with(compact('utg'));
     	}
 }

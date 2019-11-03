@@ -4,7 +4,7 @@
 @foreach($squadre as $id => $nome)
 	<option value="{{$id}}" 
 		@if ( 
-			(isset($squadre_associate) && in_array($id, $squadre_associate)) || collect(old('squadre'))->contains($id) 
+			(isset($squadre_associate) && array_key_exists($id, $squadre_associate)) || collect(old('squadre'))->contains($id) 
 			) selected="selected" @endif
 		>{{$nome}}
 	</option>

@@ -68,16 +68,6 @@ nuova
               </select>
             </div>
 
-
-              {{-- <div class="form-group">
-                <label for="unita_gestione_id">UTG</label>
-                <select class="form-control" style="width: 100%;" name="unita_gestione_id" id="unita_gestione_id">
-                  @foreach ($utg as $id => $nome)
-                    <option value="{{$id}}" @if ($zona->unita_gestione_id == $id || old('unita_gestione_id') == $id) selected="selected" @endif>{{$nome}}</option>
-                  @endforeach
-                </select>
-              </div> --}}
-
               <div class="form-group" id="unita_select">
                 @include('admin.inc_unita_select')
               </div>
@@ -219,6 +209,8 @@ nuova
 				    $('.select2').select2();
 
 				    var unita_gestione_id = $("#unita_gestione_id").val();
+            
+            //console.log('unita_gestione_id = '+unita_gestione_id);
 
 				    showDistretto(unita_gestione_id);
 

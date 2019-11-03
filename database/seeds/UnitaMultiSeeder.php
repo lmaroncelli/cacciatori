@@ -31,7 +31,8 @@ class UnitaMultiSeeder extends Seeder
               // questo nome fa riferimento al distretto a cui l'unità dovrà essere collegata
               $name = $unita->name->__toString();
 
-              $nome_unita = 'unita '.$name;
+              $nome_unita = 'unita '. $unita->attributes()->id;
+
 
               try 
                 {
