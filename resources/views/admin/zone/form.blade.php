@@ -156,6 +156,8 @@ nuova
 	<script type="text/javascript">
 				
 				function caricaSquadre(distretto_id, zona_id) {
+          console.log('caricaSquadre');
+
 					var distretto_id = distretto_id;
 					var zona_id = zona_id;
 					
@@ -178,6 +180,7 @@ nuova
 
 
 				function showDistretto(val) {
+          console.log('showDistretto');
 					var unita_gestione_id = val;
 					
 					jQuery.ajax({
@@ -210,12 +213,31 @@ nuova
 
 				    var unita_gestione_id = $("#unita_gestione_id").val();
             
-            //console.log('unita_gestione_id = '+unita_gestione_id);
+            console.log('init unita_gestione_id = '+unita_gestione_id);
 
 				    showDistretto(unita_gestione_id);
 
 				    $('#unita_gestione_id').change(function(){
+              console.log('on change unita unita_gestione_id ='+this.value);
 				    	showDistretto(this.value);
+
+              // se seleziono un UG devo ricaricare la select delle UG con solo quelle che hanno lo stesso distretto di quella selezionata
+              jQuery.ajax({
+					        url: '{{ route('ricarica_ug_stesso_distretto') }}',
+					        type: "post",
+					        async: false,
+					        data : { 
+					               'unita_gestione_id': this.value, 
+					               '_token': jQuery('input[name=_token]').val()
+					               },
+					       	success: function(data) {
+					         jQuery("#unita_select").html(data);
+                   $('.select2').select2();
+					         
+					       } // success
+					 }); // ajax
+
+
 				    });
 
         });

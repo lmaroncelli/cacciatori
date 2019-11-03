@@ -176,10 +176,17 @@ class SelectConditionalController extends Controller
    public function showDistrettoZonaAjax(Request $request)
      {
      $unita_gestione_id = $request->get('unita_gestione_id');
+
+     // UG può essere un array
+     if (is_array($unita_gestione_id)) 
+      {
+      $unita_gestione_id = $unita_gestione_id[0]; 
+      }
+
      if(!is_null($unita = UnitaGestione::find($unita_gestione_id)))
        {
-        // attenzione adesso $unita_gestione_id è un array e $unità è una collection!!!
-       if(!is_null($distretto = $unita->first()->distretto))
+
+       if(!is_null($distretto = $unita->distretto))
          {
          $res['nome'] = $distretto->nome;
          $res['id'] = $distretto->id;
@@ -199,6 +206,35 @@ class SelectConditionalController extends Controller
        return  json_encode($res);
        }
      }
+
+    /**
+     * [RicaricaUgStessoDistrettoAjax 
+     * se seleziono un UG devo ricaricare la select delle UG con solo quelle che hanno lo stesso distretto di quella selezionata]
+     * @param Request $request [description]
+     */
+    public function RicaricaUgStessoDistrettoAjax(Request $request)
+      {
+      $unita_gestione_id = $request->get('unita_gestione_id');
+
+      $unita_associate = [];
+      // UG può essere un array
+      if (is_array($unita_gestione_id)) 
+        {
+        $unita_associate = $unita_gestione_id; 
+        $unita_gestione_id = $unita_gestione_id[0]; 
+        }
+           
+      $unita_associate[$unita_gestione_id] = $unita_gestione_id;
+
+      $unita = UnitaGestione::find($unita_gestione_id);
+      $distretto = $unita->distretto;
+
+      $unita_selezionabili = $distretto->unita->pluck('nome','id')->toArray();
+
+
+      return view('admin.inc_unita_select',['utg' => $unita_selezionabili, 'unita_associate' => $unita_associate]);
+
+      }
 
 
    /**

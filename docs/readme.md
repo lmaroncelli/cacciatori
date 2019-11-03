@@ -17,4 +17,3 @@ Adesso UG (*) ------- (*) Zone
 - Partendo dall'UG posso selezionare più zone
 - Una zona può essere associata a più UG (vincolo stesso distretto ?? Al momento no) 
 
-
