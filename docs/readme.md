@@ -38,3 +38,9 @@ Faccio in modo che al caricamento della zona le unità selezionabili siano solo 
 Se tolgo TUTTE le UG: ricarico tutte le UG per la nuova sezione
 
 
+**BUG**
+
+Se prendo una zona che non ha UG, dopo che ho assegnato la prima ed ho aggiornato la lista delle UG, non me ne fa più aggiungere
+ $(document).on('change', '#unita_gestione_id', function() { 
+   triggera prima che selezioni e non fa inserire
+

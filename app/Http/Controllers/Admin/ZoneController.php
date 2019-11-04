@@ -105,39 +105,44 @@ class ZoneController extends LoginController
           {
            $poligono->coordinate()->createMany(Utility::fakeCoords()); 
           }
-        $unita = $zona->unita;
 
-        if (!is_null($unita)) 
+        // trovo tutte le UTG
+        $coordinate_unita = [];
+        $nomi_unita = [];
+      
+        
+        $trovato_distretto = false;
+        foreach ($zona->unita as $unita) 
           {
-          $poligono_unita = $unita->poligono;
-          $coordinate_unita = $poligono_unita->coordinate->pluck('long','lat');
           
-          $distretto = $zona->unita->distretto;
-          
-          if(!is_null($distretto))
-            {
-            $poligono_distretto = $distretto->poligono;
-            $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
-            }
-          else 
-            {
-            $poligono_distretto = null;
-            $coordinate_distretto = null;
-            }
-          } 
-        else 
-          {
-          $poligono_unita = null;
-          $coordinate_unita = null;
+          $poligono_unita =  $unita->poligono;
+          $coordinata_unita = $poligono_unita->coordinate->pluck('long','lat');
+          $coordinate_unita[$unita->id] = $coordinata_unita;
+          $nomi_unita[$unita->id] = $unita->nome;
 
-          $distretto = null;
-          $poligono_distretto = null;
-          $coordinate_distretto = null;
+          // trvo un solo distretto perché tutte le unità hanno come padre 1! distretto
+          if(!$trovato_distretto)
+            {
+              
+            $distretto = $unita->distretto;
+            if(!is_null($distretto))
+              {
+              $poligono_distretto = $distretto->poligono;
+              $coordinate_distretto = $poligono_distretto->coordinate->pluck('long','lat');
+              }
+            else 
+              {
+              $distretto = null;
+              $poligono_distretto = null;
+              $coordinate_distretto = null;
+              }
+              
+              $trovato_distretto = true;
+            }
+
           }
         
-        
-        
-        return view('admin.zone.show_mappa', compact('zona','coordinate', 'unita', 'coordinate_unita', 'distretto', 'coordinate_distretto'));
+        return view('admin.zone.show_mappa', compact('zona','coordinate', 'nomi_unita', 'coordinate_unita', 'distretto', 'coordinate_distretto'));
 
     }
 

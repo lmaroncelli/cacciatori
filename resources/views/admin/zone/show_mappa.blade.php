@@ -4,10 +4,10 @@
 
 @section('titolo')
 
-@if (!is_null($distretto) && !is_null($unita))
-  {{$zona->unita->distretto->nome}} > 
+@if (!is_null($distretto))
+  {{$distretto->nome}} > 
 
-  {{$zona->unita->nome}} > 
+  {{$zona->getUnita()}} > 
 @endif
 
 {{$zona->nome}}
@@ -52,8 +52,14 @@
 
 
     var distretto;
-    var utg;
+    var utg_ids = new Array();
     var zona;
+
+    @foreach ($coordinate_unita as $id_utg => $coordinata_utg)
+      var utg_{{$id_utg}};
+      utg_ids.push({{$id_utg}});
+    @endforeach
+
 
 
 		// Initialize and add the map
@@ -128,52 +134,49 @@
         ///////////////////////////////////////////////////////////////////////////////
         
         // CREAZIONE DEL POLIGONO UNITA
-
-       var utg_coords = new Array();
-
-         @if (!is_null($coordinate_unita))
-
-            @foreach ($coordinate_unita as $lat => $long)
-              
-              var jsonData = {};
-              jsonData['lat'] = {{$lat}};
-              jsonData['lng'] = {{$long}};
-              
-              //console.log('jsonData = '+JSON.stringify(jsonData));
-
-              utg_coords.push(jsonData);
-
-            @endforeach
+        // creo tutte le utg delle quali ho le coordinate nell'array coordinate_unita
+        @foreach ($coordinate_unita as $id_utg => $coordinata_utg)
           
-          @endif
+          var utg_coords = new Array();
 
-          //console.log(utg_coords);
-          //console.log(utg_coords);
-
-        if(utg_coords.length !== 0) {
-
-            // Construct the polygon.
-            utg = new google.maps.Polygon({
-                paths: utg_coords,
-                strokeColor: '{{$colors["utg"]}}',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '{{$colors["utg"]}}',
-                fillOpacity: 0.35,
-                editable: false,
-                draggable: false
-              });
+          @foreach ($coordinata_utg as $lat => $long)
 
 
-            //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-            utg.setMap(map);
+        
+            var jsonData = {};
+            jsonData['lat'] = {{$lat}};
+            jsonData['lng'] = {{$long}};
+            
+            //console.log('jsonData = '+JSON.stringify(jsonData));
+
+            utg_coords.push(jsonData);
+          
+          @endforeach
+
+          // Construct the polygon.
+          utg_{{$id_utg}} = new google.maps.Polygon({
+            paths: utg_coords,
+            strokeColor: '{{$colors["utg"]}}',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '{{$colors["utg"]}}',
+            fillOpacity: 0.35,
+            editable: false,
+            draggable: false
+          });
 
 
-            google.maps.event.addListener(utg, 'click', function(event){
-              showInfo(event,'utg',"{{optional($unita)->nome}}");
-            });
+          //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+          utg_{{$id_utg}}.setMap(map);
 
-        }
+
+          google.maps.event.addListener(utg_{{$id_utg}}, 'click', function(event){
+            showInfo(event,'unità',"{{$nomi_unita[$id_utg]}}");
+          });
+
+
+        @endforeach
+       
 
       
         
@@ -278,11 +281,15 @@
 
 
     function spegni_utg() {
-        utg.setMap(null); 
-      }
+      utg_ids.forEach(function(id){
+          eval('utg_'.concat(id)).setMap(null);  
+      })
+    }
 
     function accendi_utg() {
-        utg.setMap(map); 
+      utg_ids.forEach(function(id){
+          eval('utg_'.concat(id)).setMap(map);  
+      })
     }
 
 

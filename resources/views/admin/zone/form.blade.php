@@ -243,7 +243,9 @@ nuova
 				  
 				    //$('#unita_gestione_id').change(function(){
 
-            $(document).on('change', '#unita_gestione_id', function() { 
+            $(document).on('select2:select', '#unita_gestione_id', function(e) { 
+              var data = e.params.data;
+              console.log(data);
               console.log('on change unita unita_gestione_id ='+this.value);
 				    	
               showDistretto(this.value);
