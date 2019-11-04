@@ -38,7 +38,7 @@ Route::resource('distretti', 'Admin\DistrettiController');
 Route::resource('utg', 'Admin\UtgController');
 Route::resource('squadre', 'Admin\SquadreController');
 Route::post('getZonaAjax','Admin\SelectConditionalController@getZonaAjax')->name('get_zona');
-Route::resource('zone', 'Admin\ZoneController')->middleware('log');
+Route::resource('zone', 'Admin\ZoneController')/*->middleware('log')*/;
 Route::post('getSquadreFromDistrettoAjax','Admin\SelectConditionalController@getSquadreFromDistrettoAjax')->name('get_squadre');
 Route::post('showDistrettoZonaAjax','Admin\SelectConditionalController@showDistrettoZonaAjax')->name('show_distretto');
 
@@ -52,8 +52,8 @@ Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromU
 
 
 Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
-Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')->middleware('log');
-Route::resource('azioni', 'Admin\AzioniCacciaController')->middleware('log');
+Route::post('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')/*->middleware('log')*/;
+Route::resource('azioni', 'Admin\AzioniCacciaController')/*->middleware('log')*/;
 
 Route::group(['middleware' => ['admin']], function () {
 

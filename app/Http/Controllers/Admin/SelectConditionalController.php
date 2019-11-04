@@ -216,15 +216,34 @@ class SelectConditionalController extends Controller
       {
       $unita_gestione_id = $request->get('unita_gestione_id');
 
+      // ho azzerato le UG devoricaricarle tutte
+      if(is_null($unita_gestione_id))
+        {
+        $unita_associate = [];
+        $unita_selezionabili = UnitaGestione::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
+        
+        return view('admin.inc_unita_select',['utg' => $unita_selezionabili, 'unita_associate' => $unita_associate]);
+        }
+
+
       $unita_associate = [];
       // UG può essere un array
       if (is_array($unita_gestione_id)) 
         {
-        $unita_associate = $unita_gestione_id; 
-        $unita_gestione_id = $unita_gestione_id[0]; 
+         
+        foreach ($unita_gestione_id as $u_id) 
+          {
+          $unita_associate[$u_id] = $u_id;          
+          }
+        
+        $unita_gestione_id = $unita_gestione_id[0];
+
+        } 
+      else
+        {
+        $unita_associate[$unita_gestione_id] = $unita_gestione_id;
         }
            
-      $unita_associate[$unita_gestione_id] = $unita_gestione_id;
 
       $unita = UnitaGestione::find($unita_gestione_id);
       $distretto = $unita->distretto;

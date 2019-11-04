@@ -207,6 +207,31 @@ nuova
 
 				} // showDistretto
 
+
+        function ricarica_ug_stesso_distretto(val) {
+          
+            console.log('ricarica_ug_stesso_distretto');
+            var unita_gestione_id = val;
+
+            // se seleziono un UG devo ricaricare la select delle UG con solo quelle che hanno lo stesso distretto di quella selezionata
+            jQuery.ajax({
+                url: '{{ route('ricarica_ug_stesso_distretto') }}',
+                type: "post",
+                async: false,
+                data : { 
+                       'unita_gestione_id': unita_gestione_id, 
+                       '_token': jQuery('input[name=_token]').val()
+                       },
+                success: function(data) {
+                 jQuery("#unita_select").html(data);
+                 $('.select2').select2();
+                 
+               } // success
+         }); // ajax
+
+
+        } //ricarica_ug_stesso_distretto
+
 				$(function () {
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
@@ -215,30 +240,20 @@ nuova
             
             console.log('init unita_gestione_id = '+unita_gestione_id);
 
-				    showDistretto(unita_gestione_id);
+				  
+				    //$('#unita_gestione_id').change(function(){
 
-				    $('#unita_gestione_id').change(function(){
+            $(document).on('change', '#unita_gestione_id', function() { 
               console.log('on change unita unita_gestione_id ='+this.value);
-				    	showDistretto(this.value);
+				    	
+              showDistretto(this.value);
+              ricarica_ug_stesso_distretto(this.value);
 
-              // se seleziono un UG devo ricaricare la select delle UG con solo quelle che hanno lo stesso distretto di quella selezionata
-              jQuery.ajax({
-					        url: '{{ route('ricarica_ug_stesso_distretto') }}',
-					        type: "post",
-					        async: false,
-					        data : { 
-					               'unita_gestione_id': this.value, 
-					               '_token': jQuery('input[name=_token]').val()
-					               },
-					       	success: function(data) {
-					         jQuery("#unita_select").html(data);
-                   $('.select2').select2();
-					         
-					       } // success
-					 }); // ajax
+            });
 
 
-				    });
+            showDistretto(unita_gestione_id);
+            ricarica_ug_stesso_distretto(unita_gestione_id);
 
         });
         
