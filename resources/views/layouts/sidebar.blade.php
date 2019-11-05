@@ -29,7 +29,7 @@
 
       {{-- Utg --}}
         <li class="treeview @if (in_array('utg',Request::segments())) active @endif">
-          <a href="#"><i class="fa fa-houzz"></i> <span>Utg</span>
+          <a href="#"><i class="fa fa-houzz"></i> <span>Ug</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -44,7 +44,7 @@
 
         {{-- Zone --}}
       <li class="treeview @if (in_array('zone',Request::segments())) active @endif">
-        <a href="#"><i class="fa fa-map-signs"></i> <span>Zone/Particelle</span>
+        <a href="#"><i class="fa fa-map-signs"></i> <span>Quadranti</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

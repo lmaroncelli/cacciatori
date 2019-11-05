@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="zone">Zona:</label>
+                  <label for="zone">Quadrante:</label>
                   <select name="zona" id="zona" class="form-control">
                     @foreach(['0' => 'Selziona...'] + $zone as $id => $nome)
                       <option value="{{$id}}" 

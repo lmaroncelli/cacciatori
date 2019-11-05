@@ -5,11 +5,11 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Elenco zone</h3>
+            <h3 class="box-title">Elenco quadranti</h3>
             <div class="box-tools">
               @not_role_and(['cacciatore','admin_ro'])
               <div class="input-group input-group-sm" style="width: 150px;">
-                  <a href="{{ route('zone.create') }}" title="Nuova Zona" class="btn btn-success"><i class="fa fa-plus"></i> Nuova zona</a>
+                  <a href="{{ route('zone.create') }}" title="Nuovo quadrante" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo quadrante</a>
               </div>
               @endnot_role_and
             </div>
@@ -19,7 +19,7 @@
             
             <div class="callout callout-warning" style="margin: 5px;">
               <h4>Attenzione</h4>
-              <p>Nessuna zona/particella presente.</p>
+              <p>Nessun quadrante presente.</p>
             </div>
           
             @else

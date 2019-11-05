@@ -2,11 +2,11 @@
 
 
 @section('titolo')
-Zona
+Quadrante
 @endsection
 
 @section('titolo_small')
-nuova
+nuovo
 @endsection
 
 
@@ -25,7 +25,7 @@ nuova
     <div class="col-xs-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Zona</h3> 
+          <h3 class="box-title">Quadrante</h3> 
           @if ($zona->exists) 
             <div class="text" style="margin:10px 0">Referenti: <span id="elenco_referenti">{{$zona->getReferenti()}}</span></div>
           @endif

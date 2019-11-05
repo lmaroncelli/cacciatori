@@ -45,7 +45,7 @@ class SelectConditionalController extends Controller
       
       foreach ($distretto->unita as $unita) 
         {
-        $zone += $unita->zone()->pluck('nome','id')->toArray();
+        $zone += $unita->zone()->pluck('tblZone.nome','tblZone.id')->toArray();
         }
 
       

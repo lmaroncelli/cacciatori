@@ -12,7 +12,7 @@
     <div class="col-xs-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Distretto</h3>
+          <h3 class="box-title">Unità di gestione</h3>
         </div>
         <!-- /.box-header -->
         @if ($utg->exists)

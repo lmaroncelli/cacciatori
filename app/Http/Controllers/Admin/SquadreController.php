@@ -123,7 +123,7 @@ class SquadreController extends LoginController
           $zone = [];
           foreach ($utg as $unita) 
             {
-            $zone += $unita->zone()->pluck('nome','id')->toArray();
+            $zone += $unita->zone()->pluck('tblZone.nome','tblZone.id')->toArray();
             }
           if(!empty($zone))
             asort($zone);

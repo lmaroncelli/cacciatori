@@ -19,7 +19,7 @@ Adesso UG (*) ------- (*) Zone
 
 
 
-**Use Case**
+**Use Case: Zone**
 
 Distretto: DG1
 
@@ -38,9 +38,40 @@ Faccio in modo che al caricamento della zona le unità selezionabili siano solo 
 Se tolgo TUTTE le UG: ricarico tutte le UG per la nuova sezione
 
 
-**BUG**
+**BUG RISOLTO**
 
 Se prendo una zona che non ha UG, dopo che ho assegnato la prima ed ho aggiornato la lista delle UG, non me ne fa più aggiungere
  $(document).on('change', '#unita_gestione_id', function() { 
    triggera prima che selezioni e non fa inserire
+
+
+
+
+**Use Case: Squadre**
+
+OK
+
+
+**Use Case: Attività**
+
+Nel momento in cui seleziono la Squadra che farà la caccia ottengo il DISTRETTO corrispondente (ajax call get_distretto)
+e subito dopo faccio un'altra chiamata 
+
+caricaUtg(distretto_id);
+
+per avere le Unità di distretto da selezionare (getUtgFromDistrettoAjax)
+
+
+OK
+
+
+**Use Case: Distretti ordinamento**
+
+OK
+
+
+
+**Use Case: Quadranti ordinamento**
+
+OK
 

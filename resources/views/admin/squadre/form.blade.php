@@ -88,6 +88,7 @@
 
 
 				function caricaZone(val) {
+          console.log('carica zone da distretto_id = '+val);
 					var distretto_id = val;
 					
 					jQuery.ajax({

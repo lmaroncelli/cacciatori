@@ -221,7 +221,7 @@ class AzioniCacciaController extends LoginController
             'squadra_nome' => 'Squadra',
             'distretto_nome' => 'Distretto',
             'unita_nome' => 'UTG',
-            'zona_nome' => 'Zona'
+            'zona_nome' => 'Quadrante'
         ];
 
         if ($export_pdf) 

@@ -58,6 +58,8 @@ class UtgController extends LoginController
 
         $utg = UnitaGestione::getAll($order_by, $order);
 
+        //dd($utg);
+
         return view('admin.utg.index', compact('utg', 'order_by', 'order'));
     }
 

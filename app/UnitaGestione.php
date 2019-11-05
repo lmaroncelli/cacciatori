@@ -49,6 +49,7 @@ class UnitaGestione extends Model
     {
               
       return $query->leftJoin('tblDistretti', 'tblUnitaGestione.distretto_id', '=', 'tblDistretti.id')
+              ->select('tblUnitaGestione.*')
               ->orderBy('tblDistretti.nome', $order)
               ->get();
     } 
