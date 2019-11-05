@@ -34,6 +34,8 @@ __Quando un utente invia un SMS al mio numero Twilio, Twilio invia una WEBHOOK H
 siccome in locale creo una pagina che risponde ad un SMS, per essere raggiunta da fuori utilizzo ngrok
 
 
+> ngrok http 8000
+
 
 ngrok by @inconshreveable                                                             (Ctrl+C to quit)
                                                                                                       

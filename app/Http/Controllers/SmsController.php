@@ -72,7 +72,7 @@ class SmsController extends Controller
         
           $zona = Zona::find($zona_id);
 
-          if(is_null($zona) || $zona->unita_gestione_id != $ug->id)
+          if(is_null($zona) || !in_array($zona->unita()->pluck('tblUnitaGestione.id')->toArray(), $ug->id))
             {
             throw new \Exception('Zona non valida!');
             }
