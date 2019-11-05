@@ -240,23 +240,58 @@ nuova
             
             console.log('init unita_gestione_id = '+unita_gestione_id);
 
+
+            $(document).on({
+
+                 // Triggered whenever a result is selected.
+                'select2:select': function (e) {
+                  //var id_to_add = e.params.data.id;
+                  //console.log('id_to_add = '+id_to_add);
+
+                  console.log('on change unita unita_gestione_id ='+this.value);
+              
+                  var retval = [];    
+                  $("#unita_gestione_id  > option:selected").each(function(){
+                      retval.push($(this).val()); 
+                  });
+                  
+                  
+                  console.log('tutti i valori selezionati ='+retval);
+                  
+                  showDistretto(this.value);
+
+                  ricarica_ug_stesso_distretto(retval);
+                },
+
+                'select2:unselect': function () {
+
+                  console.log('valore deselezionato');
+                  
+                  var retval = [];    
+                  $("#unita_gestione_id  > option:selected").each(function(){
+                      retval.push($(this).val()); 
+                  });
+
+                  if( !retval.length)
+                  {
+                    console.log('nessun valore selezionato');
+                      
+                    ricarica_ug_stesso_distretto('');
+                    showDistretto('');
+
+                  }
+
+                }
+                
+            }, '#unita_gestione_id');
+
 				  
-				    //$('#unita_gestione_id').change(function(){
 
-            $(document).on('select2:select', '#unita_gestione_id', function(e) { 
-              var data = e.params.data;
-              console.log(data);
-              console.log('on change unita unita_gestione_id ='+this.value);
-				    	
-              showDistretto(this.value);
-              ricarica_ug_stesso_distretto(this.value);
-
-            });
-
+            
 
             showDistretto(unita_gestione_id);
-            ricarica_ug_stesso_distretto(unita_gestione_id);
-
+            
+           
         });
         
         @if ($zona->exists)

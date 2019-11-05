@@ -25,6 +25,29 @@ class ZoneController extends LoginController
 
 
     /**
+     * Se la zona ha già un UTG, allora le altre selezionabili devono essere solo quelle che hanno come padre lo stesso distretto
+     * altrimenti sono tutte
+     *
+     * @return void
+     */
+    private function _getUtg($zona)
+      {
+      if($zona->unita()->count())
+        {
+          $unita = $zona->unita()->first();
+          $distretto = $unita->distretto;
+          $utg = $distretto->unita->pluck('nome','id')->toArray();
+        }
+      else 
+        {
+        $utg = UnitaGestione::getAll($sort_by = 'nome')->pluck('nome','id')->toArray();
+        }
+      
+        return $utg;
+      }
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -53,10 +76,11 @@ class ZoneController extends LoginController
     public function create()
     {
         $zona = new Zona;
+        $utg = $this->_getUtg($zona);
 
         $squadre_associate = $zona->squadre->pluck('nome','id')->toArray();
 
-        return view('admin.zone.form', compact('zona','squadre_associate'));
+        return view('admin.zone.form', compact('zona','squadre_associate', 'utg'));
     }
 
     /**
@@ -158,8 +182,10 @@ class ZoneController extends LoginController
 
       $squadre_associate = $zona->squadre->pluck('nome','id')->toArray();
       $unita_associate = $zona->unita->pluck('nome','id')->toArray();
-      
-      return view('admin.zone.form', compact('zona','squadre_associate','unita_associate'));
+
+      $utg = $this->_getUtg($zona);
+
+      return view('admin.zone.form', compact('zona','squadre_associate','unita_associate','utg'));
     }
 
     /**
