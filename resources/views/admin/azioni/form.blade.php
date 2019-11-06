@@ -104,11 +104,9 @@
               @include('admin.azioni.inc_unita_select_cascade', ['selected_id' => $selected_id])
             </div>
 
-            @php
-              $azione->exists ? $selected_id = $azione->zona_id : $selected_id = 0;
-            @endphp
-            <div class="form-group" id="zone_select_wrapper"  style="display: none;">
-              @include('admin.azioni.inc_zone_select_cascade', ['selected_id' => $selected_id])
+            
+            <div class="form-group" id="zone_select_wrapper" @if (!isset($zone_associate)) style="display: none;" @endif>
+              @include('admin.azioni.inc_zone_select_cascade')
             </div>	
 
           
@@ -247,6 +245,7 @@
                                 },
                           success: function(data) {
                             jQuery("#zone_select_wrapper").html(data);
+                             $('.select2').select2();
                             $("#zone_select_wrapper").show();
                         }
 
@@ -254,7 +253,7 @@
 
                   }
 
-	        }).change();
+	        });
 
 
 			    }

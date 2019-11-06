@@ -75,3 +75,33 @@ OK
 
 OK
 
+
+**Use Case: Azioni Quadranti molti-a-molti**
+
+Nel momento in cui seleziono la Squadra che farà la caccia ottengo il DISTRETTO corrispondente (ajax call get_distretto)
+e subito dopo faccio un'altra chiamata 
+
+caricaUtg(distretto_id);
+
+per avere le Unità di distretto da selezionare (getUtgFromDistrettoAjax)
+
+@Gupi 06/11/19 - i quadranti sono svincolati da tutto perché potrei dover inserire azioni per quadranti che sono anche in distretti differenti
+
+nell'inserimento di un'azione, quando seleziono un UG
+
+ $("#utg").change(function(){
+
+faccio una chiamata AJAX per prendere le zone corrispondenti
+
+jQuery.ajax({
+    url: '{{ route('get_zone_form_utg') }}',
+
+Invece adesso 
+
+// Prendo tutte lezone della squadra, MA LA SQUADRA FA PARTE DI 1! distretto quindi non posso avere zone su 2 distretti
+// $zone = Zona::getAll()->pluck('nome','id')->toArray();
+
+OPPURE 
+
+// prendo SEMPRE E COMUNQUE TUTTE le zone 
+$zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();

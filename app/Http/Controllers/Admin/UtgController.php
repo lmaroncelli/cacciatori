@@ -38,6 +38,10 @@ class UtgController extends LoginController
         {
         $utg->zone()->sync($request->get('zone')); 
         }
+      else 
+        {
+        $utg->zone()->detach();
+        }
         
       }
     /**

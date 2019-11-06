@@ -36,11 +36,15 @@ class AzioniCacciaController extends LoginController
         $azione->squadra_id = $request->get('squadra_id');
         $azione->distretto_id = $request->get('distretto_id');
         $azione->unita_gestione_id = $request->get('unita_gestione_id');
-        $azione->zona_id = $request->get('zona_id');
         $azione->note = $request->get('note');
         $azione->user_id = Auth::id();
 
         $azione->save();
+
+        if($request->has('zone'))
+          {
+          $azione->zone()->sync($request->get('zone')); 
+          }
       }
 
     
@@ -175,7 +179,7 @@ class AzioniCacciaController extends LoginController
           $ordering = 1;
           }
         
-        $query = AzioneCaccia::with(['squadra','distretto','unita','zona']);
+        $query = AzioneCaccia::with(['squadra','distretto','unita']);
 
         switch ($order_by) {
           case 'squadra_nome':
@@ -190,9 +194,9 @@ class AzioniCacciaController extends LoginController
             $query = AzioneCaccia::join('tblUnitaGestione','tblUnitaGestione.id','=','tblAzioniCaccia.unita_gestione_id')->orderBy('tblUnitaGestione.nome', $order);
             break;
 
-          case 'zona_nome':
-            $query = AzioneCaccia::join('tblZone','tblZone.id','=','tblAzioniCaccia.zona_id')->orderBy('tblZone.nome', $order);
-            break;
+          // case 'zona_nome':
+          //   $query = AzioneCaccia::join('tblZone','tblZone.id','=','tblAzioniCaccia.zona_id')->orderBy('tblZone.nome', $order);
+          //   break;
           
           default:
             $query->orderBy($order_by, $order);
@@ -209,10 +213,10 @@ class AzioniCacciaController extends LoginController
           $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
           }
         
-        if($zona_selected > 0)
-          {
-          $query->where('tblAzioniCaccia.zona_id',$zona_selected);
-          }
+        // if($zona_selected > 0)
+        //   {
+        //   $query->where('tblAzioniCaccia.zona_id',$zona_selected);
+        //   }
 
         $azioni = $query->get();
         
@@ -221,7 +225,7 @@ class AzioniCacciaController extends LoginController
             'squadra_nome' => 'Squadra',
             'distretto_nome' => 'Distretto',
             'unita_nome' => 'UTG',
-            'zona_nome' => 'Quadrante'
+            'zona_nome' => 'Quadranti'
         ];
 
         if ($export_pdf) 
@@ -289,7 +293,9 @@ class AzioniCacciaController extends LoginController
     public function edit($id)
     {
         $azione = AzioneCaccia::find($id);
-        return view('admin.azioni.form', compact('azione'));
+        $zone_associate = $azione->zone->pluck('id')->toArray();
+
+        return view('admin.azioni.form', compact('azione','zone_associate'));
     }
 
     /**

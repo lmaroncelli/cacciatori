@@ -28,13 +28,6 @@ class Zona extends Model
     return implode(',', $this->unita()->pluck('nome')->toArray());
     }
 
-
-    public function roles()
-      {
-          return $this->belongsToMany('App\Role', 'role_user_table', 'user_id', 'role_id');
-      }
-
-
 		public function squadre()
 		{
 		    return $this->belongsToMany(Squadra::class, 'tblSquadreZone', 'zona_id', 'squadra_id')->withTimestamps();
@@ -48,9 +41,10 @@ class Zona extends Model
 
     public function azioni()
       {
-      return $this->hasMany(AzioneCaccia::class, 'zona_id', 'id');
+      return $this->belongsToMany(AzioneCaccia::class, 'tblAzioneZona', 'zona_id', 'azione_id');
       }
 
+ 
 		public function poligono()
 		  { 
 		      // the Poligono model is automatically assumed to have a zona_id foreign key

@@ -41,13 +41,15 @@ class AzioneCaccia extends Model
         return $this->belongsTo(UnitaGestione::class, 'unita_gestione_id', 'id');
     }
 
-	public function zona()
-		{
-		return $this->belongsTo(Zona::class, 'zona_id', 'id');
-		}
-    
-    
+    public function zone()
+      {
+      return $this->belongsToMany(Zona::class, 'tblAzioneZona', 'azione_id', 'zona_id');
+      }
 
+   public function getZone() 
+    {
+    return implode(',', $this->zone()->pluck('nome')->toArray());
+    }
 
 	public function getDalleAlle()
 		{

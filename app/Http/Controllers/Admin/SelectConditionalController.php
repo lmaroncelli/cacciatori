@@ -114,6 +114,21 @@ class SelectConditionalController extends Controller
       */
      public function getZoneFromUtgAjax(Request $request)
        {
+
+        /**
+         * @Gupi 06/11/19 - i quadranti sono svincolati da tutto perché potrei dover inserire azioni per quadranti che sono anche in distretti differenti
+         * 
+         */
+        
+        // Prendo tutte lezone della squadra, MA LA SQUADRA FA PARTE DI 1! distretto quindi non posso avere zone su 2 distretti
+        // $zone = Zona::getAll()->pluck('nome','id')->toArray();
+
+
+        // prendo tutte le zone 
+        $zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
+
+        return view('admin.azioni.inc_zone_select_cascade', compact('zone'));
+
          if(!is_null($unita_gestione_id = $request->get('unita_gestione_id')))
            {
            if(!is_null($unita = UnitaGestione::find($unita_gestione_id)))
@@ -131,6 +146,8 @@ class SelectConditionalController extends Controller
 
              }
            }
+
+
          
        }
 
