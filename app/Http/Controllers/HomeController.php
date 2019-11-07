@@ -26,7 +26,7 @@ class HomeController extends Controller
     private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, $from, $to)
       {
         // cerco tutte le azioni di questa data 
-        $azioni = AzioneCaccia::with('squadra', 'distretto', 'unita','zona')
+        $azioni = AzioneCaccia::with('squadra', 'distretto', 'unita','zone')
                   ->where('dalle','>=',$from)
                   ->where('alle','<=',$to)
                   ->get();
@@ -37,15 +37,17 @@ class HomeController extends Controller
         
         foreach ($azioni as $azione) 
           {
-          $zona_azione = $azione->zona;
-          
-          if(!in_array($zona_azione->id, $zone_ids))
-            $zone_ids[] = $zona_azione->id;
+          $zone_azione = $azione->zone;
 
-          $poligono = $zona_azione->poligono;
-          $coordinata_zona = $poligono->coordinate->pluck('long','lat');
-          $coordinate_zona[$zona_azione->id] = $coordinata_zona;
-          
+          foreach ($zone_azione as $zona_azione) 
+            {
+            if(!in_array($zona_azione->id, $zone_ids))
+              $zone_ids[] = $zona_azione->id;
+  
+            $poligono = $zona_azione->poligono;
+            $coordinata_zona = $poligono->coordinate->pluck('long','lat');
+            $coordinate_zona[$zona_azione->id] = $coordinata_zona;
+            }
           }
 
               
@@ -63,9 +65,16 @@ class HomeController extends Controller
           $azione->nomesquadra = $azione->squadra->nome;
           $azione->caposquadra = $azione->squadra->getNomeCapoSquadra();
           $azione->tel_capo = optional($azione->squadra->getCapoSquadra())->telefono;
-          $azioni_di_zona[$azione->zona_id][] = $azione;
-          $nomi_di_zona[$azione->zona_id] = $azione->zona->nome;
+          
+          $zone_azione = $azione->zone;
+
+          foreach ($zone_azione as $zona_azione) 
+            {
+            $azioni_di_zona[$zona_azione->id][] = $azione;
+            $nomi_di_zona[$zona_azione->id] = $zona_azione->nome;
+            }
           }
+
         $azioni = $azioni->keyBy('id')->toArray();         
 
         // mi serve per centrare la mappa e zoommarla
