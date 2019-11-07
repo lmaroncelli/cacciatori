@@ -179,8 +179,20 @@ class AzioniCacciaController extends LoginController
           $ordering = 1;
           }
         
-        $query = AzioneCaccia::with(['squadra','distretto','unita']);
 
+        if($zona_selected > 0)
+          {
+          $query = AzioneCaccia::with(['squadra','distretto','unita'])
+                  ->whereHas('zone', function($q) use ($zona_selected){
+                    $q->where('tblZone.id',$zona_selected);
+                  });
+          }
+          else 
+          {
+          $query = AzioneCaccia::with(['squadra','distretto','unita']);       
+          }
+        
+        
         switch ($order_by) {
           case 'squadra_nome':
             $query = AzioneCaccia::join('tblSquadre','tblSquadre.id','=','tblAzioniCaccia.squadra_id')->orderBy('tblSquadre.nome', $order);
@@ -213,10 +225,7 @@ class AzioniCacciaController extends LoginController
           $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
           }
         
-        // if($zona_selected > 0)
-        //   {
-        //   $query->where('tblAzioniCaccia.zona_id',$zona_selected);
-        //   }
+      
 
         $azioni = $query->get();
         
@@ -225,7 +234,7 @@ class AzioniCacciaController extends LoginController
             'squadra_nome' => 'Squadra',
             'distretto_nome' => 'Distretto',
             'unita_nome' => 'UTG',
-            'zona_nome' => 'Quadranti'
+            '' => 'Quadranti'
         ];
 
         if ($export_pdf) 
