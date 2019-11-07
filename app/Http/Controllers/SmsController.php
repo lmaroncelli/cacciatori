@@ -29,6 +29,7 @@ class SmsController extends Controller
     
       list($data,$da,$a,$ug_id,$zona_id) = explode('#', $body);
       
+      $zone_arr = explode(',', $zona_id);
       
       // dal numero identifico il caposquadra
       $cacciatore = Cacciatore::where('telefono',trim($number))->first();
@@ -69,10 +70,8 @@ class SmsController extends Controller
         }
       else
         {
-        
-          $zona = Zona::find($zona_id);
-
-          if(is_null($zona) || !in_array($zona->unita()->pluck('tblUnitaGestione.id')->toArray(), $ug->id))
+          
+          if(is_null($zone_arr))
             {
             throw new \Exception('Zona non valida!');
             }
@@ -88,65 +87,74 @@ class SmsController extends Controller
       $azione->squadra_id = $squadra->id;
       $azione->distretto_id = $distretto->id;
       $azione->unita_gestione_id = $ug->id;
-      $azione->zona_id = $zona->id;
       $azione->note = "Inserita via SMS";
       $azione->user_id = $cacciatore->id;
 
       $azione->save();
 
-      
-      $avviso_referenti = "";
-
-
-      // Creo un messaggio leggibile da inviare ai referenti
-      $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nella $zona->tipo $zona->nome";
-      
-      $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
-      
-      if(count($referenti_zona_tel))
+      foreach ($zone_arr as $zona_id) 
         {
-          
-        try 
+        $azione->zone()->attach($zona_id);
+        $zona = Zona::find($zona_id);
+        
+        $avviso_referenti = "";
+
+
+        // Creo un messaggio leggibile da inviare ai referenti
+        $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nella $zona->tipo $zona->nome";
+        
+        $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+        
+        if(count($referenti_zona_tel))
           {
-          $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
-          
-          foreach ($referenti_zona_tel as $number) 
+            
+          try 
             {
-              $twilio->messages
-                    ->create(
-                            $number, // to
-                            array(
-                                "body" => $readable_msg,
-                                "from" => env('TWILIO_FROM')
-                            )
-                    );
-            } // for numeri
-          } 
-        catch (\Exception $e) 
+            $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+            
+            foreach ($referenti_zona_tel as $number) 
+              {
+                $twilio->messages
+                      ->create(
+                              $number, // to
+                              array(
+                                  "body" => $readable_msg,
+                                  "from" => env('TWILIO_FROM')
+                              )
+                      );
+              } // for numeri
+            } 
+          catch (\Exception $e) 
+            {
+            $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
+            }
+
+          } // if telefoni
+        else 
           {
-          $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
+          $avviso_referenti = " ATTENZIONE: Nessun numero da contattare per i referenti di zona";        
           }
 
-        } // if telefoni
-      else 
-        {
-        $avviso_referenti = " ATTENZIONE: Nessun numero da contattare per i referenti di zona";        
-        }
+        $response_body = "Azione inserita correttamente dal numero: ".$number;
+  
+        if(!empty($avviso_referenti))
+          {
+          $response_body .= $avviso_referenti;
+          }
+  
+        $response = new MessagingResponse();
+  
+        $response->message(
+            $response_body
+        );
+  
+        echo $response;
+        
 
-      $response_body = "Azione inserita correttamente dal numero: ".$number;
+        } // end foreach zona
+      
+      
 
-      if(!empty($avviso_referenti))
-        {
-        $response_body .= $avviso_referenti;
-        }
-
-      $response = new MessagingResponse();
-
-      $response->message(
-          $response_body
-      );
-
-      echo $response;
       } 
     catch (\Exception $e) 
       {

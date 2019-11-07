@@ -98,10 +98,14 @@ jQuery.ajax({
 
 Invece adesso 
 
-// Prendo tutte lezone della squadra, MA LA SQUADRA FA PARTE DI 1! distretto quindi non posso avere zone su 2 distretti
+// Prendo tutte le zone della squadra, MA LA SQUADRA FA PARTE DI 1! distretto quindi non posso avere zone su 2 distretti
 // $zone = Zona::getAll()->pluck('nome','id')->toArray();
 
 OPPURE 
 
 // prendo SEMPRE E COMUNQUE TUTTE le zone 
 $zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
+
+
+**Use Case: Azioni su molti Quadranti SMS**
+
