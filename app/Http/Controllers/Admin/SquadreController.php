@@ -110,26 +110,12 @@ class SquadreController extends LoginController
     {
       $squadra = Squadra::find($id);
       
-      $zone = [];
+      // zone dal composer
+      // le zone che posso selezionare NON DIPENDONO PIU' da DISTRETTO e UG
+
+
       $zone_associate = [];
 
-
-      // la squadra sta in questo distretto
-      if(!is_null($squadra->distretto))
-        {
-        // questo distrtto ha tantio UTG e le zone associabili alla squadra sono quelle di TUTTI gli UTG
-        if(!is_null($utg = $squadra->distretto->unita))
-          {
-          $zone = [];
-          foreach ($utg as $unita) 
-            {
-            $zone += $unita->zone()->pluck('tblZone.nome','tblZone.id')->toArray();
-            }
-          if(!empty($zone))
-            asort($zone);
-          }
-        }
-      
       if(!is_null($squadra->zone))
         {
         $zone_associate = $squadra->zone->pluck('nome','id')->toArray();
@@ -143,7 +129,7 @@ class SquadreController extends LoginController
 
 
 
-       return view('admin.squadre.form', compact('squadra', 'zone', 'zone_associate','cacciatori_squadra'));
+       return view('admin.squadre.form', compact('squadra', 'zone_associate','cacciatori_squadra'));
 
     }
 

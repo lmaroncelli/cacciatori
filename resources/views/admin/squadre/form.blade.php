@@ -84,48 +84,9 @@
 	<script src="{{ asset('js/select2.full.min.js') }}"></script>
 
 	<script type="text/javascript">
-				
-
-
-				function caricaZone(val) {
-          console.log('carica zone da distretto_id = '+val);
-					var distretto_id = val;
-					
-					jQuery.ajax({
-					        url: '{{ route('get_zona') }}',
-					        type: "post",
-					        async: false,
-					        data : { 
-					               'distretto_id': distretto_id, 
-					               '_token': jQuery('input[name=_token]').val()
-					               },
-					       	success: function(data) {
-					         jQuery("#zone_select").html(data);
-                    $('.select2').select2();
-					       }
-					 });
-
-				}
-
-
-
-
-
-
 				$(function () {
 				    //Initialize Select2 Elements
 				    $('.select2').select2();
-
-            @if (!$squadra->exists || ($squadra->exists && !$squadra->zone()->count()))
-				      var distretto_id = $("#distretto_id").val();
-              caricaZone(distretto_id);
-            @endif
-				    
-				    $('#distretto_id').change(function(){
-				    	caricaZone(this.value);
-				    });
-
-
 
 				});
 	</script>
