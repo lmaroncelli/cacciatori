@@ -41,8 +41,8 @@ al momento è $ 0.0883 / message per tutti gli operatori. Poi ci sono anche dell
 
 Un cacciatore/caposquadra che vuole creare un'azione di caccia via SMS deve comporre un SMS del tipo
 
-<data_azione>#<dalle>#<alle>#<ID unità di gestione>#<ID Zona/>Particella>
-03/09/2019#05:00#10:00#48#69
+<data_azione>#<dalle>#<alle>#<ID Quadrante/>
+03/09/2019#05:00#10:00#69
 
 Il sistema verificherà la correttezza dei dati inseriti, in particolare:
 

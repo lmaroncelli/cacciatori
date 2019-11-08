@@ -14,7 +14,7 @@ class Zona extends Model
 {
 		protected $table = 'tblZone';
 
-		protected $fillable = ['numero','nome','superficie','tipo','note'];
+		protected $fillable = ['numero','nome','superficie','note'];
 
 
 		public function unita()

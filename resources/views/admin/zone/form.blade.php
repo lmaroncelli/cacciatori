@@ -58,16 +58,6 @@ nuovo
               <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $zona->nome}}" required="required">
             </div>
 
-
-            <div class="form-group">
-              <label for="tipo">Tipo</label>
-              <select class="form-control" name="tipo" id="tipo">
-                @foreach (App\Utility::getTipoZona() as $key => $nome)
-                  <option value="{{$key}}" @if ($zona->tipo == $key || old('zona') == $key) selected="selected" @endif>{{$nome}}</option>
-                @endforeach
-              </select>
-            </div>
-
               <div class="form-group" id="unita_select">
                 @include('admin.inc_unita_select')
               </div>

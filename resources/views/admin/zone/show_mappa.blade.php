@@ -13,14 +13,10 @@
 {{$zona->nome}}
 @endsection
 
-@section('titolo_small')
-{{App\Utility::getTipoZona()[$zona->tipo]}}
-@endsection
-
-
 @section('back')
 <a href="{{ route('zone.index') }}"><i class="fa fa-step-backward"></i> back </a>
 @endsection
+
 
 @section('content')
 	<div id="content">

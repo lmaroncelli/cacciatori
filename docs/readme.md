@@ -107,5 +107,21 @@ OPPURE
 $zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
 
 
+
+I quadranti sono associati direttamente al caposquadra, cioè alla squadra
+
+Quando associo i quadranti alle squadre, i quadranti sono liberi
+
+Toglo UG dalle azioni di caccia
+
+
+
+le azioni sms sono del tipo
+
+<data_azione>#<dalle>#<alle>#<ID Quadrante/>
+
+
+
 **Use Case: Azioni su molti Quadranti SMS**
+
 

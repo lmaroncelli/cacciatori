@@ -50,7 +50,7 @@
                     @endif>
                       <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
                   </th>
-                  <th>Zone</th>
+                  <th>Quadranti</th>
                   @not_role_and(['cacciatore','admin_ro'])
                   <th></th>
                   <th></th>
