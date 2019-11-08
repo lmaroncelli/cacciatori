@@ -93,21 +93,12 @@
             
             <div class="form-group" id="distretto_wrapper" style="display: none;">
               <label for="distretto">Distretto</label>
-              <input type="text" class="form-control" id="distretto" value="" readonly="readonly">
+              <input type="text" class="form-control" id="distretto" @if (isset($distretto_associato)) value="{{$distretto_associato->nome}}" @else value=""  @endif readonly="readonly">
             </div>
 
-
-            @php
-              $azione->exists ? $selected_id = $azione->unita_gestione_id : $selected_id = 0;
-            @endphp
-            <div class="form-group" id="unita_gestione_wrapper"  style="display: none;">
-              @include('admin.azioni.inc_unita_select_cascade', ['selected_id' => $selected_id])
-            </div>
-
-            
             <div class="form-group" id="zone_select_wrapper" @if (!isset($zone_associate)) style="display: none;" @endif>
               @include('admin.azioni.inc_zone_select_cascade')
-            </div>	
+            </div>
 
           
             <div class="form-group">
@@ -145,123 +136,79 @@
 	<script src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
 
 	<script type="text/javascript">
+
+      function carica_zone(squadra_id) {
+              console.log('sono in carica zone');
+              jQuery.ajax({
+                      url: '{{ route('get_zone_from_squadra') }}',
+                      type: "post",
+                      //async: false,
+                      data : { 
+                            'squadra_id': squadra_id, 
+                            '_token': jQuery('input[name=_token]').val()
+                            },
+                      success: function(data) {
+                        
+                        jQuery("#zone_select_wrapper").html(data);
+                        $("#zone_select_wrapper").show();
+                        $('.select2').select2();
+
+                    }
+
+              });
+
+        } // carica_zone
+
 			$(function () {
-			    //Initialize Select2 Elements
-			    $('.select2').select2();
+        //Initialize Select2 Elements
+        $('.select2').select2();
 
-	        $("#squadra_id").change(function(){
-	        	console.log('squadra_id.change');
-	        	var squadra_id = $(this).val();
+        $("#squadra_id").change(function(){
+        	console.log('squadra_id.change');
+        	var squadra_id = $(this).val();
 
-	        	if(squadra_id != 0)
-	        		{
+        	if(squadra_id != 0)
+        		{
 
-	    	    	jQuery.ajax({
-	    	    	        url: '{{ route('get_distretto') }}',
-	    	    	        type: "post",
-	    	    	        dataType: 'json',
-	    	    	        async: false,
-	    	    	        data : { 
-	    	    	               'squadra_id': squadra_id, 
-	    	    	               '_token': jQuery('input[name=_token]').val()
-	    	    	               },
-	    	    	       	success: function(data) {
-	    	    	         jQuery("#distretto").val(data.nome);
-	    	    	         $("#distretto_wrapper").show();
-	    	    	         var distretto_id = data.id;
+    	    	jQuery.ajax({
+    	    	        url: '{{ route('get_distretto') }}',
+    	    	        type: "post",
+    	    	        dataType: 'json',
+    	    	        async: false,
+    	    	        data : { 
+    	    	               'squadra_id': squadra_id, 
+    	    	               '_token': jQuery('input[name=_token]').val()
+    	    	               },
+    	    	       	success: function(data) {
+    	    	          jQuery("#distretto").val(data.nome);
+                      $("#distretto_wrapper").show();
+                      var distretto_id = data.id;
 
-	    	    	         if(distretto_id != 0) {
-	    	    	         		$("#distretto_id").val(distretto_id);
-	    	    	         		caricaUtg(distretto_id);
-	    	    	         }
+    	    	         if(distretto_id != 0) {
+                       $("#distretto_id").val(distretto_id);
+                       carica_zone(squadra_id);
+    	    	         }
+    	    	       }
 
-	    	    	       }
-
-	    	    	 });
-
-	        		}
-
-	        }).change();
-
-	        
-			    function caricaUtg(distretto_id) {
-			    	
-			    	console.log('caricaUtg');
-
-			    	var distretto_id = distretto_id;
-
-			    	console.log('distretto_id = '+distretto_id);
-
-			    	var unita_gestione_id = 0;
-
-			    	@if ($azione->exists)
-			    		unita_gestione_id = {{$azione->unita_gestione_id}}
-              console.log('unita_gestione_id = '+unita_gestione_id);
-			    	@endif
-
-			    	
-			    	jQuery.ajax({
-			    	        url: '{{ route('get_utg') }}',
-			    	        type: "post",
-			    	        async: false,
-			    	        data : { 
-			    	               'distretto_id': distretto_id, 
-			    	               'unita_gestione_id': unita_gestione_id,
-			    	               '_token': jQuery('input[name=_token]').val()
-			    	               },
-			    	       	success: function(data) {
-			    	         jQuery("#unita_gestione_wrapper").html(data);
-                      $('#unita_gestione_wrapper').show();
-			    	       }
              });
-             
 
-             $("#utg").change(function(){
+        		}
 
-                console.log('unita_gestione_id.change');
-                
-                var unita_gestione_id = $(this).val();
-
-                console.log('unita_gestione_id = '+unita_gestione_id);
-
-                if(unita_gestione_id != 0)
-                  {
-
-                  var zona_id = 0;
-
-                  @if ($azione->exists)
-                    zona_id = {{$azione->zona_id}}
-                    console.log('zona_id = '+zona_id);
-                  @endif
-
-                  jQuery.ajax({
-                          url: '{{ route('get_zone_form_utg') }}',
-                          type: "post",
-                          async: false,
-                          data : { 
-                                'unita_gestione_id': unita_gestione_id, 
-                                'zona_id': zona_id,
-                                '_token': jQuery('input[name=_token]').val()
-                                },
-                          success: function(data) {
-                            jQuery("#zone_select_wrapper").html(data);
-                             $('.select2').select2();
-                            $("#zone_select_wrapper").show();
-                        }
-
-                  });
-
-                  }
-
-	        });
+        });
 
 
-			    }
 
+        @if ($azione->exists)
+          var id_squadra = '{{$azione->squadra_id}}'
+          console.log('azione esistente con id_squadra = '+id_squadra);
+          carica_zone(squadra_id);
+          console.log('caricato zone');
+        @endif
+         
+          
+        
 
-			   
-
-			});
+			}); // end $(function () 
 
 			var _jsonObjDate = {language: "it", format: 'dd/mm/yyyy', autoclose: true, todayBtn:true, todayHighlight: true};
 

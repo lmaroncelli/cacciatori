@@ -49,6 +49,7 @@ Route::post('RicaricaUgStessoDistrettoAjax','Admin\SelectConditionalController@R
 Route::post('getUtgFromDistrettoAjax','Admin\SelectConditionalController@getUtgFromDistrettoAjax')->name('get_utg');
 Route::post('getDistrettoFromSquadraAjax','Admin\SelectConditionalController@getDistrettoFromSquadraAjax')->name('get_distretto');
 Route::post('getZoneFromUtgAjax','Admin\SelectConditionalController@getZoneFromUtgAjax')->name('get_zone_form_utg');
+Route::post('getZoneFromSquadraAjax','Admin\SelectConditionalController@getZoneFromSquadraAjax')->name('get_zone_from_squadra');
 
 
 Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');

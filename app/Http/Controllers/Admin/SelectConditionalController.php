@@ -151,6 +151,29 @@ class SelectConditionalController extends Controller
          
        }
 
+    public function getZoneFromSquadraAjax(Request $request)
+       {
+        /**
+         * @Gupi 08/11/19 - i quadranti sono svincolati da tutto perché potrei dover inserire azioni per quadranti che sono anche in distretti differenti, li prendo direttamente dalla squadra del capoasquadra loggato
+         * 
+         */
+        if(!is_null($squadra_id = $request->get('squadra_id')))
+          {
+          if(!is_null($squadra = Squadra::find($squadra_id)))
+            {
+            $zone = $squadra->zone->pluck('nome','id')->toArray();
+
+             if(!empty($zone))
+                  asort($zone);
+
+             return view('admin.azioni.inc_zone_select_cascade', compact('zone'));
+
+            }
+            
+          }
+
+       }
+
 
    /**
     * [getDistrettoFromSquadraAjax description]

@@ -35,7 +35,6 @@ class AzioniCacciaController extends LoginController
         $azione->alle = Utility::getCarbonDateTime($alle);
         $azione->squadra_id = $request->get('squadra_id');
         $azione->distretto_id = $request->get('distretto_id');
-        $azione->unita_gestione_id = $request->get('unita_gestione_id');
         $azione->note = $request->get('note');
         $azione->user_id = Auth::id();
 
@@ -182,14 +181,14 @@ class AzioniCacciaController extends LoginController
 
         if($zona_selected > 0)
           {
-          $query = AzioneCaccia::with(['squadra','distretto','unita'])
+          $query = AzioneCaccia::with(['squadra','distretto'])
                   ->whereHas('zone', function($q) use ($zona_selected){
                     $q->where('tblZone.id',$zona_selected);
                   });
           }
           else 
           {
-          $query = AzioneCaccia::with(['squadra','distretto','unita']);       
+          $query = AzioneCaccia::with(['squadra','distretto']);       
           }
         
         
@@ -201,14 +200,6 @@ class AzioniCacciaController extends LoginController
           case 'distretto_nome':
             $query = AzioneCaccia::join('tblDistretti','tblDistretti.id','=','tblAzioniCaccia.distretto_id')->orderBy('tblDistretti.nome', $order);
             break;
-
-          case 'unita_nome':
-            $query = AzioneCaccia::join('tblUnitaGestione','tblUnitaGestione.id','=','tblAzioniCaccia.unita_gestione_id')->orderBy('tblUnitaGestione.nome', $order);
-            break;
-
-          // case 'zona_nome':
-          //   $query = AzioneCaccia::join('tblZone','tblZone.id','=','tblAzioniCaccia.zona_id')->orderBy('tblZone.nome', $order);
-          //   break;
           
           default:
             $query->orderBy($order_by, $order);
@@ -233,7 +224,6 @@ class AzioniCacciaController extends LoginController
             'dalle' => 'Data',
             'squadra_nome' => 'Squadra',
             'distretto_nome' => 'Distretto',
-            'unita_nome' => 'UTG',
             '' => 'Quadranti'
         ];
 
@@ -303,8 +293,9 @@ class AzioniCacciaController extends LoginController
     {
         $azione = AzioneCaccia::find($id);
         $zone_associate = $azione->zone->pluck('id')->toArray();
+        $distretto_associato  = $azione->distretto;
 
-        return view('admin.azioni.form', compact('azione','zone_associate'));
+        return view('admin.azioni.form', compact('azione','zone_associate','distretto_associato'));
     }
 
     /**

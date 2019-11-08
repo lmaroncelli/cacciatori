@@ -78,6 +78,12 @@ OK
 
 **Use Case: Azioni Quadranti molti-a-molti**
 
+
+I quadranti sono associati direttamente al caposquadra, cioè alla squadra
+
+Quando associo i quadranti alle squadre, i quadranti sono liberi
+
+
 Nel momento in cui seleziono la Squadra che farà la caccia ottengo il DISTRETTO corrispondente (ajax call get_distretto)
 e subito dopo faccio un'altra chiamata 
 
@@ -108,12 +114,14 @@ $zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
 
 
 
-I quadranti sono associati direttamente al caposquadra, cioè alla squadra
 
-Quando associo i quadranti alle squadre, i quadranti sono liberi
+
+
+
+
+
 
 Toglo UG dalle azioni di caccia
-
 
 
 le azioni sms sono del tipo

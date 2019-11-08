@@ -139,7 +139,6 @@
                     <td>{{$azione->getDalleAlle()}}</td>
                     <td>{{optional($azione->squadra)->nome}}</td>
                     <td>{{optional($azione->distretto)->nome}}</td>
-                    <td>{{optional($azione->unita)->nome}}</td>
                     <td>{{$azione->getZone()}}</td>
                     @not_role('admin_ro')
                     <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
