@@ -2,28 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\AzioneCaccia;
+use Auth; 
 use App\Utility;
 use Carbon\Carbon;
+use App\AzioneCaccia;
 use Illuminate\Http\Request;
-use Auth; 
+use App\Http\Controllers\Admin\LoginController;
 
 
-class HomeController extends Controller
+class HomeController extends LoginController
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-
-
-    private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, $from, $to)
+  
+    private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, &$coordinate_unita, &$nomi_unita, &$nomi_ug_di_zona, &$coordinate_distretto, &$nomi_distretto, $from, $to)
       {
         // cerco tutte le azioni di questa data 
         $azioni = AzioneCaccia::with('squadra', 'distretto','zone')
@@ -34,7 +24,13 @@ class HomeController extends Controller
         // trovo tutte le zone facendo un loop su tutte le AZIONI
         $coordinate_zona = [];
         $zone_ids = [];
-        
+
+        $coordinate_unita = [];
+        $nomi_unita = [];
+
+        $coordinate_distretto = [];
+        $nomi_distretto = [];
+                    
         foreach ($azioni as $azione) 
           {
           $zone_azione = $azione->zone;
@@ -47,12 +43,37 @@ class HomeController extends Controller
             $poligono = $zona_azione->poligono;
             $coordinata_zona = $poligono->coordinate->pluck('long','lat');
             $coordinate_zona[$zona_azione->id] = $coordinata_zona;
+            
+      
+
+            // trovo tutte le UG della zona
+            foreach ($zona_azione->unita as $unita) 
+              {
+
+              $poligono_unita =  $unita->poligono;
+              $coordinata_unita = $poligono_unita->coordinate->pluck('long','lat');
+
+              $coordinate_unita[$zona_azione->id][$unita->id] = $coordinata_unita;
+              $nomi_unita[$zona_azione->id][$unita->id] = $unita->nome;
+             
+              $distretto = $unita->distretto;
+
+              if(!is_null($distretto))
+                {
+                $poligono_distretto = $distretto->poligono;
+                $coordinate_distretto[$unita->id] = $poligono_distretto->coordinate->pluck('long','lat');
+                $nomi_distretto[$unita->id] = $distretto->nome;
+                }
+              
+              }
+
             }
           }
 
               
         $azioni_di_zona = []; 
         $nomi_di_zona = []; 
+        $nomi_ug_di_zona = [];
         
         // RAGGRUPPO le mie azioni in base alla zona
         foreach ($azioni as $azione) 
@@ -72,6 +93,15 @@ class HomeController extends Controller
             {
             $azioni_di_zona[$zona_azione->id][] = $azione;
             $nomi_di_zona[$zona_azione->id] = $zona_azione->nome;
+            $u_nomi = [];
+            if(isset($nomi_unita[$zona_azione->id]))
+              {
+              foreach ($nomi_unita[$zona_azione->id] as $u_id => $u_nome) 
+                {
+                $u_nomi[] = $u_nome;
+                }
+              }
+            $nomi_ug_di_zona[$zona_azione->id] = implode(',',$u_nomi);
             }
           }
 
@@ -121,13 +151,17 @@ class HomeController extends Controller
         $zone_count = null;
         $azioni_di_zona = null;
         $nomi_di_zona = null;
+        $coordinate_unita = null;
+        $nomi_unita = null;
+        $nomi_ug_di_zona = null;
+        $coordinate_distretto = null; 
+        $nomi_distretto = null;
 
 
+        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
 
-
-        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $from, $to);
-
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'to_show'));
+      
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'to_show') );
     }
 
     public function changeDateMappaAttivitaAjax(Request $request) 
@@ -139,15 +173,23 @@ class HomeController extends Controller
         
         $azioni = null;
         $coordinate_zona = null;
+
         $item = null;
         $zone_count = null;
+        
         $azioni_di_zona = null;
         $nomi_di_zona = null;
+        
+        $coordinate_unita = null;
+        $nomi_unita = null;
+        
+        $nomi_ug_di_zona = null;
 
 
-        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $from, $to);
-
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona'));
+        $this->getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
+        
+        
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto'));
         }
       }
 

@@ -116,12 +116,7 @@ $zone = Zona::orderBy('nome')->pluck('nome','id')->toArray();
 
 
 
-
-
-
-
-
-Toglo UG dalle azioni di caccia
+Tolgo UG dalle azioni di caccia
 
 
 le azioni sms sono del tipo
