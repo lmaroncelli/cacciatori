@@ -91,7 +91,7 @@
             </div>	
 
             
-            <div class="form-group" id="distretto_wrapper" style="display: none;">
+            <div class="form-group" id="distretto_wrapper" @if (!isset($distretto_associato)) style="display: none;" @endif>
               <label for="distretto">Distretto</label>
               <input type="text" class="form-control" id="distretto" @if (isset($distretto_associato)) value="{{$distretto_associato->nome}}" @else value=""  @endif readonly="readonly">
             </div>
@@ -195,18 +195,6 @@
         		}
 
         });
-
-
-
-        @if ($azione->exists)
-          var id_squadra = '{{$azione->squadra_id}}'
-          console.log('azione esistente con id_squadra = '+id_squadra);
-          carica_zone(squadra_id);
-          console.log('caricato zone');
-        @endif
-         
-          
-        
 
 			}); // end $(function () 
 

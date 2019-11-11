@@ -26,7 +26,7 @@ class HomeController extends Controller
     private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, $from, $to)
       {
         // cerco tutte le azioni di questa data 
-        $azioni = AzioneCaccia::with('squadra', 'distretto', 'unita','zone')
+        $azioni = AzioneCaccia::with('squadra', 'distretto','zone')
                   ->where('dalle','>=',$from)
                   ->where('alle','<=',$to)
                   ->get();

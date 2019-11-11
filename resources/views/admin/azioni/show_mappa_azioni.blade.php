@@ -129,7 +129,7 @@
           //console.log(event);
           //console.log('zona_id = '+zona_id);
           
-          var contentString = "Elenco azioni zona <b>" + nomi_di_zona[zona_id] + "</b>:<br/><br/>"
+          var contentString = "Elenco azioni quadrante <b>" + nomi_di_zona[zona_id] + "</b>:<br/><br/>"
           for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
             const azione = azioni_di_zona[zona_id][index];
             //console.log('azione = '+azione.dalle);
