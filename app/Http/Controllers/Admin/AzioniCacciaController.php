@@ -322,8 +322,10 @@ class AzioniCacciaController extends LoginController
      */
     public function destroy($id)
     {
-      AzioneCaccia::destroy($id);
 
+      $azione = AzioneCaccia::find($id);
+      $azione->destroyMe();
+      
       return redirect()->route("azioni.index")->with('status', 'Azione eliminata correttamente!');        
     }
 

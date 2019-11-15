@@ -63,7 +63,14 @@ class AzioneCaccia extends Model
 			return 'dal '. $this->dalle->format('d/m/Y H:i'). ' al '.$this->alle->format('d/m/Y H:i'); 
 			}
 		
-		}
+    }
+    
+  public function destroyMe()
+    {
+    self::zone()->detach();
+    
+    self::delete();
+    }
 
 		
 
