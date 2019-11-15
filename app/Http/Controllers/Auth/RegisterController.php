@@ -128,13 +128,13 @@ class RegisterController extends Controller
           $validation_rules['nome'] = 'required|string|max:255';
           $validation_rules['cognome'] = 'required|string|max:255';
           
-          $validation_messages['nome.required'] = 'Il nome è obbligatoria';
-          $validation_messages['cognome.required'] = 'Il cognome è obbligatoria';
+          $validation_messages['nome.required'] = 'Il nome è obbligatorio';
+          $validation_messages['cognome.required'] = 'Il cognome è obbligatorio';
           }
         else
           {
-          $validation_rules['name'] = 'required|string|max:255';
-          $validation_messages['name.required'] = 'Il nome è obbligatoria';
+          $validation_rules['nome'] = 'required|string|max:255';
+          $validation_messages['nome.required'] = 'Il nome è obbligatorio';
           
           }
 
