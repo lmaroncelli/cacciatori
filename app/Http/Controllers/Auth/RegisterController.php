@@ -167,7 +167,7 @@ class RegisterController extends Controller
                'password' => Hash::make($data['password']),
            ]);
 
-           if ( !is_null($user) && array_key_exists('user', $data) && $data['user'] == 'cacciatore') 
+           if ( !is_null($user) && array_key_exists('ruolo', $data) && $data['ruolo'] == 'cacciatore') 
              {
              $cacciatore = Cacciatore::create($data);
              $cacciatore->user_id = $user->id;
