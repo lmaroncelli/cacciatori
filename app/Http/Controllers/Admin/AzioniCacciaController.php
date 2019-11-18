@@ -280,7 +280,61 @@ class AzioniCacciaController extends LoginController
      */
     public function show($id)
     {
-        //
+      $coordinate_zona = [];
+      $zone_ids = [];
+      $nomi_zona = [];
+
+
+      $coordinate_unita = [];
+      $nomi_unita = [];
+
+      $coordinate_distretto = [];
+      $nomi_distretto = [];
+      $azione = AzioneCaccia::with('squadra', 'distretto','zone')->find($id);
+      
+      $zone_azione = $azione->zone;
+      
+      foreach ($zone_azione as $zona_azione) 
+        {
+        
+        if(!in_array($zona_azione->id, $zone_ids))
+            $zone_ids[] = $zona_azione->id;
+
+        $poligono = $zona_azione->poligono;
+        $coordinata_zona = $poligono->coordinate->pluck('long','lat');
+        $coordinate_zona[$zona_azione->id] = $coordinata_zona;
+        $nomi_zona[$zona_azione->id] = $zona_azione->nome;
+        
+        // trovo tutte le UG della zona
+        foreach ($zona_azione->unita as $unita) 
+          {
+
+          $poligono_unita =  $unita->poligono;
+          $coordinata_unita = $poligono_unita->coordinate->pluck('long','lat');
+
+          $coordinate_unita[$zona_azione->id][$unita->id] = $coordinata_unita;
+          $nomi_unita[$zona_azione->id][$unita->id] = $unita->nome;
+          
+          $distretto = $unita->distretto;
+
+          if(!is_null($distretto))
+            {
+            $poligono_distretto = $distretto->poligono;
+            $coordinate_distretto[$unita->id] = $poligono_distretto->coordinate->pluck('long','lat');
+            $nomi_distretto[$unita->id] = $distretto->nome;
+            }
+          
+          } // end foreach unita
+        } // end foreach zone
+      
+      $zone_count = count($zone_ids);
+
+      // mi serve per centrare la mappa e zoommarla
+      //$item = Utility::fakeCenterCoords();
+
+      $item = $azione->zone()->first();
+
+      return view('admin.azioni.show_mappa', compact('azione', 'nomi_zona', 'coordinate_zona', 'item', 'zone_count', 'coordinate_unita', 'nomi_unita', 'coordinate_distretto', 'nomi_distretto'));
     }
 
     /**

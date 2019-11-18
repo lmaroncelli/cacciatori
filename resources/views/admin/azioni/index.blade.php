@@ -127,10 +127,12 @@
                         </th>
                     @endif
                   @endforeach
+                  <th></th>
                   @not_role('admin_ro')
                   <th></th>
                   <th></th>
                   @endnot_role
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -140,6 +142,7 @@
                     <td>{{optional($azione->squadra)->nome}}</td>
                     <td>{{optional($azione->distretto)->nome}}</td>
                     <td>{{$azione->getZone()}}</td>
+                    <td> <a href="{{ route('azioni.show',$azione->id) }}" title="Visualizza azione" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
                     @not_role('admin_ro')
                     <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
                     <td>
