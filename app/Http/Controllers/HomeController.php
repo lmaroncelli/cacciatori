@@ -12,6 +12,13 @@ use App\Http\Controllers\Admin\LoginController;
 
 class HomeController extends LoginController
 {
+
+    public function __construct()
+    {
+      ini_set('memory_limit', '256M');
+       // Invoke parent
+      parent::__construct();
+    }
   
     private function getAzioniMappa(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, &$coordinate_unita, &$nomi_unita, &$nomi_ug_di_zona, &$coordinate_distretto, &$nomi_distretto, $from, $to)
       {
