@@ -135,6 +135,15 @@ form#filtra_azioni div.form-group {
 
 
 
+    /*  visualizzazione singola azione nella mappa */
+
+    .info-azione ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+
 
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),

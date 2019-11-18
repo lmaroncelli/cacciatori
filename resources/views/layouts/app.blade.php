@@ -50,7 +50,9 @@
                 <li>@yield('back')</li>
               </ol>
             </section>
-            
+            <section class="content-header info-azione">
+               @yield('info-azione')
+            </section>
             <!-- Main content -->    
             <section class="content container-fluid">
                 @include('layouts.errors')

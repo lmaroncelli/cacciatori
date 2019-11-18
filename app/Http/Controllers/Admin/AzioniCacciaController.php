@@ -282,6 +282,8 @@ class AzioniCacciaController extends LoginController
     {
       $coordinate_zona = [];
       $zone_ids = [];
+      $nomi_zona = [];
+
 
       $coordinate_unita = [];
       $nomi_unita = [];
@@ -301,6 +303,7 @@ class AzioniCacciaController extends LoginController
         $poligono = $zona_azione->poligono;
         $coordinata_zona = $poligono->coordinate->pluck('long','lat');
         $coordinate_zona[$zona_azione->id] = $coordinata_zona;
+        $nomi_zona[$zona_azione->id] = $zona_azione->nome;
         
         // trovo tutte le UG della zona
         foreach ($zona_azione->unita as $unita) 
@@ -327,9 +330,11 @@ class AzioniCacciaController extends LoginController
       $zone_count = count($zone_ids);
 
       // mi serve per centrare la mappa e zoommarla
-      $item = Utility::fakeCenterCoords();
+      //$item = Utility::fakeCenterCoords();
 
-      return view('admin.azioni.show_mappa', compact('azione', 'coordinate_zona', 'item', 'zone_count', 'coordinate_unita', 'nomi_unita', 'coordinate_distretto', 'nomi_distretto'));
+      $item = $azione->zone()->first();
+
+      return view('admin.azioni.show_mappa', compact('azione', 'nomi_zona', 'coordinate_zona', 'item', 'zone_count', 'coordinate_unita', 'nomi_unita', 'coordinate_distretto', 'nomi_distretto'));
     }
 
     /**

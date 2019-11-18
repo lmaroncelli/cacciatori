@@ -8,7 +8,23 @@
 @endsection
 
 @section('titolo')
-Azione su {{$zone_count}} zone
+@if ($zone_count == 1)
+  Azione sulla zona: {{$azione->getZone()}}    
+@else  
+  Azione su {{$zone_count}} zone: {{$azione->getZone()}}
+@endif
+@endsection
+
+@section('info-azione')
+  Il <b>{{$azione->getDalleAlle()}}</b> ad opera della Squadra <b>{{$azione->squadra->nome}}</b>
+  <ul>
+    @if (!is_null($azione->note))
+      <li>Nota: {{$azione->note}}</li>
+    @endif
+    <li>Caposquadra: {{$azione->squadra->getNomeCapoSquadra()}}</li>
+    <li>Tel: {{optional($azione->squadra->getCapoSquadra())->telefono}}</li>
+  </ul>
+     
 @endsection
 
 
@@ -39,9 +55,6 @@ Azione su {{$zone_count}} zone
 		var contentString;
     var infoWindow;
 
-    
-    
-
 				// Initialize and add the map
 				function initMap() {
 
@@ -56,12 +69,8 @@ Azione su {{$zone_count}} zone
 				  map = new google.maps.Map(
 				      document.getElementById('map'), {zoom: zoom, center: center});
 
-
-        if({{$zone_count}} > 0)
-          {
           // Create the bounds object
           var bounds = new google.maps.LatLngBounds();
-          }
         
         // per evitare sovrapposizione nei poligono disegno PRIMA i DISTRETTI
         @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
@@ -105,6 +114,10 @@ Azione su {{$zone_count}} zone
 
 
                         distretto.setMap(map);
+
+                        distretto.getPath().forEach(function (path, index) {
+                            bounds.extend(path);
+                        });
 
                         google.maps.event.addListener(distretto, 'click', function(event){
                           showInfo(event,'distretto',"{{$nomi_distretto[$id_utg]}}");
@@ -210,13 +223,8 @@ Azione su {{$zone_count}} zone
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           zona.setMap(map);
 
-           zona.getPath().forEach(function (path, index) {
-              bounds.extend(path);
-          });
-
-          // Add a listener for the click event.
-          zona.addListener('click', function(event) {
-            showAzioni(event, {{$zona_id}});
+          google.maps.event.addListener(zona, 'click', function(event){
+            showInfo(event,'zona',"{{$nomi_zona[$zona_id]}}");
           });
 
           infoWindow = new google.maps.InfoWindow;
@@ -224,48 +232,20 @@ Azione su {{$zone_count}} zone
 
         @endforeach //end $coordinate_zona
 				
-        if({{$zone_count}} > 0)
-        {
-          map.fitBounds(bounds);
-        }
+        if(distretto_coords.length !== 0)
+          {
+            map.fitBounds(bounds);
+          }
 
 				} // initMap
 
-
-        function showAzioni(event, zona_id)
+        function showInfo(event, type, nome)
           {
-          //console.log(event);
-          //console.log('zona_id = '+zona_id);
-          
-          var contentString = "Elenco azioni quadrante <b>" + nomi_di_zona[zona_id] + "(unità: "+ nomi_ug_di_zona[zona_id] +")</b>:<br/><br/>"
-          for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
-            const azione = azioni_di_zona[zona_id][index];
-            //console.log('azione = '+azione.dalle);
-            contentString += azione.dalle_alle + ': <ul>'
-            + '<li>Squadra: ' + azione.nomesquadra + '</li>'
-            + '<li>Nota: ' + azione.note + '</li>'
-            + '<li>Caposquadra:' + azione.caposquadra + '</li>'
-            + '<li>Tel:' + azione.tel_capo + '</li>'
-            + '</ul>'
+            // Replace the info window's content and position.
+          infoWindow.setContent(type + ' <b>'+ nome + '</b>');
+          infoWindow.setPosition(event.latLng);
+          infoWindow.open(map);
           }
-         
-
-          // Replace the info window's content and position.
-		      infoWindow.setContent(contentString);
-		      infoWindow.setPosition(event.latLng);
-
-		      infoWindow.open(map);
-
-          }
-
-
-          function showInfo(event, type, nome)
-            {
-              // Replace the info window's content and position.
-            infoWindow.setContent(type + ' <b>'+ nome + '</b>');
-            infoWindow.setPosition(event.latLng);
-            infoWindow.open(map);
-            }
 	</script>
 	
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrH8m8vUnPJQKt8zDTokE7Fg-kSGuL0mY&callback=initMap" type="text/javascript"></script>

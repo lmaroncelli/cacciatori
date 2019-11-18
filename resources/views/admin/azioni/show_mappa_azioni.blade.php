@@ -60,11 +60,10 @@
 				      document.getElementById('map'), {zoom: zoom, center: center});
 
 
-          if({{$zone_count}} > 0)
-          {
+          
           // Create the bounds object
           var bounds = new google.maps.LatLngBounds();
-          }
+          
         
         // per evitare sovrapposizione nei poligono disegno PRIMA i DISTRETTI
         @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
@@ -108,6 +107,10 @@
 
 
                         distretto.setMap(map);
+
+                        distretto.getPath().forEach(function (path, index) {
+                            bounds.extend(path);
+                        });
 
                         google.maps.event.addListener(distretto, 'click', function(event){
                           showInfo(event,'distretto',"{{$nomi_distretto[$id_utg]}}");
@@ -213,9 +216,6 @@
           //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
           zona.setMap(map);
 
-           zona.getPath().forEach(function (path, index) {
-              bounds.extend(path);
-          });
 
           // Add a listener for the click event.
           zona.addListener('click', function(event) {
@@ -227,10 +227,12 @@
 
         @endforeach //end $coordinate_zona
 				
-        if({{$zone_count}} > 0)
-        {
+        if(distretto_coords.length !== 0) 
+          {
           map.fitBounds(bounds);
-        }
+          }
+
+       
 
 				} // initMap
 
