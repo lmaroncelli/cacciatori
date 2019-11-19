@@ -9,11 +9,86 @@ use App\Cacciatore;
 use App\AzioneCaccia;
 use App\UnitaGestione;
 use Twilio\Rest\Client;
+use App\Mail\AzioneCreata;
 use Illuminate\Http\Request;
 use Twilio\TwiML\MessagingResponse;
+use Illuminate\Support\Facades\Mail;
 
 class SmsController extends Controller
 {
+
+
+  private function _sendMail($azione, $zona, $referenti_zona_email)
+    {
+
+    try 
+      {
+
+      foreach ($referenti_zona_email as $email) 
+        {
+        
+        if(!is_null($email) && $email != '')
+          {
+            try 
+              {
+              Mail::to($email)->send(new AzioneCreata($azione, $zona));
+              }
+            catch (\Exception $e) 
+              {
+                //log "ERRORE MAIL zona $zona->nome";
+              }
+          }// if email
+
+        } // for email 
+      
+      }
+    catch (\Exception $e) 
+      {
+      //log "ERRORE SMS zona $zona_id";        
+      }
+
+    }
+  
+  private function _sendSms($readable_msg,$referenti_zona_tel)
+    {
+      try 
+        {
+        $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+        
+        foreach ($referenti_zona_tel as $number) 
+          {
+
+            if(!is_null($number) && $number != '')
+              {
+
+              try 
+                {
+                $twilio->messages
+                      ->create(
+                              $number, // to
+                              array(
+                                  "body" => $readable_msg,
+                                  "from" => env('TWILIO_FROM')
+                              )
+                      );
+                } 
+              catch (\Exception $e) 
+                {
+                //log "ERRORE SMS zona $zona_id";        
+                }
+              
+              } // if number
+
+          } // for numeri
+        } 
+      catch (\Exception $e) 
+        {
+        //log "ERRORE SMS zona $zona_id";        
+        }
+    }
+
+
+  
 
   // https://www.twilio.com/docs/voice/twiml
   public function reply(Request $request)
@@ -91,56 +166,55 @@ class SmsController extends Controller
       $azione->user_id = $cacciatore->id;
 
       $azione->save();
+      
+      $azione->zone()->sync($zone_arr);
+
 
       foreach ($zone_arr as $zona_id) 
         {
-        $azione->zone()->attach($zona_id);
+        
         $zona = Zona::find($zona_id);
         
-        $avviso_referenti = "";
-
-
-        // Creo un messaggio leggibile da inviare ai referenti
-        $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nella $zona->tipo $zona->nome";
-        
-        $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
-        
-        if(count($referenti_zona_tel))
+        if (!is_null($zona)) 
           {
-            
-          try 
+          $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+          // INVIO SMS A TUTTI I REFERENTI DI ZONA
+          if(count($referenti_zona_tel))
             {
-            $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
-            
-            foreach ($referenti_zona_tel as $number) 
-              {
-                $twilio->messages
-                      ->create(
-                              $number, // to
-                              array(
-                                  "body" => $readable_msg,
-                                  "from" => env('TWILIO_FROM')
-                              )
-                      );
-              } // for numeri
-            } 
-          catch (\Exception $e) 
-            {
-            $avviso_referenti = " ATTENZIONE: ERRORE invio SMS referenti di zona!!";        
-            }
 
-          } // if telefoni
+            // Creo un messaggio leggibile da inviare ai referenti
+            $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nel quadrante $zona->nome";
+          
+            $this->_sendSms($readable_msg,$referenti_zona_tel);
+            
+            }
+          // FINE - INVIO SMS A TUTTI I REFERENTI DI ZONA
+
+          $referenti_zona_email = $zona->referenti->pluck('email')->toArray();
+          // INVIO MAIL A TUTTI I REFERENTI DI ZONA
+          if(count($referenti_zona_email))
+            {
+            // invio una mail ai referenti
+            $this->_sendMail($azione, $zona, $referenti_zona_email);
+
+            }
+          //  FINE - INVIO MAIL A TUTTI I REFERENTI DI ZONA
+
+          }
         else 
           {
-          $avviso_referenti = " ATTENZIONE: Nessun numero da contattare per i referenti di zona";        
+          $azione->zone()->detach($zona_id);
           }
+
+      
+        } // end foreach zona
+        
+
+
 
         $response_body = "Azione inserita correttamente dal numero: ".$number;
   
-        if(!empty($avviso_referenti))
-          {
-          $response_body .= $avviso_referenti;
-          }
+      
   
         $response = new MessagingResponse();
   
@@ -149,10 +223,6 @@ class SmsController extends Controller
         );
   
         echo $response;
-        
-
-        } // end foreach zona
-      
       
 
       } 
