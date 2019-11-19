@@ -27,7 +27,8 @@ class ReferentiController extends LoginController
       {
          $request->validate([
           'nome' => 'required|max:200',
-          'telefono' => ['required', new PhoneNumber]
+          'telefono' => ['required', new PhoneNumber],
+          'email' => 'required|string|email|max:255'
         ]);
       }
 
@@ -166,7 +167,6 @@ class ReferentiController extends LoginController
 
       $ref->fill($request->all())->save();
 
-     
       return redirect()->route('referenti.index')->with('status','Referente modificato correttamente!');
       
     }

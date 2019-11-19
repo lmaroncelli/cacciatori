@@ -44,6 +44,11 @@
               <input type="text" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="{{ old('telefono') != '' ?  old('telefono') : $ref->telefono}}">
             </div>
 
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" name="email" id="email" placeholder="email" value="{{ old('email') != '' ?  old('email') : $ref->email}}">
+            </div>
+
           <div class="box-footer">
             <button type="submit" class="btn btn-success">
               @if ($ref->exists)

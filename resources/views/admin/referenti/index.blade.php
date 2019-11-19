@@ -24,6 +24,11 @@
                       <a href="{{url()->current()}}?order_by=nome&order={{ $order_by=='nome' && $order=='asc' ? 'desc' : 'asc' }}">Nome</a>
                   </th>
                   <th>Numero</th>
+                  <th @if ($order_by=='email')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=email&order={{ $order_by=='email' && $order=='asc' ? 'desc' : 'asc' }}">Email</a>
+                  </th>
                   <th @if ($order_by=='dipartimento')
                     class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
                     @endif>
@@ -45,6 +50,7 @@
                   <tr>
                     <td>{{$referente->nome}}</td>
                     <td>{{$referente->telefono}}</td>
+                    <td>{{$referente->email}}</td>
                     <td>{{$referente->dipartimento}}</td>
                     <td>{{$referente->getZone()}}</td>
                     @not_role('admin_ro')
