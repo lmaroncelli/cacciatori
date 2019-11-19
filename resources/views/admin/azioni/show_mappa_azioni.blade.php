@@ -8,7 +8,7 @@
 @endsection
 
 @section('titolo')
-{{count($azioni)}} azioni su {{$zone_count}} zone
+azioni {{count($azioni)}} su quadranti {{$zone_count}}
 @endsection
 
 

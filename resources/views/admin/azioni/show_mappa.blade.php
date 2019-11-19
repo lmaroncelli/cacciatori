@@ -9,9 +9,9 @@
 
 @section('titolo')
 @if ($zone_count == 1)
-  Azione sulla zona: {{$azione->getZone()}}    
+  Azione sul quadrante: {{$azione->getZone()}}    
 @else  
-  Azione su {{$zone_count}} zone: {{$azione->getZone()}}
+  Azione su {{$zone_count}} quadranti: {{$azione->getZone()}}
 @endif
 @endsection
 
