@@ -39,6 +39,21 @@ class UnitaGestione extends Model
     return implode(',', $this->zone()->pluck('nome')->toArray());
     }
 
+    public function getZoneForTable() 
+      {
+      $to_show =  implode(',', $this->zone()->limit(5)->pluck('nome')->toArray());
+      
+      if ($this->zone()->count() > 5 ) 
+        {
+        return $to_show.'...';
+        } 
+      else 
+        {
+        return $to_show;
+        }
+      
+      }
+
 
     public function scopeJoinDistretto($query, $order) 
     {

@@ -56,7 +56,7 @@
                 <tr>
                   <td>{{optional($squadra->distretto)->nome}}</td>
                   <td>{{$squadra->nome}}</td>
-                  <td>{{$squadra->getZone()}}</td>          
+                  <td>{{$squadra->getZoneForTable()}}</td>          
                   <td>{{$squadra->getCacciatori()}}</td>
 
                   @role('admin')

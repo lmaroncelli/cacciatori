@@ -68,7 +68,7 @@
                     <td>{{optional($unita->distretto)->nome}}</td>
                     <td>{{$unita->id}}</td>
                     <td>{{$unita->nome}}</td>
-                    <td>{{$unita->getZone()}}</td>
+                    <td>{{$unita->getZoneForTable()}}</td>
 
                     @not_role_and(['cacciatore','admin_ro'])
                     <td> <a href="{{ route('utg.edit',$unita->id) }}" title="Modifica unita" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> </td>
