@@ -8,10 +8,15 @@ use App\Squadra;
 use App\Distretto;
 use App\UnitaGestione;
 use App\Scopes\AzioniOwnedByScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AzioneCaccia extends Model
 {
+    use SoftDeletes;
+
+
 		protected $table = 'tblAzioniCaccia';
 
 		protected $guarded = ['id'];
@@ -67,9 +72,20 @@ class AzioneCaccia extends Model
     
   public function destroyMe()
     {
-    self::zone()->detach();
+    if (Auth::check()) 
+      {
+      if(Auth::user()->hasRole('cacciatore'))
+        {
+        // e' una cancellazione logica e NON ELIMINO anche la relazione con i quadranti
+        self::delete();
+        }
+      else 
+        {
+        self::zone()->detach();
+        self::forceDelete();
+        }
+      }
     
-    self::delete();
     }
 
 		
