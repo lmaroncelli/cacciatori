@@ -53,6 +53,7 @@ class AzioniCacciaController extends LoginController
       $request->session()->forget('datefilter');
       $request->session()->forget('squadra');
       $request->session()->forget('zona');
+      $request->session()->forget('trashed');
 
       return redirect()->route("azioni.index")->with('status', 'Tutti i filtri sono stati rimossi!');
       } 
@@ -97,6 +98,25 @@ class AzioniCacciaController extends LoginController
 
 
         // Filtri
+        
+        
+        
+        // ANCHE QUELLI CANCELLATI LOGICAMENTE
+        if( !isset($request->trashed) && $request->session()->has('trashed'))
+          $request->trashed = $request->session()->get('trashed');
+
+        if (isset($request->trashed) && $request->trashed == 1) 
+          {
+          $request->session()->put('trashed', $request->trashed);
+          $filtro_pdf[] =  "Anche Azioni cancellate logicamente";
+          $trashed = 1;
+          } 
+        else 
+          {
+          $request->session()->forget('trashed');
+          $trashed = 0;
+          }
+        
 
 
 
@@ -178,6 +198,8 @@ class AzioniCacciaController extends LoginController
           $ordering = 1;
           }
         
+        
+        
 
         if($zona_selected > 0)
           {
@@ -216,7 +238,10 @@ class AzioniCacciaController extends LoginController
           $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
           }
         
-      
+        
+          if($trashed) {
+            $query->withTrashed();
+          }
 
         $azioni = $query->get();
         
@@ -239,7 +264,7 @@ class AzioniCacciaController extends LoginController
           } 
         else 
           {
-          return view('admin.azioni.index', compact('pdf_export_url', 'azioni', 'columns', 'init_value','squadra_selected','zona_selected'));
+          return view('admin.azioni.index', compact('pdf_export_url', 'azioni', 'columns', 'init_value','squadra_selected','zona_selected','trashed'));
           }
         
     }

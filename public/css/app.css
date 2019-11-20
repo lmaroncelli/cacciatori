@@ -144,6 +144,30 @@ form#filtra_azioni div.form-group {
     }
 
 
+    /*
+    allinea a dx fino a 768 px 
+    */
+
+    .align-dx {
+      display: block;
+    }
+
+    /*  da 768 in avanti */
+    @media (min-width: 768px) {
+
+      .align-dx {
+          float: right;
+          margin-right: 15px;
+      }
+
+    }
+
+
+    tr.trashed td {
+      background-color: #dd4b39;
+      color: #fff;
+    }
+
 
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),

@@ -5,6 +5,8 @@
     <!-- DataTables -->
     <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
 
+    {{-- bootstrap toogle button --}}
+	  <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -56,6 +58,12 @@
                 </div>
 
                 <div class="form-group">
+                  <label class="checkbox-inline">
+							      <input type="checkbox" name="trashed" value="1" @if ($trashed) checked @endif data-toggle="toggle" data-onstyle="danger" data-offstyle="success" data-width="150" data-height="25" data-off="NON Eliminate" data-on="ANCHE ELIMINATE"> <b>AZIONI</b>
+							    </label>
+                </div>
+
+                <div class="form-group align-dx">
                   <button type="submit" class="btn btn-success">Filtra</button>
                   <a href="{{ route('reset') }}" class="btn btn-warning">Reset</a>
                   <a href="{{$pdf_export_url}}" title="Esporta" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
@@ -137,7 +145,7 @@
               </thead>
               <tbody>
                 @foreach ($azioni as $azione)
-                  <tr>
+                  <tr @if ($azione->trashed()) class="trashed"@endif>
                     <td>{{$azione->getDalleAlle()}}</td>
                     <td>{{optional($azione->squadra)->nome}}</td>
                     <td>{{optional($azione->distretto)->nome}}</td>
@@ -167,6 +175,9 @@
     </script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
     </script>
+
+    {{-- bootstrap toogle button --}}
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
 
     {{-- Date range picker --}}
     <script src="{{ asset('js/moment.min.js') }}">
