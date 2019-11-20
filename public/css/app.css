@@ -169,6 +169,14 @@ form#filtra_azioni div.form-group {
     }
 
 
+    tr.trashed  .btn-danger {
+        font-weight: bold;;
+        background-color: #fff;;
+        color: #dd4b39;
+        border-color: #d73925;
+    }
+
+
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (-moz-min-device-pixel-ratio: 1.5),

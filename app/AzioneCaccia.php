@@ -6,17 +6,19 @@ namespace App;
 use App\Zona;
 use App\Squadra;
 use App\Distretto;
-use App\UnitaGestione;
 use App\Scopes\AzioniOwnedByScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class AzioneCaccia extends Model
 {
+
     use SoftDeletes;
-
-
+    
 		protected $table = 'tblAzioniCaccia';
 
 		protected $guarded = ['id'];
@@ -24,6 +26,14 @@ class AzioneCaccia extends Model
 		protected $dates = ['dalle','alle'];
 
 
+  public static function bootSoftDeletes()
+  {   
+      if(!Session::has('trashed'))
+        {
+          static::addGlobalScope(new SoftDeletingScope);
+        }
+  }
+  
 	protected static function boot()
     {
         parent::boot();

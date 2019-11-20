@@ -238,10 +238,10 @@ class AzioniCacciaController extends LoginController
           $query->where('tblAzioniCaccia.squadra_id',$squadra_selected);
           }
         
-        
-          if($trashed) {
-            $query->withTrashed();
-          }
+        // il trashed viene gestito nella model AzioneCaccia
+        // if($trashed) {
+        //   $query->withTrashed();
+        // }
 
         $azioni = $query->get();
         

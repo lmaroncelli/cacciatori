@@ -2,8 +2,7 @@
 
 
 @section('header_css')
-    <!-- DataTables -->
-    <link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+   
 
     {{-- bootstrap toogle button --}}
 	  <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
@@ -59,7 +58,7 @@
 
                 <div class="form-group">
                   <label class="checkbox-inline">
-							      <input type="checkbox" name="trashed" value="1" @if ($trashed) checked @endif data-toggle="toggle" data-onstyle="danger" data-offstyle="success" data-width="150" data-height="25" data-off="NON Eliminate" data-on="ANCHE ELIMINATE"> <b>AZIONI</b>
+							      <input type="checkbox" id="trashed" name="trashed" value="1" @if ($trashed) checked @endif data-toggle="toggle" data-onstyle="danger" data-offstyle="success" data-width="150" data-height="25" data-off="NON Eliminate" data-on="ANCHE ELIMINATE"> <b>AZIONI</b>
 							    </label>
                 </div>
 
@@ -170,11 +169,7 @@
 
 
 @section('script_footer')
-    <!-- DataTables -->
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
-    </script>
-    <script src="{{ asset('js/dataTables.bootstrap.min.js') }}">
-    </script>
+
 
     {{-- bootstrap toogle button --}}
     <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
@@ -186,16 +181,6 @@
     </script>
     <script type="text/javascript">
         $(function () {
-
-    	    $('#tbl_azioni').DataTable({
-              'paging'      : false,
-              'lengthChange': false,
-              'searching'   : false,
-              'ordering'    : false,
-              'info'        : false,
-              'autoWidth'   : true
-            });
-
 
           //Date range picker
           $('input[name="datefilter"]').daterangepicker({
@@ -220,6 +205,16 @@
           $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
               $(this).val('');
           });
+
+          $('#trashed').change(function() {
+            var checked = $(this).prop('checked');
+            //console.log('checked = '+checked)
+            if(!checked)
+              {
+              // chiamata per rimuovere tutti i filtri
+              window.location.href = "{{ route('reset') }}";
+              }
+          })
 
 
     	});

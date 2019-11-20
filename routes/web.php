@@ -53,7 +53,7 @@ Route::post('getZoneFromSquadraAjax','Admin\SelectConditionalController@getZoneF
 
 
 Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
-Route::any('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')/*->middleware('log')*/;
+Route::any('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')->middleware('log');
 Route::resource('azioni', 'Admin\AzioniCacciaController')/*->middleware('log')*/;
 
 Route::group(['middleware' => ['admin']], function () {
