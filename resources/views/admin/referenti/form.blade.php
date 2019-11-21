@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+
+@section('header_css')
+	<!-- Select2 -->
+	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 	<div class="row">    
     <div class="col-xs-12">
@@ -49,6 +55,20 @@
               <input type="text" class="form-control" name="email" id="email" placeholder="email" value="{{ old('email') != '' ?  old('email') : $ref->email}}">
             </div>
 
+            <div class="form-group" id="zone_select">
+              <label for="zone">Quadranti:</label>
+              <select multiple="multiple" name="zone[]" id="zone" class="form-control select2" data-placeholder="@if (count($zone)) Seleziona i quadranti @else Nessun quadrante disponibile @endif " style="width: 100%;">
+              @foreach($zone as $id => $nome)
+                <option value="{{$id}}" 
+                  @if ( 
+                    ( isset($zone_associate) && array_key_exists($id, $zone_associate) ) || collect(old('zone'))->contains($id) 
+                    ) selected="selected" @endif
+                  >{{$nome}}
+                </option>
+              @endforeach
+              </select>
+            </div>
+
           <div class="box-footer">
             <button type="submit" class="btn btn-success">
               @if ($ref->exists)
@@ -64,4 +84,18 @@
         </div>
     </div>
   </div>
+@endsection
+
+
+@section('script_footer')
+	<!-- Select2 -->
+	<script src="{{ asset('js/select2.full.min.js') }}"></script>
+
+	<script type="text/javascript">
+				$(function () {
+				    //Initialize Select2 Elements
+				    $('.select2').select2();
+
+				});
+	</script>
 @endsection

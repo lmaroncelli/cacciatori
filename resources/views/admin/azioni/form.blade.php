@@ -53,14 +53,14 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" name="data" @if ($azione->exists) value="{{ old('data') != '' ? old('data') : $azione->dalle->format('d/m/Y') }}" @else value="{{ old('data')}}" @endif class="form-control pull-right" id="datepicker">
+                  <input type="text" name="data" @if ($azione->exists) value="{{ old('data') != '' ? old('data') : $azione->dalle->format('d/m/Y') }}" @else value="{{ old('data', Carbon\Carbon::now()->format('d/m/Y'))}}" @endif class="form-control pull-right" id="datepicker">
                 </div>
               </div>
               
               <div class="col-md-4 bootstrap-timepicker">
                 <label>Dalle:</label>
                 <div class="input-group">
-                  <input type="text" name="dal" @if ($azione->exists) value="{{ old('dal') != '' ? old('dal') : $azione->dalle->format('H:i')}}" @endif class="form-control timepicker">
+                  <input type="text" name="dal" @if ($azione->exists) value="{{ old('dal') != '' ? old('dal') : $azione->dalle->format('H:i')}}" @else vale="{{old('dal', Carbon\Carbon::now('Europe/Rome')->format('H').':00')}}" @endif class="form-control timepicker">
 
                   <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
@@ -71,7 +71,7 @@
               <div class="col-md-4 bootstrap-timepicker">
                 <label>Alle:</label>
                 <div class="input-group">
-                  <input type="text" name="al" @if ($azione->exists) value="{{old('al') != ''  ? old('al') : $azione->alle->format('H:i')}}" @endif class="form-control timepicker">
+                  <input type="text" name="al" @if ($azione->exists) value="{{old('al') != ''  ? old('al') : $azione->alle->format('H:i')}}" @else vale="{{old('al', Carbon\Carbon::now('Europe/Rome')->addHours(2)->format('H').':00')}}" @endif class="form-control timepicker">
 
                   <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
@@ -84,7 +84,7 @@
             <div class="form-group">
               <label for="squadra_id">Squadra</label>
               <select class="form-control" style="width: 100%;" name="squadra_id" id="squadra_id">
-                @foreach ([0 => 'Seleziona'] + $squadre as $id => $nome)
+                @foreach ($squadre as $id => $nome)
                   <option value="{{$id}}" @if ($azione->squadra_id == $id || old('squadra_id') == $id) selected="selected" @endif>{{$nome}}</option>
                 @endforeach
               </select>
@@ -208,7 +208,7 @@
 			  language: "it",
 			  showInputs: false,
 			  showMeridian: false,
-			  minuteStep: 1
+			  minuteStep: 5
 			})
 	</script>
 @endsection

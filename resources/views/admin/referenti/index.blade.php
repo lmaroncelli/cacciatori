@@ -52,7 +52,7 @@
                     <td>{{$referente->telefono}}</td>
                     <td>{{$referente->email}}</td>
                     <td>{{$referente->dipartimento}}</td>
-                    <td>{{$referente->getZone()}}</td>
+                    <td>{{$referente->getZoneForTable()}}</td>
                     @not_role('admin_ro')
                     <td> <a href="{{ route('referenti.edit',$referente->id) }}" title="Modifica referente" class="btn btn-success btn-sm">modifica</a> </td>
                     <td>

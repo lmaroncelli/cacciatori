@@ -80,7 +80,7 @@ class SquadreController extends LoginController
     public function store(Request $request)
     {
   
-      $squadra = Squadra::create($request->all());
+      $squadra = Squadra::create($request->except(['zone','cacciatori']));
       
 
       $this->_aggiorna_squadra($request, $squadra);
@@ -145,7 +145,7 @@ class SquadreController extends LoginController
 
         $squadra = Squadra::find($id);
 
-        $squadra->fill($request->all())->save();
+        $squadra->fill($request->except(['zone','cacciatori']))->save();
 
       
         $this->_aggiorna_squadra($request, $squadra);

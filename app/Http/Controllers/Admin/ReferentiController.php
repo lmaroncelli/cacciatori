@@ -107,6 +107,8 @@ class ReferentiController extends LoginController
     {
         $ref = new Referente;
 
+        $zone_associate = [];
+
         return view('admin.referenti.form', compact('ref'));
     }
 
@@ -121,7 +123,12 @@ class ReferentiController extends LoginController
 
       $this->_validation($request);
       
-      Referente::create($request->all());
+      $ref = Referente::create($request->except('zone'));
+
+      if ($request->has('zone')) 
+        {
+        $ref->zone()->sync($request->get('zone'));
+        }
 
       return redirect()->route('referenti.index')->with('status','Referente creato correttamente!');
         
@@ -148,7 +155,14 @@ class ReferentiController extends LoginController
     {
       $ref = Referente::find($id);
 
-      return view('admin.referenti.form', compact('ref'));
+      $zone_associate = [];
+
+      if(!is_null($ref->zone))
+        {
+        $zone_associate = $ref->zone->pluck('nome','id')->toArray();
+        }
+
+      return view('admin.referenti.form', compact('ref','zone_associate'));
 
     }
 
@@ -165,7 +179,12 @@ class ReferentiController extends LoginController
       
       $ref = Referente::find($id);
 
-      $ref->fill($request->all())->save();
+      $ref->fill($request->except('zone'))->save();
+
+      if ($request->has('zone')) 
+        {
+        $ref->zone()->sync($request->get('zone'));
+        }
 
       return redirect()->route('referenti.index')->with('status','Referente modificato correttamente!');
       

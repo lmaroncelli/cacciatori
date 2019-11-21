@@ -23,8 +23,8 @@ class LoginController extends BaseController
         $this->middleware('auth');
 
         $colors['zona'] = 'red';
-        $colors['distretto'] = 'yellow';
-        $colors['utg'] = '#0859C1';
+        $colors['distretto'] = '#fff3c9';
+        $colors['utg'] = '#8EA1B9';
 
         View::share('colors', $colors);
 
