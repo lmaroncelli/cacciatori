@@ -86,8 +86,8 @@ aggiungo il mio numero e dovrò aggiungere tutti quelli che manderanno SMS al nu
 
 quindi nel .env 
 
-TWILIO_SID=AC6c3c3fbcff04f969423128603869ddda
-TWILIO_TOKEN=64eda82436ecfcf983adaed15bec086e
+TWILIO_SID=
+TWILIO_TOKEN=
 TWILIO_FROM=+15623828121
 
 
