@@ -32,6 +32,9 @@ Route::get('/home', 'HomeController@showMappaAttivita')->name('home');
 
 
 Route::get('/reply', 'SmsController@reply')->name('reply_sms');
+Route::get('/delete/{sid}', 'SmsController@delete')->name('delete_sms');
+
+
 
 
 Route::resource('distretti', 'Admin\DistrettiController');

@@ -88,6 +88,14 @@ class SmsController extends Controller
     }
 
 
+  public function delete(Request $request, $sid)
+    {
+      $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+
+      $twilio->messages($sid)
+       ->delete();
+    }
+
   
 
   // https://www.twilio.com/docs/voice/twiml
