@@ -1,10 +1,7 @@
 
 
 account
-box@info-alberghi.com
-Provrim2019!?!
-
-
+vedi .env
 
 
 dentro Programmable SMS > Tools > TwiML Apps (https://www.twilio.com/console/sms/runtime/twiml-apps)

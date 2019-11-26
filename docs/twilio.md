@@ -1,8 +1,7 @@
 
 
 account
-lmaroncelli@gmail.com
-solita610?!?
+vedi .env
 
 ho verificato il mio numero personale (per le incoming calls on Twilio)
 
