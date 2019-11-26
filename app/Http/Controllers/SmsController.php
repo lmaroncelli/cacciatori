@@ -150,9 +150,9 @@ class SmsController extends Controller
       $azione->zone()->sync($zone_arr);
       
       
-      $msg = "azioni da inserire ".count($zone_arr);
+      $msg = "quadranti da inserire ".count($zone_arr);
       
-      $azioni_scartate = 0;
+      $quadranti_scartati = 0;
       foreach ($zone_arr as $zona_id) 
         {
         
@@ -187,15 +187,15 @@ class SmsController extends Controller
         else 
           {
           $azione->zone()->detach($zona_id);
-          $azioni_scartate++;
+          $quadranti_scartati++;
           }
 
       
         } // end foreach zona
         
-        $msg .= ", scartate ".$azioni_scartate;
+        $msg .= ", scartati ".$quadranti_scartati;
 
-        if (!$azioni_scartate) 
+        if (!$quadranti_scartati) 
           {
           $response_body = "Azione inserita correttamente dal numero ".$number. ": ".$msg;
           } 
