@@ -102,7 +102,7 @@ class SmsController extends Controller
       $body = $request->Body;
       $number = $request->From;
     
-      list($data,$da,$a,$ug_id,$zona_id) = explode('#', $body);
+      list($data,$da,$a,$zona_id) = explode('#', $body);
       
       $zone_arr = explode(',', $zona_id);
       
@@ -133,26 +133,7 @@ class SmsController extends Controller
         {
         throw new \Exception('Errore nelle date!');
         }
-      
-
-
-      // devo verificare la correttezza di UG e ZONA
-      $ug = UnitaGestione::find($ug_id);
-
-      if(is_null($ug))
-        {
-        throw new \Exception('Unita gestione non valida!');
-        }
-      else
-        {
           
-          if(is_null($zone_arr))
-            {
-            throw new \Exception('Zona non valida!');
-            }
-        }
-
-      
 
       // inserisco una azione di caccia
       $azione = new AzioneCaccia;
@@ -161,7 +142,6 @@ class SmsController extends Controller
       $azione->alle = Utility::getCarbonDateTime($alle);
       $azione->squadra_id = $squadra->id;
       $azione->distretto_id = $distretto->id;
-      $azione->unita_gestione_id = $ug->id;
       $azione->note = "Inserita via SMS";
       $azione->user_id = $cacciatore->id;
 
