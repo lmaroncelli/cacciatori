@@ -96,6 +96,6 @@ PROVA:
 
 
 
-27/11/2019#05:00#10:00#626,626
+27/11/2019#05:00#10:00#626,628
 
 Questo SMS inserisce una azione di caccia nei quadranti 1 e 10

@@ -71,3 +71,6 @@ devo ritornare twiml, cioè un XML con tag proprietari di Twilio
 
 
 
+- inserimento attività in un quadrante
+
+27/11/2019#05:00#10:00#626
