@@ -193,7 +193,7 @@ class SmsController extends Controller
       
         } // end foreach zona
         
-        $msg = ", scartate ".$azioni_scartate;
+        $msg .= ", scartate ".$azioni_scartate;
 
         if (!$azioni_scartate) 
           {
