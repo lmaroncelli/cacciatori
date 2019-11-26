@@ -148,8 +148,11 @@ class SmsController extends Controller
       $azione->save();
       
       $azione->zone()->sync($zone_arr);
-
-
+      
+      
+      $msg = "azioni da inserire ".count($zone_arr);
+      
+      $azioni_scartate = 0;
       foreach ($zone_arr as $zona_id) 
         {
         
@@ -184,15 +187,23 @@ class SmsController extends Controller
         else 
           {
           $azione->zone()->detach($zona_id);
+          $azioni_scartate++;
           }
 
       
         } // end foreach zona
         
+        $msg = ", scartate ".$azioni_scartate;
 
-
-
-        $response_body = "Azione inserita correttamente dal numero: ".$number;
+        if (!$azioni_scartate) 
+          {
+          $response_body = "Azione inserita correttamente dal numero ".$number. ": ".$msg;
+          } 
+        else 
+          {
+          $response_body = "Azione inserita con errori dal numero ".$number. ": ".$msg;
+          }
+        
   
       
   
