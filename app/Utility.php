@@ -1,22 +1,14 @@
 <?php
 namespace App;
 
-use Auth;
 use Carbon\Carbon;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
+use Twilio\Rest\Client;
+use App\Mail\AzioneCreata;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
-use Mail;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\Eloquent\Model;
 /**
  *
  */
@@ -298,6 +290,93 @@ class Utility extends Model
 
 	 	return $hours . $minutes;
 	 	}
+
+
+
+
+	 	public static function sendMailAzione($azione, $zona, $referenti_zona_email)
+    {
+
+	    try 
+	      {
+
+	      foreach ($referenti_zona_email as $email) 
+	        {
+	        
+	        if(!is_null($email) && $email != '')
+	          {
+	            try 
+	              {
+	              Mail::to($email)->send(new AzioneCreata($azione, $zona));
+
+	              Log::channel('sms_log')->info('Invio MAIL al referente con indirizzo '.$email);
+
+	              }
+	            catch (\Exception $e) 
+	              {
+	                //log "ERRORE MAIL zona $zona->nome";
+	                Log::channel('sms_log')->info('ERRORE Invio MAIL al referente con indirizzo '.$email . ' errore: '.$e->getMessage());
+	              }
+	          }// if email
+
+	        } // for email 
+	      
+	      }
+	    catch (\Exception $e) 
+	      {
+	      //log "ERRORE SMS zona $zona_id";     
+	      Log::channel('sms_log')->info('ERRORE Invio MAIL referenti di zona errore: '.$e->getMessage());   
+	      }
+
+    }
+
+
+
+   	public static function  sendSmsAzione($readable_msg,$referenti_zona_tel)
+    {
+      // A Twilio number you own with SMS capabilities (env('TWILIO_FROM') non funziona??!!)
+
+      $twilio_number = "+16788418799";
+      
+      try 
+        {
+        $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+        
+        foreach ($referenti_zona_tel as $number) 
+          {
+
+            if(!is_null($number) && $number != '')
+              {
+
+              try 
+                {
+                
+                $twilio->messages
+                      ->create(
+                              $number, // to
+                              array(
+                                "from" => $twilio_number,
+                                "body" => $readable_msg
+                              )
+                      );
+
+                Log::channel('sms_log')->info('Invio SMS al referente con numero '.$number);
+                } 
+              catch (\Exception $e) 
+                {
+                //log "ERRORE SMS zona $zona_id";        
+                Log::channel('sms_log')->info('ERRORE Invio SMS al referente con numero '.$number . ' errore: '.$e->getMessage());
+                }
+              
+              } // if number
+
+          } // for numeri
+        } 
+      catch (\Exception $e) 
+        {
+        Log::channel('sms_log')->info('ERRORE Invio SMS referenti di zona errore: '.$e->getMessage());        
+        }
+    }
 
 
 

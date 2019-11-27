@@ -36,7 +36,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily','sms_log'],
             'ignore_exceptions' => false,
         ],
 
@@ -51,6 +51,14 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 14,
+        ],
+
+
+        'sms_log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sms.log'),
+            'level' => 'debug',
+            'days' => 7,
         ],
 
         'slack' => [

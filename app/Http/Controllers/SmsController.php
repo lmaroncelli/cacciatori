@@ -11,6 +11,7 @@ use App\UnitaGestione;
 use Twilio\Rest\Client;
 use App\Mail\AzioneCreata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Twilio\TwiML\MessagingResponse;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,74 +19,87 @@ class SmsController extends Controller
 {
 
 
-  private function _sendMail($azione, $zona, $referenti_zona_email)
-    {
+  // private function _sendMail($azione, $zona, $referenti_zona_email)
+  //   {
 
-    try 
-      {
+  //   try 
+  //     {
 
-      foreach ($referenti_zona_email as $email) 
-        {
+  //     foreach ($referenti_zona_email as $email) 
+  //       {
         
-        if(!is_null($email) && $email != '')
-          {
-            try 
-              {
-              Mail::to($email)->send(new AzioneCreata($azione, $zona));
-              }
-            catch (\Exception $e) 
-              {
-                //log "ERRORE MAIL zona $zona->nome";
-              }
-          }// if email
+  //       if(!is_null($email) && $email != '')
+  //         {
+  //           try 
+  //             {
+  //             Mail::to($email)->send(new AzioneCreata($azione, $zona));
 
-        } // for email 
+  //             Log::channel('sms_log')->info('Invio MAIL al referente con indirizzo '.$email);
+
+  //             }
+  //           catch (\Exception $e) 
+  //             {
+  //               //log "ERRORE MAIL zona $zona->nome";
+  //               Log::channel('sms_log')->info('ERRORE Invio MAIL al referente con indirizzo '.$email . ' errore: '.$e->getMessage());
+  //             }
+  //         }// if email
+
+  //       } // for email 
       
-      }
-    catch (\Exception $e) 
-      {
-      //log "ERRORE SMS zona $zona_id";        
-      }
+  //     }
+  //   catch (\Exception $e) 
+  //     {
+  //     //log "ERRORE SMS zona $zona_id";     
+  //     Log::channel('sms_log')->info('ERRORE Invio MAIL referenti di zona errore: '.$e->getMessage());   
+  //     }
 
-    }
+  //   }
   
-  private function _sendSms($readable_msg,$referenti_zona_tel)
-    {
-      try 
-        {
-        $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
+  // private function _sendSms($readable_msg,$referenti_zona_tel)
+  //   {
+  //     // A Twilio number you own with SMS capabilities (env('TWILIO_FROM') non funziona??!!)
+
+  //     $twilio_number = "+16788418799";
+      
+  //     try 
+  //       {
+  //       $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
         
-        foreach ($referenti_zona_tel as $number) 
-          {
+  //       foreach ($referenti_zona_tel as $number) 
+  //         {
 
-            if(!is_null($number) && $number != '')
-              {
+  //           if(!is_null($number) && $number != '')
+  //             {
 
-              try 
-                {
-                $twilio->messages
-                      ->create(
-                              $number, // to
-                              array(
-                                  "body" => $readable_msg,
-                                  "from" => env('TWILIO_FROM')
-                              )
-                      );
-                } 
-              catch (\Exception $e) 
-                {
-                //log "ERRORE SMS zona $zona_id";        
-                }
+  //             try 
+  //               {
+                
+  //               $twilio->messages
+  //                     ->create(
+  //                             $number, // to
+  //                             array(
+  //                               "from" => $twilio_number,
+  //                               "body" => $readable_msg
+  //                             )
+  //                     );
+
+  //               Log::channel('sms_log')->info('Invio SMS al referente con numero '.$number);
+  //               } 
+  //             catch (\Exception $e) 
+  //               {
+  //               //log "ERRORE SMS zona $zona_id";        
+  //               Log::channel('sms_log')->info('ERRORE Invio SMS al referente con numero '.$number . ' errore: '.$e->getMessage());
+  //               }
               
-              } // if number
+  //             } // if number
 
-          } // for numeri
-        } 
-      catch (\Exception $e) 
-        {
-        //log "ERRORE SMS zona $zona_id";        
-        }
-    }
+  //         } // for numeri
+  //       } 
+  //     catch (\Exception $e) 
+  //       {
+  //       Log::channel('sms_log')->info('ERRORE Invio SMS referenti di zona errore: '.$e->getMessage());        
+  //       }
+  //   }
 
 
   public function delete(Request $request, $sid)
@@ -111,7 +125,9 @@ class SmsController extends Controller
       $number = $request->From;
     
       list($data,$da,$a,$zona_id) = explode('#', $body);
-      
+
+      Log::channel('sms_log')->info('SMS = '.$body);
+
       $zone_arr = explode(',', $zona_id);
       
       // dal numero identifico il caposquadra
@@ -119,6 +135,7 @@ class SmsController extends Controller
 
       if(is_null($cacciatore))
         {
+        Log::channel('sms_log')->info('Il numero inserito non fa riferimento ad un cacciatore! '.$number);
         throw new \Exception('Il numero inserito non fa riferimento ad un cacciatore!');
         }
 
@@ -127,6 +144,7 @@ class SmsController extends Controller
 
       if(is_null($squadra))
         {
+        Log::channel('sms_log')->info('Il numero inserito non fa riferimento ad un caposquadra! '.$number);
         throw new \Exception('Il numero inserito non fa riferimento ad un caposquadra!');
         }
 
@@ -139,6 +157,7 @@ class SmsController extends Controller
       // verifico la data
       if (Carbon::createFromFormat('d/m/Y H:i',$dalle) === false || Carbon::createFromFormat('d/m/Y H:i',$alle) === false) 
         {
+        Log::channel('sms_log')->info('Errore nelle date!');
         throw new \Exception('Errore nelle date!');
         }
           
@@ -157,27 +176,42 @@ class SmsController extends Controller
       
       $azione->zone()->sync($zone_arr);
       
+      Log::channel('sms_log')->info('Azione creata su '. count($zone_arr) .' quadranti');
+
       
       $msg = "quadranti da inserire ".count($zone_arr);
       
       $quadranti_scartati = 0;
+
+      Log::channel('sms_log')->info('Loop su quadranti '.count($zone_arr));
+
       foreach ($zone_arr as $zona_id) 
         {
         
         $zona = Zona::find($zona_id);
         
+        
         if (!is_null($zona)) 
-          {
+        {
+          Log::channel('sms_log')->info('Quadrante '.$zona->nome);
+          
           $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+
           // INVIO SMS A TUTTI I REFERENTI DI ZONA
           if(count($referenti_zona_tel))
             {
-
-            // Creo un messaggio leggibile da inviare ai referenti
-            $readable_msg = "È stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nel quadrante $zona->nome";
-          
-            $this->_sendSms($readable_msg,$referenti_zona_tel);
             
+            Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_tel) . ' referenti con telefono su questo quadrante');
+            
+            // Creo un messaggio leggibile da inviare ai referenti
+            $readable_msg = "Gentile referente di zona è stata creata un'azione di caccia per il giorno ". $data ." dalle ore ".$da. " alle ore ". $a ." nel quadrante $zona->nome";
+          
+            Utility::sendSmsAzione($readable_msg,$referenti_zona_tel);
+            
+            }
+          else 
+            {
+            Log::channel('sms_log')->info('Nessun referente con telefono');
             }
           // FINE - INVIO SMS A TUTTI I REFERENTI DI ZONA
 
@@ -185,9 +219,16 @@ class SmsController extends Controller
           // INVIO MAIL A TUTTI I REFERENTI DI ZONA
           if(count($referenti_zona_email))
             {
-            // invio una mail ai referenti
-            $this->_sendMail($azione, $zona, $referenti_zona_email);
 
+            Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_email) . ' referenti con mail su questo quadrante');
+            
+            // invio una mail ai referenti
+            Utility::sendMailAzione($azione, $zona, $referenti_zona_email);
+
+            }
+          else 
+            {
+            Log::channel('sms_log')->info('Nessun referente con mail');
             }
           //  FINE - INVIO MAIL A TUTTI I REFERENTI DI ZONA
 
@@ -196,6 +237,8 @@ class SmsController extends Controller
           {
           $azione->zone()->detach($zona_id);
           $quadranti_scartati++;
+          Log::channel('sms_log')->info('Quadrante id '.$zona_id.' non esiste');
+
           }
 
       

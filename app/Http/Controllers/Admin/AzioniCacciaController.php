@@ -44,6 +44,8 @@ class AzioniCacciaController extends LoginController
           {
           $azione->zone()->sync($request->get('zone')); 
           }
+
+        
       }
 
     
