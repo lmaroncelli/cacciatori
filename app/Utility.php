@@ -332,7 +332,7 @@ class Utility extends Model
 	 		       Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_email) . ' referenti con mail su questo quadrante');
 	 		       
 	 		       // invio una mail ai referenti
-	 		       Self::sendMailAzione($azione, $zona, $referenti_zona_email);
+	 		       Self::sendMailAzione($azione, $tipo_azione, $zona, $referenti_zona_email);
 
 	 		       }
 	 		     else 
@@ -348,7 +348,7 @@ class Utility extends Model
 
 
 
-	 	public static function sendMailAzione($azione, $zona, $referenti_zona_email)
+	 	public static function sendMailAzione($azione, $tipo_azione="CREATA", $zona, $referenti_zona_email)
     {
 
 	    try 
@@ -361,7 +361,7 @@ class Utility extends Model
 	          {
 	            try 
 	              {
-	              Mail::to($email)->send(new AzioneCreata($azione, $zona));
+	              Mail::to($email)->send(new AzioneCreata($azione, $tipo_azione, $zona));
 
 	              Log::channel('sms_log')->info('Invio MAIL al referente con indirizzo '.$email);
 

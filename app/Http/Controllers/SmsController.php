@@ -222,8 +222,9 @@ class SmsController extends Controller
 
             Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_email) . ' referenti con mail su questo quadrante');
             
+            $msg_azione_tipo = "CREATA";
             // invio una mail ai referenti
-            Utility::sendMailAzione($azione, $zona, $referenti_zona_email);
+            Utility::sendMailAzione($azione, $msg_azione_tipo, $zona, $referenti_zona_email);
 
             }
           else 

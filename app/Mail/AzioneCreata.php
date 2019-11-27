@@ -15,6 +15,7 @@ class AzioneCreata extends Mailable
 
     //any public property defined on your mailable class will automatically be made available to the view.
     public $azione;
+    public $tipo_azione;
     public $zona;
 
     /**
@@ -22,9 +23,10 @@ class AzioneCreata extends Mailable
      *
      * @return void
      */
-    public function __construct(AzioneCaccia $azione, Zona $zona)
+    public function __construct(AzioneCaccia $azione, $tipo_azione, Zona $zona)
     {
         $this->azione = $azione;
+        $this->tipo_azione = $tipo_azione;
         $this->zona = $zona;
     }
 
@@ -37,6 +39,7 @@ class AzioneCreata extends Mailable
     {
         return $this
                 ->from('luigi@info-alberghi.com')
+                ->subject('azione '.$this->tipo_azione)
                 ->markdown('emails.azione.creata');
     }
 }
