@@ -176,7 +176,7 @@ class SmsController extends Controller
       
       $azione->zone()->sync($zone_arr);
       
-      Log::channel('sms_log')->info('Azione creata su '. count($zone_arr) .' quadranti');
+      Log::channel('sms_log')->info('Azione creata VIA SMS su '. count($zone_arr) .' quadranti');
 
       
       $msg = "quadranti da inserire ".count($zone_arr);

@@ -56,6 +56,22 @@ class AzioneCaccia extends Model
       return $this->belongsToMany(Zona::class, 'tblAzioneZona', 'azione_id', 'zona_id');
       }
 
+
+    public function getData()
+      {
+      return $this->dalle->format('d/m/Y');
+      }
+
+    public function getDal()
+      {
+        return $this->dalle->format('H:i');
+      }
+
+    public function getAl()
+      {
+      return $this->alle->format('H:i');  
+      }
+
    public function getZone() 
     {
     return implode(',', $this->zone()->pluck('nome')->toArray());

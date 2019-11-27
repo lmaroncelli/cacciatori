@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\AzioneCaccia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Admin\LoginController;
 
 class AzioniCacciaController extends LoginController
@@ -27,7 +28,7 @@ class AzioniCacciaController extends LoginController
       }
 
 
-    public function _saveAzione(&$azione, $request)
+    public function _saveAzione(&$azione, $request, $action = 'I')
       {
         $dalle = $request->get('data'). ' ' . $request->get('dal');
         $alle = $request->get('data'). ' ' . $request->get('al');
@@ -43,9 +44,11 @@ class AzioniCacciaController extends LoginController
         if($request->has('zone'))
           {
           $azione->zone()->sync($request->get('zone')); 
+          $action == 'I' ? $msg_azione_tipo = "CREATA" : $msg_azione_tipo = "MODIFICATA";   
+          
+          Utility::gestisciComunicazioneReferentiAzione($azione, $msg_azione_tipo);
           }
 
-        
       }
 
     
@@ -294,7 +297,7 @@ class AzioniCacciaController extends LoginController
     {
         //dd($request->all());
         $azione = new AzioneCaccia;
-        $this->_saveAzione($azione, $request);
+        $this->_saveAzione($azione, $request, $action = 'I');
         
         return redirect()->route("azioni.index")->with('status', 'Azione di caccia creata correttamente!');
     }
@@ -390,7 +393,7 @@ class AzioniCacciaController extends LoginController
     {
       $azione = AzioneCaccia::find($id);
       
-      $this->_saveAzione($azione, $request);
+      $this->_saveAzione($azione, $request, $action = 'U');
         
       return redirect()->route("azioni.index")->with('status', 'Azione di caccia modificata correttamente!');
     }
@@ -405,6 +408,15 @@ class AzioniCacciaController extends LoginController
     {
 
       $azione = AzioneCaccia::find($id);
+      
+      if (Auth::check()) 
+      {
+      if(Auth::user()->hasRole('admin'))
+        {
+          Utility::gestisciComunicazioneReferentiAzione($azione, $action = "ELIMINATA");
+        }
+      }
+
       $azione->destroyMe();
       
       return redirect()->route("azioni.index")->with('status', 'Azione eliminata correttamente!');        

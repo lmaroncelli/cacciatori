@@ -292,6 +292,60 @@ class Utility extends Model
 	 	}
 
 
+		
+	 	public static function gestisciComunicazioneReferentiAzione($azione, $tipo_azione="CREATA", $tipo_creazione = "WEB")
+	 		{
+
+	 		 Log::channel('sms_log')->info('Azione '.$tipo_azione.' VIA '.$tipo_creazione.' su '. $azione->zone()->count() .' quadranti');
+	 		 Log::channel('sms_log')->info('Loop su quadranti '.$azione->zone()->count());
+
+	 		 foreach ($azione->zone as $zona) 
+	 		   {
+	 		
+	 		     Log::channel('sms_log')->info('Quadrante '.$zona->nome);
+	 		     
+	 		     $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+
+	 		     // INVIO SMS A TUTTI I REFERENTI DI ZONA
+	 		     if(count($referenti_zona_tel))
+	 		       {
+	 		       
+	 		       Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_tel) . ' referenti con telefono su questo quadrante');
+	 		       
+	 		       // Creo un messaggio leggibile da inviare ai referenti
+	 		       $readable_msg = "Gentile referente di zona è stata $tipo_azione un'azione di caccia per il giorno ". $azione->getData() ." dalle ore ". $azione->getDal(). " alle ore ". $azione->getAl() ." nel quadrante $zona->nome";
+	 		     
+	 		       Self::sendSmsAzione($readable_msg,$referenti_zona_tel);
+	 		       
+	 		       }
+	 		     else 
+	 		       {
+	 		       Log::channel('sms_log')->info('Nessun referente con telefono');
+	 		       }
+	 		     // FINE - INVIO SMS A TUTTI I REFERENTI DI ZONA
+
+	 		     $referenti_zona_email = $zona->referenti->pluck('email')->toArray();
+	 		     // INVIO MAIL A TUTTI I REFERENTI DI ZONA
+	 		     if(count($referenti_zona_email))
+	 		       {
+
+	 		       Log::channel('sms_log')->info('Ci sono '.count($referenti_zona_email) . ' referenti con mail su questo quadrante');
+	 		       
+	 		       // invio una mail ai referenti
+	 		       Self::sendMailAzione($azione, $zona, $referenti_zona_email);
+
+	 		       }
+	 		     else 
+	 		       {
+	 		       Log::channel('sms_log')->info('Nessun referente con mail');
+	 		       }
+	 		     //  FINE - INVIO MAIL A TUTTI I REFERENTI DI ZONA
+
+	 		
+
+	 		   }// end foreach zone
+	 		}
+
 
 
 	 	public static function sendMailAzione($azione, $zona, $referenti_zona_email)
