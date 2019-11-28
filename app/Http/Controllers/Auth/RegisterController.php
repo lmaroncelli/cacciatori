@@ -69,9 +69,13 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
 
-        $this->_validatePhone($request);
-      
         $ruolo = $request->has('ruolo') ? $request->get('ruolo') : 'admin';
+        
+        if ($request->has('ruolo') && $request->get('ruolo') == 'cacciatore') 
+          {
+          $this->_validatePhone($request);
+          }
+      
         $new_request['ruolo'] = $ruolo;
        
         $request->merge($new_request);
@@ -133,8 +137,8 @@ class RegisterController extends Controller
           }
         else
           {
-          $validation_rules['nome'] = 'required|string|max:255';
-          $validation_messages['nome.required'] = 'Il nome è obbligatorio';
+          $validation_rules['name'] = 'required|string|max:255';
+          $validation_messages['name.required'] = 'Il nome è obbligatorio';
           
           }
 
@@ -161,7 +165,7 @@ class RegisterController extends Controller
            
            $user =  User::create([
                'ruolo' => $data['ruolo'],
-               'name' => $data['nome'],
+               'name' => $data['name'],
                /*'username' => $data['username'],*/ 
                'email' => $data['email'],
                'password' => Hash::make($data['password']),
