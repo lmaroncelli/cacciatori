@@ -415,7 +415,7 @@ class AzioniCacciaController extends LoginController
       
       if (Auth::check()) 
       {
-      if(Auth::user()->hasRole('admin'))
+      if(Auth::user()->hasRole('cacciatore'))
         {
           Utility::gestisciComunicazioneReferentiAzione($azione, $action = "ELIMINATA");
         }
