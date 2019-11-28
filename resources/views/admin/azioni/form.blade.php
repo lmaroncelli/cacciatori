@@ -84,7 +84,7 @@
             <div class="form-group">
               <label for="squadra_id">Squadra</label>
               <select class="form-control" style="width: 100%;" name="squadra_id" id="squadra_id">
-                @foreach ($squadre as $id => $nome)
+                @foreach (['0' => 'Seleziona']+$squadre as $id => $nome)
                   <option value="{{$id}}" @if ($azione->squadra_id == $id || old('squadra_id') == $id) selected="selected" @endif>{{$nome}}</option>
                 @endforeach
               </select>
@@ -100,7 +100,7 @@
               @include('admin.azioni.inc_zone_select_cascade')
             </div>
 
-          
+              
             <div class="form-group">
               <label for="note">Note</label>
               <textarea name="note" id="note" class="form-control">{{old('note') != '' ?  old('note') : $azione->note}}</textarea>
@@ -135,7 +135,37 @@
 	<!-- bootstrap time picker -->
 	<script src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
 
-	<script type="text/javascript">
+  <script type="text/javascript">
+    
+
+      function getDistretto(squadra_id) {
+          if(squadra_id != 0)
+        		{
+
+    	    	jQuery.ajax({
+    	    	        url: '{{ route('get_distretto') }}',
+    	    	        type: "post",
+    	    	        dataType: 'json',
+    	    	        async: false,
+    	    	        data : { 
+    	    	               'squadra_id': squadra_id, 
+    	    	               '_token': jQuery('input[name=_token]').val()
+    	    	               },
+    	    	       	success: function(data) {
+    	    	          jQuery("#distretto").val(data.nome);
+                      $("#distretto_wrapper").show();
+                      var distretto_id = data.id;
+
+    	    	         if(distretto_id != 0) {
+                       $("#distretto_id").val(distretto_id);
+                       carica_zone(squadra_id);
+    	    	         }
+    	    	       }
+
+             });
+
+        		}
+      }
 
       function carica_zone(squadra_id) {
               console.log('sono in carica zone');
@@ -163,36 +193,19 @@
         //Initialize Select2 Elements
         $('.select2').select2();
 
+        console.log('old = {{old('squadra_id')}}');
+        var old_squadra = '{{old('squadra_id')}}';
+
+        if(old_squadra != '')
+          {
+          getDistretto(old_squadra);
+          }
+
         $("#squadra_id").change(function(){
         	console.log('squadra_id.change');
         	var squadra_id = $(this).val();
 
-        	if(squadra_id != 0)
-        		{
-
-    	    	jQuery.ajax({
-    	    	        url: '{{ route('get_distretto') }}',
-    	    	        type: "post",
-    	    	        dataType: 'json',
-    	    	        async: false,
-    	    	        data : { 
-    	    	               'squadra_id': squadra_id, 
-    	    	               '_token': jQuery('input[name=_token]').val()
-    	    	               },
-    	    	       	success: function(data) {
-    	    	          jQuery("#distretto").val(data.nome);
-                      $("#distretto_wrapper").show();
-                      var distretto_id = data.id;
-
-    	    	         if(distretto_id != 0) {
-                       $("#distretto_id").val(distretto_id);
-                       carica_zone(squadra_id);
-    	    	         }
-    	    	       }
-
-             });
-
-        		}
+        	getDistretto(squadra_id);
 
         });
 

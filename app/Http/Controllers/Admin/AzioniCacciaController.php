@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Requests\AzioneCacciaRequest;
 
 class AzioniCacciaController extends LoginController
 {
@@ -293,8 +294,9 @@ class AzioniCacciaController extends LoginController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AzioneCacciaRequest $request)
     {
+
         //dd($request->all());
         $azione = new AzioneCaccia;
         $this->_saveAzione($azione, $request, $action = 'I');
@@ -391,6 +393,9 @@ class AzioniCacciaController extends LoginController
      */
     public function update(Request $request, $id)
     {
+
+      $this->_validation($request);
+
       $azione = AzioneCaccia::find($id);
       
       $this->_saveAzione($azione, $request, $action = 'U');
