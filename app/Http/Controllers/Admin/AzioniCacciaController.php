@@ -23,6 +23,7 @@ class AzioniCacciaController extends LoginController
     public function __construct()
       {
       $this->middleware('forbiddenIfRole:admin_ro')->only(['create','destroy']);
+      $this->middleware('forbiddenIfRole:consultatore')->only(['create','edit','destroy']);
       
       // Invoke parent
       parent::__construct();
@@ -391,10 +392,8 @@ class AzioniCacciaController extends LoginController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AzioneCacciaRequest $request, $id)
     {
-
-      $this->_validation($request);
 
       $azione = AzioneCaccia::find($id);
       

@@ -6,10 +6,10 @@
 
     <!-- Sidebar Menu -->
 
-    @not_role('consultatore')
     <ul class="sidebar-menu" data-widget="tree">      
       
-
+      
+      @not_role('consultatore')
         
       {{-- Distretti --}}
 
@@ -125,6 +125,8 @@
       </li>
       @endrole
 
+      @endnot_role
+
       @not_role('cartografo')
         {{-- Azioni --}}
         <li class="treeview @if (in_array('azioni',Request::segments())) active @endif">
@@ -135,9 +137,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('azioni.index') }}">Elenco</a></li>
-            @not_role('admin_ro')
-            <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
-            @endnot_role
+            @not_role_and(['admin_ro','consultatore'])
+              <li><a href="{{ route('azioni.create') }}">Nuova</a></li>
+            @endnot_role_and
           </ul>
         </li>
       @endnot_role
@@ -168,7 +170,6 @@
 
     </ul>
     <!-- /.sidebar-menu -->
-    @endnot_role
 
     
   </section>

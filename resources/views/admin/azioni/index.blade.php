@@ -82,11 +82,11 @@
             <h3 class="box-title">Elenco attività</h3>
 
             <div class="box-tools">
-              @not_role('admin_ro')
+             @not_role_and(['admin_ro','consultatore'])
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('azioni.create') }}" title="Nuovo distretto" class="btn btn-success"><i class="fa fa-plus"></i> Nuova attività</a>
               </div>
-              @endnot_role
+              @endnot_role_and
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -135,10 +135,10 @@
                     @endif
                   @endforeach
                   <th></th>
-                  @not_role('admin_ro')
+                  @not_role_and(['admin_ro','consultatore'])
                   <th></th>
                   <th></th>
-                  @endnot_role
+                  @endnot_role_and
                   <th></th>
                 </tr>
               </thead>
@@ -150,12 +150,12 @@
                     <td>{{optional($azione->distretto)->nome}}</td>
                     <td>{{$azione->getZone()}}</td>
                     <td> <a href="{{ route('azioni.show',$azione->id) }}" title="Visualizza azione" class="btn btn-warning btn-sm"><i class="fa fa-map"></i> visualizza</a> </td>
-                    @not_role('admin_ro')
+                    @not_role_and(['admin_ro','consultatore'])
                     <td> <a href="{{ route('azioni.edit',$azione->id) }}" title="Modifica azione" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>modifica</a> </td>
                     <td>
                       <button type="button" class="btn btn-danger btn-flat delete pull-right btn-sm" data-id="{{$azione->id}}"><i class="fa fa-trash"></i> elimina</button>
                     </td>
-                    @endnot_role
+                    @endnot_role_and
                   </tr>
                 @endforeach
               </tbody>
