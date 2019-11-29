@@ -28,6 +28,7 @@
                     @endif>
                       <a href="{{url()->current()}}?order_by=email&order={{ $order_by=='email' && $order=='asc' ? 'desc' : 'asc' }}">Email</a>
                   </th>
+                  <th>Cell</th>
                   <th>Squadre</th>
                   <th>CapoSquadra di</th>
                   <th>Login</th>
@@ -41,6 +42,7 @@
                   <tr>
                     <td>{{$cacciatore->cognome}} {{$cacciatore->nome}} </td>
                     <td>{{$cacciatore->utente->email}}</td>
+                    <td>{{$cacciatore->telefono}}</td>
                     <td>{{$cacciatore->getSquadre()}}</td>
                     <td>{{$cacciatore->getSquadreACapo()}}</td>
                     <td>
