@@ -18,7 +18,8 @@ use App\Http\Controllers\showMappaAttivita;
 });*/
 
 
-
+$router->pattern('documento_id', '[0-9]+');
+$router->pattern('utente_id', '[0-9]+');
 
 // la home diventa il mio loginForm
 Route::get('/','Auth\LoginController@showLoginForm')->name('login');
@@ -59,6 +60,8 @@ Route::get('reset','Admin\AzioniCacciaController@reset')->name('reset');
 Route::any('azioni_search','Admin\AzioniCacciaController@index')->name('azioni_search')/*->middleware('log')*/;
 Route::resource('azioni', 'Admin\AzioniCacciaController')/*->middleware('log')*/;
 
+Route::get('admin/documenti', ['uses' => 'Admin\DocumentiController@index', 'as' => 'documenti.index']);
+
 Route::group(['middleware' => ['admin']], function () {
 
   Route::post('utenti/modifica/{utente_id}', 'Auth\RegisterController@modificaUtente')->name('utenti.modifica');
@@ -88,6 +91,14 @@ Route::group(['middleware' => ['admin']], function () {
 
 
 	Route::get('readJson','Admin\PoligoniController@readJson')->name('readJson');
-	Route::get('readXml','Admin\PoligoniController@readXml')->name('readXml');
+  Route::get('readXml','Admin\PoligoniController@readXml')->name('readXml');
+  
+
+
+  Route::get('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@formUpload', 'as' => 'documenti.form-upload']);
+  Route::post('admin/documenti/upload', ['uses' => 'Admin\DocumentiController@upload', 'as' => 'documenti.upload']);
+  Route::get('admin/documenti/modifica/{documento_id}', ['uses' => 'Admin\DocumentiController@modifica', 'as' => 'documenti.modifica']);
+  Route::post('admin/documenti/aggiorna/{documento_id}', ['uses' => 'Admin\DocumentiController@aggiorna', 'as' => 'documenti.aggiorna']);
+  Route::post('admin/documenti/elimina/{documento_id}', ['uses' => 'Admin\DocumentiController@elimina', 'as' => 'documenti.elimina']);
 
 });

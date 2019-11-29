@@ -4,6 +4,7 @@ namespace App;
 
 use App\Zona;
 use App\Distretto;
+use App\Documento;
 use App\AzioneCaccia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,11 @@ class Squadra extends Model
 		public function zone()
 		{
 		    return $this->belongsToMany(Zona::class, 'tblSquadreZone', 'squadra_id', 'zona_id')->withTimestamps();
+    }
+    
+    public function documenti()
+		{
+		    return $this->belongsToMany(Documento::class, 'tblDocumentiSquadre', 'squadra_id', 'documento_id')->withTimestamps();
 		}
 
 		public function azioni()

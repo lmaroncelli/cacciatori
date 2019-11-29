@@ -143,11 +143,9 @@
           </ul>
         </li>
       @endnot_role
+      
 
-
-      {{-- DOCUMENTI ELENCO --}}
-
-      {{-- @if(Auth::user()->hasRole('associazione'))
+      {{-- FILE UPLOAD --}}
       <li class="treeview @if (in_array('documenti',Request::segments())) active @endif">
         <a href="#"><i class="fa fa-folder-open-o"></i> <span>Documenti</span>
           <span class="pull-right-container">
@@ -156,16 +154,11 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('documenti.index') }}">Elenco</a></li>
+          <li><a href="{{ route('documenti.form-upload') }}">Nuovo</a></li>
         </ul>
       </li>
-      @endif
-      
-      @if(Auth::user()->hasRole('admin'))
-        <li class="header">&nbsp;</li>
-        <li><a href="{{ route('utenti') }}"><i class="fa fa-navicon text-aqua"></i> <span>Elenco admin</span></a></li>
-        <li><a href="{{ route('register') }}"><i class="fa fa-plus-square text-aqua"></i> <span>Registra nuovo admin</span></a></li>
 
-      @endif --}}
+  
       
 
     </ul>
