@@ -390,8 +390,10 @@ class Utility extends Model
     {
       // A Twilio number you own with SMS capabilities (env('TWILIO_FROM') non funziona??!!)
 
-      $twilio_number = "+15623828121";
+      $twilio_number = env('TWILIO_FROM');
       
+      Log::channel('sms_log')->info('Utility::sendSmsAzione -  twilio_number = '.$twilio_number);
+
       try 
         {
         $twilio = new Client( env('TWILIO_SID'), env('TWILIO_TOKEN') );
