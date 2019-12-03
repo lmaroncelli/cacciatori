@@ -123,10 +123,42 @@ class SmsController extends Controller
       {
       $body = $request->Body;
       $number = $request->From;
-    
-      list($data,$da,$a,$zona_id) = explode('#', $body);
+      
+      
+      /**
+       * 
+       * La stringa può essere di 2 tipi:
+       * 
+       * 1) 27/11/2019#05:00#10:00#626 
+       * 
+       * 2) #626
+       * 
+       * 
+       * Se comincia con # allora ho solo elenco dei quadranti e devo settare 
+       * 
+       * data: adesso
+       * 
+       * dal: adesso
+       * 
+       * al: adesso + 3 h
+       * 
+       */
 
       Log::channel('sms_log')->info('SMS = '.$body);
+      
+      if ($body[0] == '#') 
+        {
+        $now = Carbon::now('Europe/Rome');
+        $data = $now->format('d/m/Y');
+        $da =  $now->format('H::i');
+        $a =  $now->addHours(3)->format('H::i');
+        $zona_id = ltrim($body, $body[0]);
+        } 
+      else 
+        {
+        list($data,$da,$a,$zona_id) = explode('#', $body);
+        }  
+      
 
       $zone_arr = explode(',', $zona_id);
       
