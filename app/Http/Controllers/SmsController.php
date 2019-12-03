@@ -150,8 +150,8 @@ class SmsController extends Controller
         {
         $now = Carbon::now('Europe/Rome');
         $data = $now->format('d/m/Y');
-        $da =  $now->format('H::i');
-        $a =  $now->addHours(3)->format('H::i');
+        $da =  $now->format('H:i');
+        $a =  $now->addHours(3)->format('H:i');
         $zona_id = ltrim($body, $body[0]);
         } 
       else 
