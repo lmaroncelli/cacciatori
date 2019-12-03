@@ -161,6 +161,13 @@ class SmsController extends Controller
       
 
       $zone_arr = explode(',', $zona_id);
+
+
+      Log::channel('sms_log')->info('data = '.$data);
+      Log::channel('sms_log')->info('da = '.$da);
+      Log::channel('sms_log')->info('a = '.$a);
+      Log::channel('sms_log')->info('zona_id = '.$zona_id);
+
       
       // dal numero identifico il caposquadra
       $cacciatore = Cacciatore::where('telefono',trim($number))->first();
