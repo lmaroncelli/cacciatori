@@ -26,7 +26,6 @@
           </form>
         
           <form role="form" action="{{ route('documenti.aggiorna', $doc->id) }}" method="POST">
-          {{ method_field('PUT') }}
         @else
           <form role="form" action="{{ route('documenti.upload') }}" method="POST" enctype="multipart/form-data">
         @endif
@@ -37,7 +36,7 @@
               <div class="form-group">
                 <label for="titolo">File</label>
                 <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" required="required" aria-describedby="fileHelp">
-                        <small id="fileHelp" class="form-text text-muted">Please upload a valid image file. Size of image should not be more than 2MB.</small>
+                        <small id="fileHelp" class="form-text text-muted">Please upload a valid file. Size of file should not be more than 2MB.</small>
               </div>
             @endif
   

@@ -93,13 +93,11 @@
                 <td>
                     {{ $documento->created_at->diffForHumans() }} 
                 </td>
-                <td>
-                    <a class="documento" href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento">
-                      <button type="button" class="btn btn-primary btn-flat pull-right"><i class="fa fa-edit"></i></button>
-                    </a>
+                <td> 
+                  <a href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> 
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger btn-flat delete_doc pull-right" data-doc-id="{{$documento->id}}"><i class="fa fa-trash"></i></button>
+                  <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$documento->id}}"><i class="fa fa-trash"></i> elimina</button>
                 </td>
               </tr>
               @endforeach

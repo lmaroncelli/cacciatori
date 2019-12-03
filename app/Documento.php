@@ -25,7 +25,15 @@ class Documento extends Model
 
     public function getSquadre()
     {
-    return implode(',', $this->squadre()->pluck('nome')->toArray());
+    if ($this->squadre()->count()) 
+      {
+      return implode(',', $this->squadre()->pluck('nome')->toArray());
+      } 
+    else 
+      {
+      return "Tutte";
+      }
+    
     }
     /**
     * [listaDocumenti trova la lista di documenti in base all'utente loggato ed eventualmente con un limite massimo

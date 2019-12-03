@@ -81,6 +81,19 @@ class DocumentiController extends LoginController
     $doc = Documento::find($documento_id);
     
     $squadre_associate = $doc->squadre->pluck('nome','id')->toArray();
+
+    if(!count($squadre_associate))
+      {
+      $squadre_associate = ['0' => 'Tutte'];
+      }
+    else
+      {
+      if(array_key_exists(0, $squadre_associate))
+        {
+          unset($squadre_associate[0]);
+        }
+      }
+
   
     return view('admin.documenti.form', compact('doc','squadre_associate'));
     }
@@ -92,7 +105,7 @@ class DocumentiController extends LoginController
     $doc = Documento::find($documento_id);
     $doc->update($request->except('squadre'));
     
-    $squadre = $request->get('squadre');
+    $squadre = is_null($request->get('squadre')) ? 0 : $request->get('squadre');
 
     $doc->squadre()->sync($squadre);
 
@@ -102,16 +115,19 @@ class DocumentiController extends LoginController
   
 
 
-  // public function elimina($documento_id)
-  // {   
-  //     $documento = Documento::find($documento_id);
-  //     $file = $documento->file;
-  //     $documento->delete();
+    public function elimina($documento_id)
+    {   
+        $documento = Documento::find($documento_id);
+        $file = $documento->file;
+        
+        $documento->squadre()->detach();
+        $documento->delete();
 
-  //     Storage::delete('public/'.$file);
+        Storage::delete('public/'.$file);
 
-  //     return redirect('admin/documenti')->with('status', 'Documento eliminato!');
-  // }
+
+        return redirect('admin/documenti')->with('status', 'Documento eliminato!');
+    }
 
 
 }
