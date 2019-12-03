@@ -105,6 +105,7 @@ class Squadra extends Model
     	{
     	self::cacciatori()->detach();
     	self::zone()->detach();
+    	self::documenti()->detach();
 			
 			self::delete();
     	}

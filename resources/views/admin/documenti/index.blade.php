@@ -65,10 +65,8 @@
                       @endif
 
                     @endforeach
-                    @isAdmin
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    @endisAdmin
                 </tr>
             </thead>
             <tbody>   
@@ -87,7 +85,7 @@
                     {{$documento->argomento}}
                 </td>
                 <td>
-                    {{$documento->tipo}}
+                    {{$documento->getSquadre()}}
                 </td>
                 @php
                   Carbon\Carbon::setLocale('it'); /* in un middleware every request!!*/
@@ -95,7 +93,6 @@
                 <td>
                     {{ $documento->created_at->diffForHumans() }} 
                 </td>
-                @isAdmin
                 <td>
                     <a class="documento" href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento">
                       <button type="button" class="btn btn-primary btn-flat pull-right"><i class="fa fa-edit"></i></button>
@@ -104,7 +101,6 @@
                 <td>
                   <button type="button" class="btn btn-danger btn-flat delete_doc pull-right" data-doc-id="{{$documento->id}}"><i class="fa fa-trash"></i></button>
                 </td>
-                @endisAdmin
               </tr>
               @endforeach
             </tbody>

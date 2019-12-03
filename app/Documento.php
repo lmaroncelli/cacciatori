@@ -9,13 +9,24 @@ class Documento extends Model
 {
     protected $table = 'tblDocumenti';
 
-		protected $guarded = ['id'];
+    protected $guarded = ['id'];
+    
+
+    public function pubblicatore()
+		{
+			return $this->belongsTo('App\User','user_id','id');
+		}
 
 	  public function squadre()
 		{
 		    return $this->belongsToMany(Squadra::class, 'tblDocumentiSquadre', 'documento_id', 'squadra_id')->withTimestamps();
     }
     
+
+    public function getSquadre()
+    {
+    return implode(',', $this->squadre()->pluck('nome')->toArray());
+    }
     /**
     * [listaDocumenti trova la lista di documenti in base all'utente loggato ed eventualmente con un limite massimo
     * utilizzata nella sezione documenti e nella dashboard]
