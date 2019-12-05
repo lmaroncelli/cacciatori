@@ -75,14 +75,14 @@ class Cacciatore extends Model
              
     return $query->leftJoin('users', 'tblCacciatori.user_id', '=', 'users.id')
             ->select('tblCacciatori.*')
-            ->orderBy('users.email',$order)
+            ->orderBy('users.'. $sort_by,$order)
             ->get();
     }
   
   public static function getAll($sort_by = 'id', $order = 'asc')
       {
       
-      if ($sort_by == 'email') 
+      if ($sort_by == 'email' || $sort_by == 'login_capabilities') 
         {
         return Self::with('utente')->joinUtente($sort_by, $order);
         } 

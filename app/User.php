@@ -45,6 +45,12 @@ class User extends Authenticatable
       }
 
 
+     public function documenti()
+      { 
+          return $this->hasMany('App\Documento','user_id','id');
+      }
+
+
     public function hasRole($role)
       {
       return strtolower($role) === strtolower($this->ruolo);
