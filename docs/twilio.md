@@ -74,3 +74,12 @@ devo ritornare twiml, cioè un XML con tag proprietari di Twilio
 - inserimento attività in un quadrante
 
 27/11/2019#05:00#10:00#626
+
+
+
+# SMS Webhooks
+
+When using Twilio's Programmable SMS you configure a Twilio phone number to make a request to a webhook for responses to an incoming message.Twilio can send your web application an HTTP request when certain events happen, such as an incoming text message to one of your Twilio phone numbers. These requests are called webhooks, or status callbacks. 
+
+Video at 
+https://www.twilio.com/docs/usage/webhooks/getting-started-twilio-webhooks
