@@ -77,7 +77,6 @@
               @foreach ($documenti as $documento)
               <form action="{{ route('documenti.elimina', $documento->id) }}" id="form_{{$documento->id}}" method="POST">
                 {!! csrf_field() !!}
-                @method('DELETE')
               </form>
               <tr>
                 <td>
