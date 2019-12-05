@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Squadra;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Documento extends Model
@@ -21,7 +23,7 @@ class Documento extends Model
 		{
 		    return $this->belongsToMany(Squadra::class, 'tblDocumentiSquadre', 'documento_id', 'squadra_id')->withTimestamps();
     }
-    
+
 
     public function getSquadre()
     {
@@ -43,17 +45,45 @@ class Documento extends Model
     */
    public static function listaDocumenti($order_by, $order, $paginate = 15, $limit = 0)
    	{
-   	
-    $query = self::orderBy($order_by, $order); 
     
-    if ($limit) 
+    if (Auth::user()->hasRole('cacciatore')) 
       {
-      $documenti = $query->limit($limit)->get();
+      $doc_ids = [];
+      $squadre_cacciatore = Auth::user()->cacciatore->squadre;
+      
+      // trovo tutti i documenti associati a tutte le squadre del cacciatore
+      foreach ($squadre_cacciatore as $squadra) 
+        {
+          $squadra_doc_ids = $squadra->documenti()->pluck('documento_id')->toArray();
+          $doc_ids = array_merge($doc_ids, $squadra_doc_ids);
+        }
+
+      // trovo tutti i documenti visibili a tutti
+      $doc_ids_visibili = DB::table('tblDocumentiSquadre')->where('squadra_id',0)->pluck('documento_id')->toArray();
+      
+      $doc_ids = array_merge($doc_ids, $doc_ids_visibili);
+      
+
+      $query = self::whereIn('id',$doc_ids)->orderBy($order_by, $order);
+
+    
       } 
     else 
       {
-      $documenti = $query->paginate($paginate);
+
+      $query = self::orderBy($order_by, $order); 
+    
       }
+
+
+     if ($limit) 
+        {
+        $documenti = $query->limit($limit)->get();
+        } 
+      else 
+        {
+        $documenti = $query->paginate($paginate);
+        }
    		  
    		
    	return $documenti;

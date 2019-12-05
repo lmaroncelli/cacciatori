@@ -31,7 +31,11 @@
                   <th>Cell</th>
                   <th>Squadre</th>
                   <th>CapoSquadra di</th>
-                  <th>Login</th>
+                  <th @if ($order_by=='login_capabilities')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=login_capabilities&order={{ $order_by=='login_capabilities' && $order=='asc' ? 'desc' : 'asc' }}">Login</a>
+                  </th>
                   @not_role('admin_ro')
                   <th></th>
                   @endnot_role

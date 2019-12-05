@@ -7,9 +7,11 @@
           <div class="box-header">
             <h3 class="box-title">Elenco documenti</h3>
             <div class="box-tools">
+              @role('admin')
               <div class="input-group input-group-sm" style="width: 150px;">
                   <a href="{{ route('documenti.form-upload') }}" title="Nuovo documento" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Documento</a>
               </div>
+              @endrole
             </div>
           </div>
           <div class="box-body table-responsive no-padding">
@@ -65,8 +67,10 @@
                       @endif
 
                     @endforeach
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    @role('admin')
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    @endrole
                 </tr>
             </thead>
             <tbody>   
@@ -93,12 +97,14 @@
                 <td>
                     {{ $documento->created_at->diffForHumans() }} 
                 </td>
-                <td> 
-                  <a href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> 
-                </td>
-                <td>
-                  <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$documento->id}}"><i class="fa fa-trash"></i> elimina</button>
-                </td>
+                @role('admin')
+                  <td> 
+                    <a href="{{ route('documenti.modifica', $documento->id) }}" title="Modifica documento" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> modifica</a> 
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$documento->id}}"><i class="fa fa-trash"></i> elimina</button>
+                  </td>
+                @endrole
               </tr>
               @endforeach
             </tbody>
