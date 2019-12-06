@@ -10,6 +10,7 @@ use App\AzioneCaccia;
 use App\UnitaGestione;
 use Twilio\Rest\Client;
 use App\Mail\AzioneCreata;
+use App\Squadra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Twilio\TwiML\MessagingResponse;
@@ -129,9 +130,9 @@ class SmsController extends Controller
        * 
        * La stringa può essere di 2 tipi:
        * 
-       * 1) 27/11/2019#05:00#10:00#626 
+       * 1) 27/11/2019#05:00#10:00#<ID SQUADRA/>#<NOME QUADRANTE> 
        * 
-       * 2) #626
+       * 2) #<ID SQUADRA/>#<NOME QUADRANTE>
        * 
        * 
        * Se comincia con # allora ho solo elenco dei quadranti e devo settare 
@@ -152,21 +153,23 @@ class SmsController extends Controller
         $data = $now->format('d/m/Y');
         $da =  $now->format('H:i');
         $a =  $now->addHours(3)->format('H:i');
-        $zona_id = ltrim($body, $body[0]);
+        $small_string = ltrim($body, $body[0]);
+        list($squadra_id,$zona_nome) = explode('#', $small_string);
         } 
       else 
         {
-        list($data,$da,$a,$zona_id) = explode('#', $body);
+        list($data,$da,$a,$squadra_id,$zona_nome) = explode('#', $body);
         }  
       
 
-      $zone_arr = explode(',', $zona_id);
+      $zone_arr = explode(',', $zona_nome);
 
 
       Log::channel('sms_log')->info('data = '.$data);
       Log::channel('sms_log')->info('da = '.$da);
       Log::channel('sms_log')->info('a = '.$a);
-      Log::channel('sms_log')->info('zona_id = '.$zona_id);
+      Log::channel('sms_log')->info('squadra_id = '.$squadra_id);
+      Log::channel('sms_log')->info('zona = '.$zona_nome);
 
       
       // dal numero identifico il caposquadra
@@ -179,12 +182,16 @@ class SmsController extends Controller
         }
 
       // verifico se è un caposquadra ed eventualmente prendo la PRIMA 
-      $squadra = $cacciatore->squadreACapo->first();
+      //$squadra = $cacciatore->squadreACapo->first();
+      
+      // la squadra viene passata con il codice
+      $squadra = Squadra::find($squadra_id);
+
 
       if(is_null($squadra))
         {
-        Log::channel('sms_log')->info('Il numero inserito non fa riferimento ad un caposquadra! '.$number);
-        throw new \Exception('Il numero inserito non fa riferimento ad un caposquadra!');
+        Log::channel('sms_log')->info('Il codice della squadra non esiste! '.$squadra_id);
+        throw new \Exception('Il codice della squadra non esiste!');
         }
 
       $distretto = $squadra->distretto;
@@ -213,9 +220,9 @@ class SmsController extends Controller
 
       $azione->save();
       
-      $azione->zone()->sync($zone_arr);
+      //$azione->zone()->sync($zone_arr);
       
-      Log::channel('sms_log')->info('Azione creata VIA SMS su '. count($zone_arr) .' quadranti');
+      Log::channel('sms_log')->info('Azione creata VIA SMS ancora senza quadranti');
 
       
       $msg = "quadranti da inserire ".count($zone_arr);
@@ -224,15 +231,18 @@ class SmsController extends Controller
 
       Log::channel('sms_log')->info('Loop su quadranti '.count($zone_arr));
 
-      foreach ($zone_arr as $zona_id) 
+      foreach ($zone_arr as $zona_nome) 
         {
         
-        $zona = Zona::find($zona_id);
-        
+        $zona = Zona::where('nome',$zona_nome)->first();
         
         if (!is_null($zona)) 
         {
-          Log::channel('sms_log')->info('Quadrante '.$zona->nome);
+          $zona_id = $zona->id;
+          
+          $azione->zone()->attach($zona_id);
+
+          Log::channel('sms_log')->info('Quadrante '.$zona->nome.' assegnato alla azione');
           
           $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
 
@@ -275,9 +285,9 @@ class SmsController extends Controller
           }
         else 
           {
-          $azione->zone()->detach($zona_id);
+
           $quadranti_scartati++;
-          Log::channel('sms_log')->info('Quadrante id '.$zona_id.' non esiste');
+          Log::channel('sms_log')->info('Quadrante '.$zona_nome.' non esiste');
 
           }
 
