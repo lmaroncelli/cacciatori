@@ -41,7 +41,7 @@ al momento è $ 0.0883 / message per tutti gli operatori. Poi ci sono anche dell
 
 Un cacciatore/caposquadra che vuole creare un'azione di caccia via SMS deve comporre un SMS del tipo
 
-<data_azione>#<dalle>#<alle>#<ID Quadrante/>
+<data_azione>#<dalle>#<alle>#<ID SQUADRA/>#<NOME QUADRANTE>
 03/09/2019#05:00#10:00#69
 
 Il sistema verificherà la correttezza dei dati inseriti, in particolare:
@@ -56,9 +56,9 @@ Il sistema risponderà all'SMS per l'inserimento di un'azione di caccia con un m
 Successivamente all'invio del SMS da parte di un cacciatore il sistema notificherà in automatico i referenti di Zona; nel caso in cui non fosse possibile notificarli (non ci sono referenti, oppure non hanno un telefono associato), il cacciatore, oltre al messaggio di corretto inserimento dell'azione, riceverebbe un avviso di mancato recapito ai referenti.
 
 
-E' possibile inviare anche una stringa con __solo i quadranti__:
+E' possibile inviare anche una stringa con __solo squadra e quadranti__:
 
-#69,108
+#<ID SQUADRA/>#69,108
 
 in questo caso la data sarà oggi e il periodo dal al sarà inserito automaticamente dal sistema con i valori adesso e adesso + 3h
 
