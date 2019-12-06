@@ -13,7 +13,7 @@ class PoligoniController extends LoginController
 {
     public function salvaCoordinatePoligonoAjax(Request $request) 
     	{
-
+      
       if($request->has('zona_id'))
         {
     	   $zona_id = $request->get('zona_id');
@@ -41,7 +41,14 @@ class PoligoniController extends LoginController
 
         }
 
-    	$coords = $request->get('coords');
+      $coords_object = json_decode($request->get('coords'));
+
+      // questo è un array di oggetti, lo devo trasformare in un array di array
+      $coords = array();
+      foreach ($coords_object as $object)
+        {
+          $coords[] = (array) $object;
+        }
       
       if(!is_null($coords) && !empty($coords))
         {

@@ -87,13 +87,15 @@
 
           @foreach ($coordinate_distretto as $lat => $long)
             
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
 
-            distretto_coords.push(jsonData);
+              distretto_coords.push(jsonData);
+            @endif
 
           @endforeach
         
@@ -138,14 +140,15 @@
           @foreach ($coordinata_utg as $lat => $long)
 
 
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
 
-            utg_coords.push(jsonData);
+              utg_coords.push(jsonData);
+            @endif
           
           @endforeach
 
@@ -182,14 +185,17 @@
 
     
       @foreach ($coordinate as $lat => $long)
-        
-        var jsonData = {};
-        jsonData['lat'] = {{$lat}};
-        jsonData['lng'] = {{$long}};
-        
-        //console.log('jsonData = '+JSON.stringify(jsonData));
+        @if(!empty($lat) && !empty($long))
 
-        zona_coords.push(jsonData);
+          var jsonData = {};
+          jsonData['lat'] = {{$lat}};
+          jsonData['lng'] = {{$long}};
+          
+          //console.log('jsonData = '+JSON.stringify(jsonData));
+
+          zona_coords.push(jsonData);
+
+        @endif
 
       @endforeach
 
@@ -241,14 +247,14 @@
 
  				}
 
- 				console.log(zona_coords);
+ 				console.log(zona_coords.length);
 
  	    	jQuery.ajax({
  	    	        url: '{{ route("aggiorna_coordinate") }}',
  	    	        type: "post",
  	    	        async: false,
  	    	        data : { 
- 	    	               'coords': zona_coords, 
+ 	    	               'coords': JSON.stringify(zona_coords), 
  	    	               'zona_id': '{{$item->id}}',
  	    	               '_token': jQuery('input[name=_token]').val()
  	    	               },

@@ -77,14 +77,15 @@ Unità gestione
           @foreach ($coordinata_zona as $lat => $long)
 
 
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
 
-            zona_coords.push(jsonData);
+              zona_coords.push(jsonData);
+            @endif
           
           @endforeach
 
@@ -118,14 +119,16 @@ Unità gestione
         @if (!is_null($coordinate_distretto))
           
 		   	@foreach ($coordinate_distretto as $lat => $long)
-		   		
-		    	var jsonData = {};
-		   		jsonData['lat'] = {{$lat}};
-		   		jsonData['lng'] = {{$long}};
-		   		
-		   		//console.log('jsonData = '+JSON.stringify(jsonData));
+           
+          @if(!empty($lat) && !empty($long))
+            var jsonData = {};
+            jsonData['lat'] = {{$lat}};
+            jsonData['lng'] = {{$long}};
+            
+            //console.log('jsonData = '+JSON.stringify(jsonData));
 
-		   		distretto_coords.push(jsonData);
+            distretto_coords.push(jsonData);
+          @endif
 
          @endforeach
          
@@ -168,14 +171,15 @@ Unità gestione
 
 		    
 		   	@foreach ($coordinate_utg as $lat => $long)
-		   		
-		    	var jsonData = {};
-		   		jsonData['lat'] = {{$lat}};
-		   		jsonData['lng'] = {{$long}};
-		   		
-		   		//console.log('jsonData = '+JSON.stringify(jsonData));
+		   		@if(!empty($lat) && !empty($long))
+            var jsonData = {};
+            jsonData['lat'] = {{$lat}};
+            jsonData['lng'] = {{$long}};
+            
+            //console.log('jsonData = '+JSON.stringify(jsonData));
 
-		   		utg_coords.push(jsonData);
+            utg_coords.push(jsonData);
+          @endif
 
 		   	@endforeach
 
@@ -227,14 +231,14 @@ Unità gestione
 
      				}
 
-     				console.log(utg_coords);
+     				console.log(utg_coords.length);
 
      	    	jQuery.ajax({
      	    	        url: '{{ route("aggiorna_coordinate") }}',
      	    	        type: "post",
      	    	        async: false,
      	    	        data : { 
-     	    	               'coords': utg_coords, 
+     	    	               'coords': JSON.stringify(utg_coords), 
      	    	               'utg_id': '{{$item->id}}',
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },

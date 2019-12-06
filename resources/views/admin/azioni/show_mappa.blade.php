@@ -86,13 +86,17 @@
 
                     @foreach ($coordinate_distretto[$id_utg] as $lat => $long)
                       
-                      var jsonData = {};
-                      jsonData['lat'] = {{$lat}};
-                      jsonData['lng'] = {{$long}};
-                      
-                      //console.log('jsonData = '+JSON.stringify(jsonData));
+                      @if(!empty($lat) && !empty($long))
 
-                      distretto_coords.push(jsonData);
+                          var jsonData = {};
+                          jsonData['lat'] = {{$lat}};
+                          jsonData['lng'] = {{$long}};
+                          
+                          //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                          distretto_coords.push(jsonData);
+
+                      @endif
 
                     @endforeach
                   
@@ -150,14 +154,17 @@
                 @foreach ($coordinata_unita as $lat => $long)
 
 
-              
-                  var jsonData = {};
-                  jsonData['lat'] = {{$lat}};
-                  jsonData['lng'] = {{$long}};
-                  
-                  //console.log('jsonData = '+JSON.stringify(jsonData));
+                  @if(!empty($lat) && !empty($long))
 
-                  utg_coords.push(jsonData);
+                      var jsonData = {};
+                      jsonData['lat'] = {{$lat}};
+                      jsonData['lng'] = {{$long}};
+                      
+                      //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                      utg_coords.push(jsonData);
+
+                  @endif
                 
                 @endforeach // end coordinata_unita
 
@@ -196,14 +203,17 @@
           @foreach ($coordinata_zona as $lat => $long)
 
 
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
 
-            zona_coords.push(jsonData);
+                var jsonData = {};
+                jsonData['lat'] = {{$lat}};
+                jsonData['lng'] = {{$long}};
+                
+                //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                zona_coords.push(jsonData);
+            
+            @endif
           
           @endforeach
 

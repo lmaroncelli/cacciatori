@@ -83,14 +83,16 @@ Distretto
           @foreach ($coordinata_zona as $lat => $long)
 
 
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
 
-            zona_coords.push(jsonData);
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
+
+              zona_coords.push(jsonData);
+            @endif
           
           @endforeach
 
@@ -127,14 +129,17 @@ Distretto
           @foreach ($coordinata_utg as $lat => $long)
 
 
-        
-            var jsonData = {};
-            jsonData['lat'] = {{$lat}};
-            jsonData['lng'] = {{$long}};
-            
-            //console.log('jsonData = '+JSON.stringify(jsonData));
+            @if(!empty($lat) && !empty($long))
 
-            utg_coords.push(jsonData);
+                var jsonData = {};
+                jsonData['lat'] = {{$lat}};
+                jsonData['lng'] = {{$long}};
+                
+                //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                utg_coords.push(jsonData);
+            
+            @endif
           
           @endforeach
 
@@ -171,15 +176,19 @@ Distretto
 		    var distretto_coords = new Array();
 
 		    
-		   	@foreach ($coordinate as $lat => $long)
+         @foreach ($coordinate as $lat => $long)
+         
+          @if(!empty($lat) && !empty($long))
 		   		
-		    	var jsonData = {};
-		   		jsonData['lat'] = {{$lat}};
-		   		jsonData['lng'] = {{$long}};
-		   		
-		   		//console.log('jsonData = '+JSON.stringify(jsonData));
+              var jsonData = {};
+              jsonData['lat'] = {{$lat}};
+              jsonData['lng'] = {{$long}};
+              
+              //console.log('jsonData = '+JSON.stringify(jsonData));
 
-		   		distretto_coords.push(jsonData);
+              distretto_coords.push(jsonData);
+              
+          @endif
 
 		   	@endforeach
 
@@ -231,14 +240,14 @@ Distretto
 
      				}
 
-     				console.log(distretto_coords);
+     				console.log(distretto_coords.length);
 
      	    	jQuery.ajax({
      	    	        url: '{{ route("aggiorna_coordinate") }}',
      	    	        type: "post",
      	    	        async: false,
      	    	        data : { 
-     	    	               'coords': distretto_coords, 
+     	    	               'coords': JSON.stringify(distretto_coords), 
      	    	               'distretto_id': '{{$item->id}}',
      	    	               '_token': jQuery('input[name=_token]').val()
      	    	               },
