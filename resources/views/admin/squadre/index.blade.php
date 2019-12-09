@@ -18,6 +18,7 @@
           <table class="table table-hover">
             <colgroup>
                 <col></col>
+                <col></col>
                 <col class="success"></col>
                 <col></col>
                 <col></col>
@@ -33,6 +34,7 @@
                   @endif>
                     <a href="{{url()->current()}}?order_by=distretto&order={{ $order_by=='distretto' && $order=='asc' ? 'desc' : 'asc' }}">Distretto</a>
                 </th>
+                <th>ID</th>
                 <th scope="col" @if ($order_by=='nome')
                   class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
                   @endif>
@@ -55,6 +57,7 @@
                   </form>
                 <tr>
                   <td>{{optional($squadra->distretto)->nome}}</td>
+                  <td>{{$squadra->id}}</td>
                   <td>{{$squadra->nome}}</td>
                   <td>{{$squadra->getZoneForTable()}}</td>          
                   <td>{{$squadra->getCacciatori()}}</td>
