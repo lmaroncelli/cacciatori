@@ -43,6 +43,10 @@
               </thead>
               <tbody>
                 @foreach ($cacciatori as $cacciatore)
+                  <form action="{{ route('cacciatori.destroy', $cacciatore->id) }}" id="form_{{$cacciatore->id}}" method="POST">
+                    {!! csrf_field() !!}
+                    @method('DELETE')
+                  </form>
                   <tr>
                     <td>{{$cacciatore->cognome}} {{$cacciatore->nome}} </td>
                     <td>{{$cacciatore->utente->email}}</td>
@@ -58,6 +62,9 @@
                     </td>
                     @not_role('admin_ro')
                     <td> <a href="{{ route('cacciatori.edit',$cacciatore->id) }}" title="Modifica cacciatore" class="btn btn-success btn-sm">modifica</a> </td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-flat delete btn-sm" data-id="{{$cacciatore->id}}"><i class="fa fa-trash"></i> elimina</button>
+                    </td>
                     @endnot_role
                   </tr>
                 @endforeach

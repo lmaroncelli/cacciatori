@@ -126,7 +126,7 @@ class RegisterController extends Controller
             ];
 
         /*aggiungo le regole di validazione per il cacciatore*/
-        if ( array_key_exists('user', $data) && $data['user'] == 'cacciatore' ) 
+        if ( array_key_exists('ruolo', $data) && $data['ruolo'] == 'cacciatore' ) 
           {
           $validation_rules['data_nascita'] = 'required|date_format:d/m/Y';
           $validation_rules['nome'] = 'required|string|max:255';
@@ -163,20 +163,34 @@ class RegisterController extends Controller
         $user = null;
         DB::transaction(function() use ($data) {
            
+           if (!array_key_exists('name', $data)) 
+            {
+            $name = $data['nome'].' '.$data['cognome']; 
+            } 
+          else 
+            {
+            $name = $data['name'];
+            }
+
            $user =  User::create([
                'ruolo' => $data['ruolo'],
-               'name' => $data['name'],
+               'name' => $name,
                /*'username' => $data['username'],*/ 
                'email' => $data['email'],
                'password' => Hash::make($data['password']),
            ]);
 
-           if ( !is_null($user) && array_key_exists('ruolo', $data) && $data['ruolo'] == 'cacciatore') 
-             {
+          if ( !is_null($user) && array_key_exists('ruolo', $data) && $data['ruolo'] == 'cacciatore') 
+            {
              $cacciatore = Cacciatore::create($data);
              $cacciatore->user_id = $user->id;
              $cacciatore->save();
-             }
+             
+            if(array_key_exists('squadre', $data))
+              {
+              $user->cacciatore->squadre()->sync($data['squadre']);
+              }
+            }
 
         });
 

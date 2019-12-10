@@ -90,7 +90,7 @@ class CacciatoriController extends LoginController
         
         $cacciatore = Cacciatore::with('utente')->find($id);
         
-        $squadre_associate = $cacciatore->squadre->pluck('id')->toArray();
+        $squadre_associate = $cacciatore->squadre->pluck('id','id')->toArray();
         
         return view('admin.cacciatori.form', compact('cacciatore', 'squadre_associate'));
     }
@@ -103,9 +103,23 @@ class CacciatoriController extends LoginController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
+      {
+
+      $cacciatore = Cacciatore::find($id);
+      
+      // elimino relazioni cacciatore
+      $cacciatore->squadre()->detach();
+      
+      // elimino user associato
+      $cacciatore->utente()->delete();
+      
+      // elimino cacciatore
+      $cacciatore->forceDelete();
+
+
+      return redirect()->route("cacciatori.index")->with('status', 'Cacciatore eliminato correttamente!');
+      
+      }
 
 
     public function assegnaCapoSquadraAjax(Request $request)
