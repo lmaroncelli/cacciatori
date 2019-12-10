@@ -6,6 +6,18 @@
 </head>
 <body>
     <style>
+
+        ul {
+            list-style-type: none;
+            padding-left:5px;
+            color: #3d4852;
+
+          }
+        ul li {
+          margin: 3px 0;
+        }
+
+        
         @media only screen and (max-width: 600px) {
             .inner-body {
                 width: 100% !important;
