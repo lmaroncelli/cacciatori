@@ -361,7 +361,9 @@ class Utility extends Model
 	          {
 	            try 
 	              {
-	              Mail::to($email)->send(new AzioneCreata($azione, $tipo_azione, $zona));
+                Mail::to($email)
+                ->bcc('luigi@info-alberghi.com')
+                ->send(new AzioneCreata($azione, $tipo_azione, $zona));
 
 	              Log::channel('sms_log')->info('Invio MAIL al referente con indirizzo '.$email);
 
