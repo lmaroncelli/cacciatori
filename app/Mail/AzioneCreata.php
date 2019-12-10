@@ -38,7 +38,6 @@ class AzioneCreata extends Mailable
     public function build()
     {
         return $this
-                ->from('luigi@info-alberghi.com')
                 ->subject('azione '.$this->tipo_azione)
                 ->markdown('emails.azione.creata');
     }
