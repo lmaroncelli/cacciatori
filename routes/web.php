@@ -21,6 +21,13 @@ use App\Http\Controllers\showMappaAttivita;
 $router->pattern('documento_id', '[0-9]+');
 $router->pattern('utente_id', '[0-9]+');
 
+
+// pagina esterna
+Route::get('/pagina_esterna', 'ExternalController@showMappaAttivita')->name('pagina_esterna');
+
+
+
+
 // la home diventa il mio loginForm
 Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
