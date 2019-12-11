@@ -56,7 +56,8 @@ class ExternalController extends Controller
         
 
         Utility::getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
+
+        return view('external.show_external', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'to_show') );
         
-        dd($azioni);
     }
 }
