@@ -35,6 +35,11 @@
                       <a href="{{url()->current()}}?order_by=dipartimento&order={{ $order_by=='dipartimento' && $order=='asc' ? 'desc' : 'asc' }}">Dipartimento</a>
                   </th>
                   <th>Zone di assegnazione</th>
+                  <th @if ($order_by=='notice')
+                    class="{{$order=='asc' ? 'sort_asc' : 'sort_desc' }}"
+                    @endif>
+                      <a href="{{url()->current()}}?order_by=notice&order={{ $order_by=='notice' && $order=='asc' ? 'desc' : 'asc' }}">Notifiche</a>
+                  </th>
                   @not_role('admin_ro')
                   <th></th>
                   <th></th>
@@ -53,6 +58,13 @@
                     <td>{{$referente->email}}</td>
                     <td>{{$referente->dipartimento}}</td>
                     <td>{{$referente->getZoneForTable()}}</td>
+                    <td>
+                      @if ($referente->notice)
+                        <i class="fa fa-check text-green"></i>
+                      @else
+                        <i class="fa fa-times text-red"></i>
+                      @endif
+                    </td>
                     @not_role('admin_ro')
                     <td> <a href="{{ route('referenti.edit',$referente->id) }}" title="Modifica referente" class="btn btn-success btn-sm">modifica</a> </td>
                     <td>

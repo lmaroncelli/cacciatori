@@ -57,6 +57,12 @@ class Zona extends Model
       }
 
 
+    public function referenti_notice()
+      {
+          return $this->belongsToMany('App\Referente', 'tblReferentiZone', 'zona_id', 'referente_id')->where('tblReferenti.notice',1);
+      }
+
+
 		public function setSuperficieAttribute($value)
 	   {
 	    $this->attributes['superficie'] =  (float) str_ireplace(',', '.', $value);
@@ -74,12 +80,24 @@ class Zona extends Model
     return implode(',', $this->squadre()->pluck('nome')->toArray());
     }
 
-    public function getReferenti() 
+    public function getReferenti()
     {
     $to_return = [];
-    $arr = $this->referenti()->pluck('nome', 'dipartimento')->toArray();
-    foreach ($arr as $dip => $n) {
+    $arr = $this->referenti()->pluck('dipartimento', 'nome')->toArray();
+    foreach ($arr as $n => $dip) {
       $to_return[] = $n . ' - ' . $dip;
+    }
+    return implode(', ',$to_return);
+    }
+
+
+    public function getReferentiToShow()
+    {
+    $to_return = [];
+    $refs = $this->referenti()->select('dipartimento', 'nome','notice')->get();
+    foreach ($refs as $ref) {
+
+      $to_return[] = '<span class="notice_'.$ref->notice.'">' . $ref->nome . ' - ' . $ref->dipartimento .'</span>';
     }
     return implode(', ',$to_return);
     }

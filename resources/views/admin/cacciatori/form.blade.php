@@ -33,7 +33,7 @@
             @if ($cacciatore->exists)
 						<div class="form-group has-feedback">        
 							<label class="checkbox-inline">
-							  <input type="checkbox" name="login_capabilities" value="1" @if ($cacciatore->utente->hasLoginCapabilites()) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="Login Disabilitato" data-on="Login Abilitato"> <b>LOGIN</b>
+							  <input type="checkbox" name="login_capabilities" value="1" @if ( old('login_capabilities', $cacciatore->utente->hasLoginCapabilites()) ) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="Login Disabilitato" data-on="Login Abilitato"> <b>LOGIN</b>
 							</label>
 						</div>
 					  @endif

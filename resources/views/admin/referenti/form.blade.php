@@ -3,7 +3,10 @@
 
 @section('header_css')
 	<!-- Select2 -->
-	<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+  
+  {{-- bootstrap toogle button --}}
+	<link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -29,7 +32,19 @@
         @endif
           {!! csrf_field() !!}
           <div class="box-body">
-        
+            
+
+
+            @if ($ref->exists)
+            <input type="hidden" name="notice" value="0">
+						<div class="form-group has-feedback">        
+							<label class="checkbox-inline">
+							  <input type="checkbox" name="notice" value="1" @if (old('notice',$ref->notice)) checked @endif data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="150" data-height="25" data-off="NON Notificabile" data-on="Notificabile"> <b>NOTIFICHE</b>
+							</label>
+						</div>
+					  @endif
+
+
             <div class="form-group">
               <label for="nome">Nome</label>
               <input type="text" class="form-control" name="nome" id="nome" placeholder="nome" value="{{ old('nome') != '' ?  old('nome') : $ref->nome}}" required="required">
@@ -89,7 +104,10 @@
 
 @section('script_footer')
 	<!-- Select2 -->
-	<script src="{{ asset('js/select2.full.min.js') }}"></script>
+  <script src="{{ asset('js/select2.full.min.js') }}"></script>
+  
+  {{-- bootstrap toogle button --}}
+  <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
 
 	<script type="text/javascript">
 				$(function () {

@@ -27,7 +27,7 @@ nuovo
         <div class="box-header with-border">
           <h3 class="box-title">Quadrante</h3> 
           @if ($zona->exists) 
-            <div class="text" style="margin:10px 0">Referenti: <span id="elenco_referenti">{{$zona->getReferenti()}}</span></div>
+            <div class="text" style="margin:10px 0">Referenti: <span id="elenco_referenti">{!!$zona->getReferentiToShow()!!}</span></div>
           @endif
           <div>
             <!-- Button trigger modal -->
