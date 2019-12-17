@@ -43,6 +43,8 @@ Route::get('/reply', 'SmsController@reply')->name('reply_sms');
 Route::get('/delete/{sid}', 'SmsController@delete')->name('delete_sms');
 
 
+Route::get('/reply_nexmo', 'NexmoController@reply')->name('reply_nexmo');
+
 
 
 Route::resource('distretti', 'Admin\DistrettiController');

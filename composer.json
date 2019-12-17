@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "nexmo/laravel": "^2.1",
         "twilio/sdk": "^5.34"
     },
     "require-dev": {

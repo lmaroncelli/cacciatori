@@ -4,3 +4,14 @@ When Nexmo receives an SMS for a phone number that you own, they make a HTTP req
 
 account: vedi password.md
 
+> composer upodate
+> composer require nexmo/laravel
+
+
+
+
+https://dashboard.nexmo.com/settings
+
+configuro l'url del webhook
+
+
