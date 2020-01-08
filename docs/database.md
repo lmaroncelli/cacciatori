@@ -6,3 +6,8 @@
 
 > scp volontari:/home/b92reduv/cacciatori.app-ggv.com/cacciatori_181119.sql ./
 
+
+
+**ATTENZIONE**
+
+Le tabelle sono da metter in camelCase !!

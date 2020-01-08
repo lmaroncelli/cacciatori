@@ -15,7 +15,7 @@ class HomeController extends LoginController
 
   public function __construct()
     {
-      ini_set('memory_limit', '256M');
+      ini_set('memory_limit', '512M');
        // Invoke parent
       parent::__construct();
     }
@@ -68,7 +68,6 @@ class HomeController extends LoginController
 
         Utility::getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
           
-      
         return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'to_show') );
     }
 
