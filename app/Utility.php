@@ -471,7 +471,6 @@ class Utility extends Model
             $poligono = $zona_azione->poligono;
             $coordinata_zona = $poligono->coordinate->pluck('long','lat');
             $coordinate_zona[$zona_azione->id] = $coordinata_zona;
-            
       
 
             // trovo tutte le UG della zona
@@ -498,6 +497,7 @@ class Utility extends Model
             }
           }
 
+          //dd($coordinate_zona, $coordinate_unita, $coordinate_distretto);
               
         $azioni_di_zona = []; 
         $nomi_di_zona = []; 
@@ -547,6 +547,133 @@ class Utility extends Model
         
       } // end getAzioniMappa
 
+    public static function getAzioniMappaNew(&$azioni,&$coordinate_zona, &$item, &$zone_count, &$azioni_di_zona, &$nomi_di_zona, &$coordinate_unita, &$nomi_unita, &$nomi_ug_di_zona, &$coordinate_distretto, &$nomi_distretto, $from, $to, &$distretto_coo, &$unita_coo)
+      {
+        // cerco tutte le azioni di questa data 
+        $azioni = AzioneCaccia::with('squadra', 'distretto','zone')
+                  ->where('dalle','>=',$from)
+                  ->where('alle','<=',$to)
+                  ->get();
+
+        // trovo tutte le zone facendo un loop su tutte le AZIONI
+        $coordinate_zona = [];
+        $zone_ids = [];
+
+        $coordinate_unita = [];
+        $nomi_unita = [];
+
+        $coordinate_distretto = [];
+        $nomi_distretto = [];
+                    
+        foreach ($azioni as $azione) 
+          {
+          $zone_azione = $azione->zone;
+
+          foreach ($zone_azione as $zona_azione) 
+            {
+            if(!in_array($zona_azione->id, $zone_ids))
+              $zone_ids[] = $zona_azione->id;
+  
+            $poligono = $zona_azione->poligono;
+            $coordinata_zona = $poligono->coordinate->pluck('long','lat');
+            $coordinate_zona[$zona_azione->id] = $coordinata_zona;
+      
+
+            // trovo tutte le UG della zona
+            foreach ($zona_azione->unita as $unita) 
+              {
+
+              $poligono_unita =  $unita->poligono;
+              $coordinata_unita = $poligono_unita->coordinate->pluck('long','lat');
+              
+              if (!isset($unita_coo[$unita->id])) 
+                {
+                $unita_coo[$unita->id] = $coordinata_unita;
+                $nomi_unita[$unita->id] = $unita->nome;
+                }
+              
+              $coordinate_unita[$zona_azione->id][$unita->id] = $unita->id;
+             
+              $distretto = $unita->distretto;
+
+              if(!is_null($distretto))
+                {
+                $poligono_distretto = $distretto->poligono;
+                
+                if(!isset($distretto_coo[$distretto->id])) 
+                  {
+                  $distretto_coo[$distretto->id] = $poligono_distretto->coordinate->pluck('long','lat');
+                  }
+
+                $coordinate_distretto[$unita->id] = $distretto->id;
+                $nomi_distretto[$distretto->id] = $distretto->nome;
+                }
+              
+              }
+
+            }
+          }
+
+          //dd($coordinate_zona, $coordinate_unita, $coordinate_distretto);
+              
+        $azioni_di_zona = []; 
+        $nomi_di_zona = []; 
+        $nomi_ug_di_zona = [];
+        
+        // RAGGRUPPO le mie azioni in base alla zona
+        foreach ($azioni as $azione) 
+          {
+
+          $action = new \StdClass();
+          
+          if (!Auth::check() || is_null($azione->note)) 
+            {
+            $action->note = '';
+            }
+          else 
+            {
+            $action->note = str_replace(["'",'"'], "", $azione->note);
+            
+            }
+
+          $action->dalle_alle = $azione->getDalleAlle();
+          $action->nomesquadra = $azione->squadra->nome;
+          if (Auth::check()) 
+            {
+            $action->caposquadra = $azione->squadra->getNomeCapoSquadra();
+            $action->tel_capo = optional($azione->squadra->getCapoSquadra())->telefono;
+            }
+          
+          $zone_azione = $azione->zone;
+
+          foreach ($zone_azione as $zona_azione) 
+            {
+            $azioni_di_zona[$zona_azione->id][] = $action;
+            $nomi_di_zona[$zona_azione->id] = $zona_azione->nome;
+            $u_nomi = [];
+            if(isset($nomi_unita[$zona_azione->id]))
+              {
+              foreach ($nomi_unita[$zona_azione->id] as $u_id => $u_nome) 
+                {
+                $u_nomi[] = $u_nome;
+                }
+              }
+            $nomi_ug_di_zona[$zona_azione->id] = implode(',',$u_nomi);
+            }
+          }
+
+        $azioni = $azioni->keyBy('id')->toArray();         
+
+        // mi serve per centrare la mappa e zoommarla
+        $item = Utility::fakeCenterCoords();
+
+        $zone_count = count($zone_ids);
+        
+      } // end getAzioniMappaNew
 
 
-}
+
+
+
+
+    }

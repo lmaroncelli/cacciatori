@@ -53,11 +53,14 @@ class ExternalController extends Controller
         $nomi_ug_di_zona = null;
         $coordinate_distretto = null; 
         $nomi_distretto = null;
+
+        $distretto_coo = [];
+        $unita_coo = [];
         
 
-        Utility::getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
+        Utility::getAzioniMappaNew($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to, $distretto_coo, $unita_coo);
 
-        return view('external.show_external', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'to_show') );
+        return view('external.show_external', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'distretto_coo', 'unita_coo', 'to_show') );
         
     }
 }

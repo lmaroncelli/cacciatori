@@ -66,9 +66,12 @@ class HomeController extends LoginController
         $nomi_distretto = null;
         
 
-        Utility::getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
-          
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'to_show') );
+        $distretto_coo = [];
+        $unita_coo = [];
+
+        Utility::getAzioniMappaNew($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to, $distretto_coo, $unita_coo);
+        
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'distretto_coo', 'unita_coo', 'to_show') );
     }
 
     public function changeDateMappaAttivitaAjax(Request $request) 
@@ -93,10 +96,10 @@ class HomeController extends LoginController
         $nomi_ug_di_zona = null;
 
 
-        Utility::getAzioniMappa($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to);
+        Utility::getAzioniMappaNew($azioni,$coordinate_zona, $item, $zone_count, $azioni_di_zona, $nomi_di_zona, $coordinate_unita, $nomi_unita, $nomi_ug_di_zona, $coordinate_distretto, $nomi_distretto, $from, $to, $distretto_coo, $unita_coo, $zona_coo);
         
         
-        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto'));
+        return view('admin.azioni.show_mappa_azioni', compact('azioni','coordinate_zona','item', 'zone_count','azioni_di_zona','nomi_di_zona', 'coordinate_unita', 'nomi_unita', 'nomi_ug_di_zona', 'coordinate_distretto', 'nomi_distretto', 'distretto_coo', 'unita_coo', 'zona_coo'));
         }
       }
 

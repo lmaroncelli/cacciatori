@@ -35,22 +35,29 @@ azioni {{count($azioni)}} su quadranti {{$zone_count}}
 	<script src="{{ asset('js/bootstrap-datepicker.it.js') }}"></script>
 
 	<script type="text/javascript">
-
+    
 		var map;
 		var contentString;
     var infoWindow;
 
      var azioni_di_zona = JSON.parse('{!! json_encode($azioni_di_zona) !!}');
+
      var nomi_di_zona = JSON.parse('{!! json_encode($nomi_di_zona) !!}');
      var nomi_ug_di_zona = JSON.parse('{!! json_encode($nomi_ug_di_zona) !!}');
     
+   
 
 				// Initialize and add the map
 				function initMap() {
-
+          
 		 			var center_lat = {{$item->center_lat}};
 		 			var center_long = {{$item->center_long}};
-		 			var zoom = {{$item->zoom}};
+          var zoom = {{$item->zoom}};
+           
+          var distretto_coords = new Array();
+          var utg_coords = new Array();
+          var zona_coords = new Array();
+
 
 		 		  // The location of center
 		 		  var center = {lat: center_lat, lng: center_long};
@@ -66,127 +73,121 @@ azioni {{count($azioni)}} su quadranti {{$zone_count}}
           
         
         // per evitare sovrapposizione nei poligono disegno PRIMA i DISTRETTI
-        @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
-          
-          @if(isset($coordinate_unita[$zona_id]))
-            
-            @foreach ($coordinate_unita[$zona_id] as $id_utg => $coordinata_unita)
-              
-            
-                  var distretto_coords = new Array();
-
-                  @if (!is_null($coordinate_distretto[$id_utg]))
-
-                    @foreach ($coordinate_distretto[$id_utg] as $lat => $long)
-                      
-                      @if(!empty($lat) && !empty($long))
-
-                          var jsonData = {};
-                          jsonData['lat'] = {{$lat}};
-                          jsonData['lng'] = {{$long}};
-                          
-                          //console.log('jsonData = '+JSON.stringify(jsonData));
-
-                          distretto_coords.push(jsonData);
-
-                      @endif
-
-                    @endforeach
-                  
-                  @endif
-
-                  if(distretto_coords.length !== 0) 
-                    {
-
-                        var distretto = new google.maps.Polygon({
-                          paths: distretto_coords,
-                          strokeColor: '{{$colors["distretto"]}}',
-                          strokeOpacity: 0.8,
-                          strokeWeight: 2,
-                          fillColor: '{{$colors["distretto"]}}',
-                          fillOpacity: 0.35,
-                          editable: false,
-                          draggable: false
-                        });
-
-
-                        distretto.setMap(map);
-
-                        distretto.getPath().forEach(function (path, index) {
-                            bounds.extend(path);
-                        });
-
-                        google.maps.event.addListener(distretto, 'click', function(event){
-                          showInfo(event,'distretto',"{{$nomi_distretto[$id_utg]}}");
-                        });
-
-                    }
-
-
-            @endforeach // end $coordinate_unita[$zona_id]
-          
-          @endif
       
-        @endforeach //end $coordinate_zona
-
-
-
-        // Per evitare sovrapposizione dei poligoni
-        // disegno cmq PRIMA le UG
-
-        // per ogni zona costruisco le UG (se esiste)
-        @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
           
-          @if(isset($coordinate_unita[$zona_id]))
+          
+       
+
+        @if (true )
+          
+
+          @foreach ($distretto_coo as $id_distretto => $coordinate_distretto)
             
-            // per ogni zona costruisco le UG
-            @foreach ($coordinate_unita[$zona_id] as $id_utg => $coordinata_unita)
-
-                var utg_coords = new Array();
-
-                @foreach ($coordinata_unita as $lat => $long)
+          
+                var distretto_coords = new Array();
 
 
+                @foreach ($coordinate_distretto as $lat => $long)
+                  
                   @if(!empty($lat) && !empty($long))
 
                       var jsonData = {};
                       jsonData['lat'] = {{$lat}};
                       jsonData['lng'] = {{$long}};
                       
-                      //console.log('jsonData = '+JSON.stringify(jsonData));
+                      distretto_coords.push(jsonData);
 
-                      utg_coords.push(jsonData);
-                  
                   @endif
+
+                @endforeach
                 
-                @endforeach // end coordinata_unita
+                
 
-                // Construct the polygon.
-                utg_{{$zona_id}} = new google.maps.Polygon({
-                  paths: utg_coords,
-                  strokeColor: '{{$colors["utg"]}}',
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                  fillColor: '{{$colors["utg"]}}',
-                  fillOpacity: 0.35,
-                  editable: false,
-                  draggable: false
-                });
+                if(distretto_coords.length !== 0) 
+                  {
 
-
-                //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-                utg_{{$zona_id}}.setMap(map);
+                      var distretto = new google.maps.Polygon({
+                        paths: distretto_coords,
+                        strokeColor: '{{$colors["distretto"]}}',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '{{$colors["distretto"]}}',
+                        fillOpacity: 0.35,
+                        editable: false,
+                        draggable: false
+                      });
 
 
-                google.maps.event.addListener(utg_{{$zona_id}}, 'click', function(event){
-                  showInfo(event,'unità',"{{$nomi_unita[$zona_id][$id_utg]}}");
-                });
+                      distretto.setMap(map);
 
-            @endforeach // end $coordinate_unita[$zona_id]
-          @endif
-        
-        @endforeach //end $coordinate_zona
+                      distretto.getPath().forEach(function (path, index) {
+                          bounds.extend(path);
+                      });
 
+                      google.maps.event.addListener(distretto, 'click', function(event){
+                        showInfo(event,'distretto',"{{$nomi_distretto[$id_distretto]}}");
+                      });
+
+                  }
+
+
+          @endforeach // end $distretto_coo
+
+        @endif  
+
+
+
+        // Per evitare sovrapposizione dei poligoni
+        // disegno cmq PRIMA le UG
+        @if (true)
+          
+          // per ogni zona costruisco le UG
+          @foreach ($unita_coo as $id_utg => $coordinata_unita)
+
+              var utg_coords = new Array();
+
+              @foreach ($coordinata_unita as $lat => $long)
+
+
+                @if(!empty($lat) && !empty($long))
+
+                    var jsonData = {};
+                    jsonData['lat'] = {{$lat}};
+                    jsonData['lng'] = {{$long}};
+                    
+                    //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                    utg_coords.push(jsonData);
+                
+                @endif
+              
+              @endforeach // end coordinata_unita
+
+              // Construct the polygon.
+              utg_{{$id_utg}} = new google.maps.Polygon({
+                paths: utg_coords,
+                strokeColor: '{{$colors["utg"]}}',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '{{$colors["utg"]}}',
+                fillOpacity: 0.35,
+                editable: false,
+                draggable: false
+              });
+
+
+              //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+              utg_{{$id_utg}}.setMap(map);
+
+
+              google.maps.event.addListener(utg_{{$id_utg}}, 'click', function(event){
+                showInfo(event,'unità',"{{$nomi_unita[$id_utg]}}");
+              });
+
+          @endforeach // end $unita_coo
+
+        @endif
+     
 
         // creo tutte le zone delle quali ho le coordinate nell'array coordinate_zona
         @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
@@ -236,7 +237,8 @@ azioni {{count($azioni)}} su quadranti {{$zone_count}}
           
 
         @endforeach //end $coordinate_zona
-				
+        
+        
         if(distretto_coords.length !== 0) 
           {
           map.fitBounds(bounds);
@@ -252,17 +254,20 @@ azioni {{count($azioni)}} su quadranti {{$zone_count}}
           //console.log(event);
           //console.log('zona_id = '+zona_id);
           
-          var contentString = "Elenco azioni quadrante <b>" + nomi_di_zona[zona_id] + "(unità: "+ nomi_ug_di_zona[zona_id] +")</b>:<br/><br/>"
+          var contentString = "Elenco azioni quadrante <b>" + nomi_di_zona[zona_id] + "(unità: "+ nomi_ug_di_zona[zona_id] +")</b>:<br/><br/>";
+
+          
           for (let index = 0; index < azioni_di_zona[zona_id].length; index++) {
-            const azione = azioni_di_zona[zona_id][index];
+            const azione = azioni_di_zona[zona_id][index]
             //console.log('azione = '+azione.dalle);
-            contentString += azione.dalle_alle + ': <ul>'
-            + '<li>Squadra: ' + azione.nomesquadra + '</li>'
-            + '<li>Nota: ' + azione.note + '</li>'
-            + '<li>Caposquadra:' + azione.caposquadra + '</li>'
-            + '<li>Tel:' + azione.tel_capo + '</li>'
-            + '</ul>'
+            contentString += azione.dalle_alle + ": <ul>"
+            + "<li>Squadra: " + azione.nomesquadra + "</li>"
+            + "<li>Nota: " + azione.note + "</li>"
+            + "<li>Caposquadra:" + azione.caposquadra + "</li>"
+            + "<li>Tel:" + azione.tel_capo + "</li>"
+            + "</ul>"
           }
+          
          
 
           // Replace the info window's content and position.
@@ -296,7 +301,7 @@ azioni {{count($azioni)}} su quadranti {{$zone_count}}
         if(ev != "undefined") {
           //var data =  ev.date.toLocaleDateString("it-IT");
           var data =  ev.date.getFullYear() + "-" + (ev.date.getMonth() + 1) + "-" + ev.date.getDate()
-          console.log(data);
+          //console.log(data);
           
           var url = '{{ route('home') }}'+'?data='+data
 

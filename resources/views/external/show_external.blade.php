@@ -46,7 +46,12 @@
 
 		 			var center_lat = {{$item->center_lat}};
 		 			var center_long = {{$item->center_long}};
-		 			var zoom = {{$item->zoom}};
+           var zoom = {{$item->zoom}};
+           
+
+           var distretto_coords = new Array();
+          var utg_coords = new Array();
+          var zona_coords = new Array();
 
 		 		  // The location of center
 		 		  var center = {lat: center_lat, lng: center_long};
@@ -62,127 +67,119 @@
           
         
         // per evitare sovrapposizione nei poligono disegno PRIMA i DISTRETTI
-        @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
+        @if (true )
           
-          @if(isset($coordinate_unita[$zona_id]))
+
+          @foreach ($distretto_coo as $id_distretto => $coordinate_distretto)
             
-            @foreach ($coordinate_unita[$zona_id] as $id_utg => $coordinata_unita)
-              
-            
-                  var distretto_coords = new Array();
+          
+                var distretto_coords = new Array();
 
-                  @if (!is_null($coordinate_distretto[$id_utg]))
 
-                    @foreach ($coordinate_distretto[$id_utg] as $lat => $long)
-                      
-                      @if(!empty($lat) && !empty($long))
-
-                          var jsonData = {};
-                          jsonData['lat'] = {{$lat}};
-                          jsonData['lng'] = {{$long}};
-                          
-                          //console.log('jsonData = '+JSON.stringify(jsonData));
-
-                          distretto_coords.push(jsonData);
-
-                      @endif
-
-                    @endforeach
+                @foreach ($coordinate_distretto as $lat => $long)
                   
-                  @endif
-
-                  if(distretto_coords.length !== 0) 
-                    {
-
-                        var distretto = new google.maps.Polygon({
-                          paths: distretto_coords,
-                          strokeColor: '{{$colors["distretto"]}}',
-                          strokeOpacity: 0.8,
-                          strokeWeight: 2,
-                          fillColor: '{{$colors["distretto"]}}',
-                          fillOpacity: 0.35,
-                          editable: false,
-                          draggable: false
-                        });
-
-
-                        distretto.setMap(map);
-
-                        distretto.getPath().forEach(function (path, index) {
-                            bounds.extend(path);
-                        });
-
-                        google.maps.event.addListener(distretto, 'click', function(event){
-                          showInfo(event,'distretto',"{{$nomi_distretto[$id_utg]}}");
-                        });
-
-                    }
-
-
-            @endforeach // end $coordinate_unita[$zona_id]
-          
-          @endif
-      
-        @endforeach //end $coordinate_zona
-
-
-
-        // Per evitare sovrapposizione dei poligoni
-        // disegno cmq PRIMA le UG
-
-        // per ogni zona costruisco le UG (se esiste)
-        @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
-          
-          @if(isset($coordinate_unita[$zona_id]))
-            
-            // per ogni zona costruisco le UG
-            @foreach ($coordinate_unita[$zona_id] as $id_utg => $coordinata_unita)
-
-                var utg_coords = new Array();
-
-                @foreach ($coordinata_unita as $lat => $long)
-
-
                   @if(!empty($lat) && !empty($long))
 
                       var jsonData = {};
                       jsonData['lat'] = {{$lat}};
                       jsonData['lng'] = {{$long}};
                       
-                      //console.log('jsonData = '+JSON.stringify(jsonData));
+                      distretto_coords.push(jsonData);
 
-                      utg_coords.push(jsonData);
-                  
                   @endif
+
+                @endforeach
                 
-                @endforeach // end coordinata_unita
+                
 
-                // Construct the polygon.
-                utg_{{$zona_id}} = new google.maps.Polygon({
-                  paths: utg_coords,
-                  strokeColor: '{{$colors["utg"]}}',
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                  fillColor: '{{$colors["utg"]}}',
-                  fillOpacity: 0.35,
-                  editable: false,
-                  draggable: false
-                });
+                if(distretto_coords.length !== 0) 
+                  {
 
-
-                //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
-                utg_{{$zona_id}}.setMap(map);
+                      var distretto = new google.maps.Polygon({
+                        paths: distretto_coords,
+                        strokeColor: '{{$colors["distretto"]}}',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '{{$colors["distretto"]}}',
+                        fillOpacity: 0.35,
+                        editable: false,
+                        draggable: false
+                      });
 
 
-                google.maps.event.addListener(utg_{{$zona_id}}, 'click', function(event){
-                  showInfo(event,'unità',"{{$nomi_unita[$zona_id][$id_utg]}}");
-                });
+                      distretto.setMap(map);
 
-            @endforeach // end $coordinate_unita[$zona_id]
-          @endif
-        
-        @endforeach //end $coordinate_zona
+                      distretto.getPath().forEach(function (path, index) {
+                          bounds.extend(path);
+                      });
 
+                      google.maps.event.addListener(distretto, 'click', function(event){
+                        showInfo(event,'distretto',"{{$nomi_distretto[$id_distretto]}}");
+                      });
+
+                  }
+
+
+          @endforeach // end $distretto_coo
+
+        @endif  
+            
+   
+   
+
+
+        // Per evitare sovrapposizione dei poligoni
+        // disegno cmq PRIMA le UG
+
+         @if (true)
+          
+          // per ogni zona costruisco le UG
+          @foreach ($unita_coo as $id_utg => $coordinata_unita)
+
+              var utg_coords = new Array();
+
+              @foreach ($coordinata_unita as $lat => $long)
+
+
+                @if(!empty($lat) && !empty($long))
+
+                    var jsonData = {};
+                    jsonData['lat'] = {{$lat}};
+                    jsonData['lng'] = {{$long}};
+                    
+                    //console.log('jsonData = '+JSON.stringify(jsonData));
+
+                    utg_coords.push(jsonData);
+                
+                @endif
+              
+              @endforeach // end coordinata_unita
+
+              // Construct the polygon.
+              utg_{{$id_utg}} = new google.maps.Polygon({
+                paths: utg_coords,
+                strokeColor: '{{$colors["utg"]}}',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '{{$colors["utg"]}}',
+                fillOpacity: 0.35,
+                editable: false,
+                draggable: false
+              });
+
+
+              //To add a layer to a map, you only need to call setMap(), passing it the map object on which to display the layer. 
+              utg_{{$id_utg}}.setMap(map);
+
+
+              google.maps.event.addListener(utg_{{$id_utg}}, 'click', function(event){
+                showInfo(event,'unità',"{{$nomi_unita[$id_utg]}}");
+              });
+
+          @endforeach // end $unita_coo
+
+        @endif
+      
 
         // creo tutte le zone delle quali ho le coordinate nell'array coordinate_zona
         @foreach ($coordinate_zona as $zona_id => $coordinata_zona)
