@@ -244,7 +244,7 @@ class SmsController extends Controller
 
           Log::channel('sms_log')->info('Quadrante '.$zona->nome.' assegnato alla azione');
           
-          $referenti_zona_tel = $zona->referenti->pluck('telefono')->toArray();
+          $referenti_zona_tel = $zona->referenti_notice->pluck('telefono')->toArray();
 
           // INVIO SMS A TUTTI I REFERENTI DI ZONA
           if(count($referenti_zona_tel))
@@ -264,7 +264,7 @@ class SmsController extends Controller
             }
           // FINE - INVIO SMS A TUTTI I REFERENTI DI ZONA
 
-          $referenti_zona_email = $zona->referenti->pluck('email')->toArray();
+          $referenti_zona_email = $zona->referenti_notice->pluck('email')->toArray();
           // INVIO MAIL A TUTTI I REFERENTI DI ZONA
           if(count($referenti_zona_email))
             {
